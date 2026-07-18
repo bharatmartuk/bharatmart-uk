@@ -91,6 +91,25 @@ export const MerchantService = {
     })
   },
 
+  async updateVerificationDocuments(
+    userId: string,
+    input: { businessDocumentUrl: string; idProofUrl: string },
+  ) {
+    const merchant = await prisma.merchant.findUnique({ where: { userId } })
+    if (!merchant) throw new NotFoundError('Merchant profile not found.')
+    if (merchant.verificationStatus === 'APPROVED') {
+      throw new ConflictError('Approved merchants cannot replace verification documents here.')
+    }
+
+    return prisma.merchant.update({
+      where: { id: merchant.id },
+      data: {
+        verificationDocumentUrls: [input.businessDocumentUrl, input.idProofUrl],
+        verificationStatus: 'PENDING',
+      },
+    })
+  },
+
   async setVerificationStatus(
     merchantId: string,
     status: 'APPROVED' | 'REJECTED',

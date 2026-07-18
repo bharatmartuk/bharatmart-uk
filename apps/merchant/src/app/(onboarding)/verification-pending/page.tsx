@@ -3,6 +3,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui
 import { MerchantService } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 import { redirect } from 'next/navigation'
+import { ReplaceVerificationDocuments } from '@/components/onboarding/ReplaceVerificationDocuments'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,6 +14,10 @@ export default async function VerificationPendingPage() {
   const merchant = await MerchantService.getByUserId(user.id)
   if (!merchant) redirect('/register-business')
   if (merchant.verificationStatus === 'APPROVED') redirect('/')
+
+  const hasPlaceholderDocs = merchant.verificationDocumentUrls.some((url) =>
+    url.includes('picsum.photos'),
+  )
 
   return (
     <main className="mx-auto flex min-h-screen max-w-xl items-center px-4 py-16">
@@ -29,6 +34,13 @@ export default async function VerificationPendingPage() {
             Current status:{' '}
             <strong className="text-[#a83635]">{merchant.verificationStatus}</strong>
           </p>
+          {hasPlaceholderDocs ? (
+            <p className="rounded-lg bg-[#f9f3ea] px-3 py-2 text-xs">
+              Your current uploads are placeholders and cannot be opened by admin. Please re-upload
+              below.
+            </p>
+          ) : null}
+          <ReplaceVerificationDocuments />
           <Button asChild variant="outline">
             <Link href="/login">Back to login</Link>
           </Button>

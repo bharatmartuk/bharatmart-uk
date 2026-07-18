@@ -1,8 +1,11 @@
-import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { Badge, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import { MerchantService } from '@bharatmart/services'
 import { VerificationDecisionPanel } from '@/components/merchants/VerificationDecisionPanel'
+import {
+  describeVerificationDocuments,
+  VerificationDocuments,
+} from '@/components/merchants/VerificationDocuments'
 
 export const dynamic = 'force-dynamic'
 
@@ -14,6 +17,8 @@ export default async function MerchantVerificationPage({
   const { id } = await params
   const merchant = await MerchantService.getById(id)
   if (!merchant) notFound()
+
+  const documents = describeVerificationDocuments(merchant.verificationDocumentUrls)
 
   return (
     <main className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -30,22 +35,8 @@ export default async function MerchantVerificationPage({
           <CardHeader>
             <CardTitle>Verification documents</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-3 sm:grid-cols-2">
-            {merchant.verificationDocumentUrls.length === 0 ? (
-              <p className="text-sm text-[#514534]">No documents uploaded.</p>
-            ) : (
-              merchant.verificationDocumentUrls.map((url) => (
-                <a
-                  className="relative block aspect-video overflow-hidden rounded-lg border border-[#d6c4ad]"
-                  href={url}
-                  key={url}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  <Image alt="Verification document" className="object-cover" fill src={url} unoptimized />
-                </a>
-              ))
-            )}
+          <CardContent>
+            <VerificationDocuments documents={documents} merchantId={merchant.id} />
           </CardContent>
         </Card>
       </section>

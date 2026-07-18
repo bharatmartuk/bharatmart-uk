@@ -16,6 +16,9 @@ export type SignedUploadResponse = {
  * Browser-side signed upload:
  * 1) fetch a signature from our API (secret stays on the server)
  * 2) POST the file directly to Cloudinary
+ *
+ * Without Cloudinary credentials, merchant documents are stored via local upload API
+ * so admins can open/review them without huge data-URL payloads.
  */
 export async function uploadFileToCloudinary(
   file: File,
@@ -33,16 +36,29 @@ export async function uploadFileToCloudinary(
   }
 
   const signed = (await signResponse.json()) as SignedUploadResponse
+  const publicId = `${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`
 
-  // Without real Cloudinary credentials, keep a deterministic placeholder URL.
   if (!signed.apiKey || signed.apiKey === 'stub' || signed.signature === 'pending-cloudinary-secret') {
-    const publicId = `${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`
+    if (folder === 'bharatmart/merchant-documents') {
+      const formData = new FormData()
+      formData.append('file', file)
+      const localResponse = await fetch('/api/uploads/local', {
+        method: 'POST',
+        body: formData,
+      })
+      if (!localResponse.ok) {
+        throw new Error('Local document upload failed.')
+      }
+      return (await localResponse.json()) as { url: string; publicId: string }
+    }
+
     return {
       url: `https://picsum.photos/seed/${encodeURIComponent(publicId)}/800/800`,
       publicId,
     }
   }
 
+  const resourceType = file.type.startsWith('image/') ? 'image' : 'auto'
   const formData = new FormData()
   formData.append('file', file)
   formData.append('api_key', signed.apiKey)
@@ -51,7 +67,7 @@ export async function uploadFileToCloudinary(
   formData.append('folder', signed.folder)
 
   const uploadResponse = await fetch(
-    `https://api.cloudinary.com/v1_1/${signed.cloudName}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${signed.cloudName}/${resourceType}/upload`,
     {
       method: 'POST',
       body: formData,

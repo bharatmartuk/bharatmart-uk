@@ -1,12 +1,15 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import { Button, Input, Label } from '@bharatmart/ui'
 import { approveMerchantAction, rejectMerchantAction } from '@/app/(dashboard)/merchants/actions'
 
 export function VerificationDecisionPanel({ merchantId }: { merchantId: string }) {
+  const router = useRouter()
   const [reason, setReason] = useState('')
   const [message, setMessage] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
   return (
@@ -17,13 +20,24 @@ export function VerificationDecisionPanel({ merchantId }: { merchantId: string }
         disabled={pending}
         onClick={() =>
           startTransition(async () => {
-            const result = await approveMerchantAction(merchantId)
-            setMessage(result.ok ? 'Merchant approved.' : result.error)
+            setMessage(null)
+            setError(null)
+            try {
+              const result = await approveMerchantAction(merchantId)
+              if (!result.ok) {
+                setError(result.error)
+                return
+              }
+              setMessage('Merchant approved.')
+              router.refresh()
+            } catch {
+              setError('Approve failed. Refresh the page and try again.')
+            }
           })
         }
         type="button"
       >
-        Approve merchant
+        {pending ? 'Working…' : 'Approve merchant'}
       </Button>
       <div className="space-y-2">
         <Label>Rejection reason</Label>
@@ -34,8 +48,19 @@ export function VerificationDecisionPanel({ merchantId }: { merchantId: string }
         disabled={pending}
         onClick={() =>
           startTransition(async () => {
-            const result = await rejectMerchantAction(merchantId, reason)
-            setMessage(result.ok ? 'Merchant rejected.' : result.error)
+            setMessage(null)
+            setError(null)
+            try {
+              const result = await rejectMerchantAction(merchantId, reason)
+              if (!result.ok) {
+                setError(result.error)
+                return
+              }
+              setMessage('Merchant rejected.')
+              router.refresh()
+            } catch {
+              setError('Reject failed. Refresh the page and try again.')
+            }
           })
         }
         type="button"
@@ -43,7 +68,8 @@ export function VerificationDecisionPanel({ merchantId }: { merchantId: string }
       >
         Reject merchant
       </Button>
-      {message ? <p className="text-sm text-[#514534]">{message}</p> : null}
+      {message ? <p className="text-sm text-[#2e6a39]">{message}</p> : null}
+      {error ? <p className="text-sm text-[#a83635]">{error}</p> : null}
     </div>
   )
 }

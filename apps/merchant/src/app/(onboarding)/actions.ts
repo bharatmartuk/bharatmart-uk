@@ -3,9 +3,14 @@
 import {
   MerchantService,
   ConflictError,
+  NotFoundError,
   ValidationError,
 } from '@bharatmart/services'
-import type { MerchantOnboardingInput } from '@bharatmart/validation'
+import {
+  merchantVerificationDocumentsSchema,
+  type MerchantOnboardingInput,
+  type MerchantVerificationDocumentsInput,
+} from '@bharatmart/validation'
 import { getCurrentUser } from '@/auth'
 
 export async function submitMerchantOnboarding(input: MerchantOnboardingInput) {
@@ -22,5 +27,30 @@ export async function submitMerchantOnboarding(input: MerchantOnboardingInput) {
   }
 
   // Client refreshes the JWT (CUSTOMER → MERCHANT) then navigates.
+  return { ok: true as const }
+}
+
+export async function replaceVerificationDocuments(input: MerchantVerificationDocumentsInput) {
+  const user = await getCurrentUser()
+  if (!user) return { ok: false as const, error: 'Please sign in first.' }
+
+  const parsed = merchantVerificationDocumentsSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false as const, error: 'Upload both verification documents.' }
+  }
+
+  try {
+    await MerchantService.updateVerificationDocuments(user.id, parsed.data)
+  } catch (error) {
+    if (
+      error instanceof ConflictError ||
+      error instanceof ValidationError ||
+      error instanceof NotFoundError
+    ) {
+      return { ok: false as const, error: error.message }
+    }
+    return { ok: false as const, error: 'Unable to update documents.' }
+  }
+
   return { ok: true as const }
 }

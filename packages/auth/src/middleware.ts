@@ -35,6 +35,10 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
     })
 
     if (!token) {
+      // Let API routes return JSON 401 instead of an HTML login redirect.
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
       const loginUrl = new URL('/login', req.url)
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
@@ -42,6 +46,9 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
 
     const role = token.role
     if (!isUserRole(role) || !allowedRoles.includes(role)) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+      }
       return NextResponse.redirect(new URL('/forbidden', req.url))
     }
 
@@ -76,6 +83,9 @@ export function createMerchantPortalMiddleware() {
     const token = await getToken({ req, secret })
 
     if (!token) {
+      if (pathname.startsWith('/api/')) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
       const loginUrl = new URL('/login', req.url)
       loginUrl.searchParams.set('callbackUrl', pathname)
       return NextResponse.redirect(loginUrl)
@@ -84,6 +94,11 @@ export function createMerchantPortalMiddleware() {
     const role = token.role
     if (!isUserRole(role)) {
       return NextResponse.redirect(new URL('/forbidden', req.url))
+    }
+
+    // API routes enforce their own auth; do not redirect (breaks browser uploads).
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.next()
     }
 
     if (role === UserRole.MERCHANT) {

@@ -28,6 +28,24 @@ import { submitMerchantOnboarding } from '@/app/(onboarding)/actions'
 
 const steps = ['Business Details', 'Documents', 'Store Setup', 'Review'] as const
 
+const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
+  ['businessName', 'businessType', 'registeredAddress', 'contactPhone'],
+  ['businessDocumentUrl', 'idProofUrl'],
+  ['storeName', 'storeSlug', 'storeDescription', 'deliveryPostcodes'],
+  [
+    'businessName',
+    'businessType',
+    'registeredAddress',
+    'contactPhone',
+    'businessDocumentUrl',
+    'idProofUrl',
+    'storeName',
+    'storeSlug',
+    'storeDescription',
+    'deliveryPostcodes',
+  ],
+]
+
 const businessTypes = [
   ['GROCERY', 'Grocery'],
   ['RESTAURANT', 'Restaurant'],
@@ -39,6 +57,15 @@ const businessTypes = [
   ['DISTRIBUTOR', 'Distributor'],
   ['OTHER', 'Other'],
 ] as const
+
+function firstErrorMessage(
+  errors: Partial<Record<keyof MerchantOnboardingInput, { message?: string }>>,
+) {
+  for (const value of Object.values(errors)) {
+    if (value?.message) return value.message
+  }
+  return 'Please fix the highlighted fields.'
+}
 
 export function MerchantOnboardingForm() {
   const router = useRouter()
@@ -65,14 +92,26 @@ export function MerchantOnboardingForm() {
   })
 
   const values = form.watch()
+  const fieldErrors = form.formState.errors
 
   async function handleUpload(field: 'businessDocumentUrl' | 'idProofUrl', file: File) {
+    setError(null)
     try {
       const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-documents')
       form.setValue(field, uploaded.url, { shouldValidate: true })
     } catch {
       setError('Document upload failed. Please try again.')
     }
+  }
+
+  async function goNext() {
+    setError(null)
+    const valid = await form.trigger(stepFields[step])
+    if (!valid) {
+      setError(firstErrorMessage(form.formState.errors))
+      return
+    }
+    setStep((current) => Math.min(steps.length - 1, current + 1))
   }
 
   async function onSubmit(data: MerchantOnboardingInput) {
@@ -110,18 +149,28 @@ export function MerchantOnboardingForm() {
           <CardTitle>{steps[step]}</CardTitle>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className="space-y-4"
+            onSubmit={form.handleSubmit(onSubmit, (errors) => {
+              setError(firstErrorMessage(errors))
+            })}
+          >
             {step === 0 ? (
               <>
                 <div className="space-y-2">
                   <Label>Business name</Label>
                   <Input {...form.register('businessName')} placeholder="e.g. Royal Spice Traders" />
+                  {fieldErrors.businessName ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.businessName.message}</p>
+                  ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>Business type</Label>
                   <Select
                     onValueChange={(value) =>
-                      form.setValue('businessType', value as MerchantOnboardingInput['businessType'])
+                      form.setValue('businessType', value as MerchantOnboardingInput['businessType'], {
+                        shouldValidate: true,
+                      })
                     }
                     value={values.businessType}
                   >
@@ -140,10 +189,16 @@ export function MerchantOnboardingForm() {
                 <div className="space-y-2">
                   <Label>Registered address</Label>
                   <Input {...form.register('registeredAddress')} />
+                  {fieldErrors.registeredAddress ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.registeredAddress.message}</p>
+                  ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>Contact phone</Label>
                   <Input {...form.register('contactPhone')} placeholder="7700 900000" />
+                  {fieldErrors.contactPhone ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.contactPhone.message}</p>
+                  ) : null}
                 </div>
               </>
             ) : null}
@@ -153,6 +208,7 @@ export function MerchantOnboardingForm() {
                 <div className="space-y-2">
                   <Label>Business document</Label>
                   <Input
+                    accept=".pdf,.png,.jpg,.jpeg,.webp"
                     onChange={(event) => {
                       const file = event.target.files?.[0]
                       if (file) void handleUpload('businessDocumentUrl', file)
@@ -160,12 +216,16 @@ export function MerchantOnboardingForm() {
                     type="file"
                   />
                   {values.businessDocumentUrl ? (
-                    <p className="text-xs text-[#2e6a39]">Uploaded via signed Cloudinary flow</p>
+                    <p className="text-xs text-[#2e6a39]">Document uploaded</p>
+                  ) : null}
+                  {fieldErrors.businessDocumentUrl ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.businessDocumentUrl.message}</p>
                   ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>ID proof</Label>
                   <Input
+                    accept=".pdf,.png,.jpg,.jpeg,.webp"
                     onChange={(event) => {
                       const file = event.target.files?.[0]
                       if (file) void handleUpload('idProofUrl', file)
@@ -173,7 +233,10 @@ export function MerchantOnboardingForm() {
                     type="file"
                   />
                   {values.idProofUrl ? (
-                    <p className="text-xs text-[#2e6a39]">Uploaded via signed Cloudinary flow</p>
+                    <p className="text-xs text-[#2e6a39]">Document uploaded</p>
+                  ) : null}
+                  {fieldErrors.idProofUrl ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.idProofUrl.message}</p>
                   ) : null}
                 </div>
               </>
@@ -184,14 +247,26 @@ export function MerchantOnboardingForm() {
                 <div className="space-y-2">
                   <Label>Store name</Label>
                   <Input {...form.register('storeName')} />
+                  {fieldErrors.storeName ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.storeName.message}</p>
+                  ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>Store slug</Label>
                   <Input {...form.register('storeSlug')} placeholder="royal-spice-traders" />
+                  {fieldErrors.storeSlug ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.storeSlug.message}</p>
+                  ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>Store description</Label>
-                  <Input {...form.register('storeDescription')} />
+                  <Input
+                    {...form.register('storeDescription')}
+                    placeholder="At least 20 characters about your store"
+                  />
+                  {fieldErrors.storeDescription ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.storeDescription.message}</p>
+                  ) : null}
                 </div>
                 <div className="space-y-2">
                   <Label>Delivery postcodes</Label>
@@ -218,8 +293,11 @@ export function MerchantOnboardingForm() {
                     </Button>
                   </div>
                   <p className="text-xs text-[#514534]">
-                    {(values.deliveryPostcodes ?? []).join(', ') || 'None added yet'}
+                    {(values.deliveryPostcodes ?? []).join(', ') || 'None added yet — add at least one'}
                   </p>
+                  {fieldErrors.deliveryPostcodes ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.deliveryPostcodes.message}</p>
+                  ) : null}
                 </div>
               </>
             ) : null}
@@ -231,6 +309,10 @@ export function MerchantOnboardingForm() {
                 </p>
                 <p>
                   <strong>Store:</strong> {values.storeName} / {values.storeSlug}
+                </p>
+                <p>
+                  <strong>Delivery:</strong>{' '}
+                  {(values.deliveryPostcodes ?? []).join(', ') || 'None'}
                 </p>
                 <p>
                   <strong>Documents:</strong>{' '}
@@ -255,7 +337,7 @@ export function MerchantOnboardingForm() {
               {step < steps.length - 1 ? (
                 <Button
                   className="bg-[#a83635] text-white hover:bg-[#881e20]"
-                  onClick={() => setStep((current) => Math.min(steps.length - 1, current + 1))}
+                  onClick={() => void goNext()}
                   type="button"
                 >
                   Save & Continue
@@ -266,7 +348,7 @@ export function MerchantOnboardingForm() {
                   disabled={form.formState.isSubmitting}
                   type="submit"
                 >
-                  Submit for verification
+                  {form.formState.isSubmitting ? 'Submitting…' : 'Submit for verification'}
                 </Button>
               )}
             </div>

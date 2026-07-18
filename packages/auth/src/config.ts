@@ -155,25 +155,30 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
         }
 
         // Keep role/merchantId in sync (e.g. CUSTOMER → MERCHANT after onboarding).
+        // Never throw here — a DB blip must not invalidate the whole session/action.
         if (token.sub) {
-          const dbUser = await prisma.user.findUnique({
-            where: { id: token.sub },
-            include: { merchant: { select: { id: true } } },
-          })
-
-          if (dbUser && isUserRole(dbUser.role)) {
-            token.role = dbUser.role
-            token.merchantId = dbUser.merchant?.id ?? null
-          } else if (user?.email) {
-            const byEmail = await prisma.user.findUnique({
-              where: { email: user.email.toLowerCase() },
+          try {
+            const dbUser = await prisma.user.findUnique({
+              where: { id: token.sub },
               include: { merchant: { select: { id: true } } },
             })
-            if (byEmail && isUserRole(byEmail.role)) {
-              token.sub = byEmail.id
-              token.role = byEmail.role
-              token.merchantId = byEmail.merchant?.id ?? null
+
+            if (dbUser && isUserRole(dbUser.role)) {
+              token.role = dbUser.role
+              token.merchantId = dbUser.merchant?.id ?? null
+            } else if (user?.email) {
+              const byEmail = await prisma.user.findUnique({
+                where: { email: user.email.toLowerCase() },
+                include: { merchant: { select: { id: true } } },
+              })
+              if (byEmail && isUserRole(byEmail.role)) {
+                token.sub = byEmail.id
+                token.role = byEmail.role
+                token.merchantId = byEmail.merchant?.id ?? null
+              }
             }
+          } catch {
+            // Keep existing token claims if the database is temporarily unreachable.
           }
         }
 
