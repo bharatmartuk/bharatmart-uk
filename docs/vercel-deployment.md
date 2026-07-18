@@ -42,6 +42,7 @@ After deploy, `/` is the storefront and `/login` is **customer** login.
 2. **Root Directory:** `apps/merchant`
 3. Build from [`apps/merchant/vercel.json`](../apps/merchant/vercel.json).
 4. Env: shared DB vars + own `AUTH_SECRET` / `AUTH_URL` / `AUTH_TRUST_HOST=true`
+   - `AUTH_URL` must be the **exact** live merchant origin (e.g. `https://bharatmart-uk-merchant-theta.vercel.app`), including `https://`. A wrong host (e.g. `bharatmart-merchant.vercel.app` when that project does not exist) breaks post-login redirects.
 5. Deploy.
 
 ### Admin (`bharatmart-admin`)

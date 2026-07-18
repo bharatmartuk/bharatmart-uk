@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { safeInternalPath } from '@bharatmart/utils'
 import { loginSchema, type LoginInput } from '@bharatmart/validation'
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@bharatmart/ui'
 
@@ -47,7 +48,7 @@ export function CredentialsLoginForm({
       return
     }
 
-    router.push(result?.url ?? callbackUrl)
+    router.push(safeInternalPath(callbackUrl, '/', result?.url))
     router.refresh()
   }
 
