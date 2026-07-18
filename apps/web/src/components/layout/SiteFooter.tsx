@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Facebook, Instagram, MessageCircle, Share2 } from 'lucide-react'
 import { Button, Separator } from '@bharatmart/ui'
+import { merchantAppPath } from '@/lib/app-urls'
 
 const footerGroups = [
   {
@@ -21,17 +22,14 @@ const footerGroups = [
       ['Terms of service', '/terms'],
     ],
   },
-  {
-    title: 'Sell on BharatMart',
-    links: [
-      ['Become a seller', '/merchant'],
-      ['Merchant login', '/merchant/login'],
-      ['Seller FAQ', '/seller-faq'],
-    ],
-  },
 ] as const
 
 export function SiteFooter() {
+  const sellLinks = [
+    ['Become a seller', merchantAppPath('/register-business')],
+    ['Merchant login', merchantAppPath('/login')],
+  ] as const
+
   return (
     <>
       <aside className="fixed bottom-5 right-5 z-40">
@@ -79,6 +77,19 @@ export function SiteFooter() {
               </ul>
             </div>
           ))}
+
+          <div>
+            <h2 className="font-semibold text-[#7f5700]">Sell on BharatMart</h2>
+            <ul className="mt-4 space-y-3">
+              {sellLinks.map(([label, href]) => (
+                <li key={label}>
+                  <a className="text-sm text-[#514534] hover:underline" href={href}>
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <Separator className="bg-[#d6c4ad]" />
         <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-[#837561] md:px-8 lg:px-16">

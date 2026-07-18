@@ -1,24 +1,66 @@
 # BharatMart UK — Vercel deployment
 
-Create **three** Vercel projects from the same Git repository:
+This monorepo has **three separate Next.js apps**. Deploy each as its own Vercel project from the same GitHub repo. Do **not** point the marketplace domain at `apps/admin`.
 
-| Project | Root Directory | Filter |
-| --- | --- | --- |
-| web | `apps/web` | `@bharatmart/web` |
-| merchant | `apps/merchant` | `@bharatmart/merchant` |
-| admin | `apps/admin` | `@bharatmart/admin` |
+| Project name (suggested) | Root Directory | Build filter | Public role |
+| --- | --- | --- | --- |
+| `bharatmart-uk` (existing) | `apps/web` | `@bharatmart/web` | Customer marketplace |
+| `bharatmart-merchant` | `apps/merchant` | `@bharatmart/merchant` | Seller portal + merchant login |
+| `bharatmart-admin` | `apps/admin` | `@bharatmart/admin` | Ops console + admin login |
+
+## Fix the current main URL (shows Admin login)
+
+If [https://bharatmart-uk.vercel.app](https://bharatmart-uk.vercel.app) shows **Admin login**, the project Root Directory is still `apps/admin`.
+
+1. Open **Vercel → bharatmart-uk → Settings → General**.
+2. Set **Root Directory** to `apps/web` (Include source files outside root if prompted / leave as Vercel monorepo default).
+3. Confirm build settings match [`apps/web/vercel.json`](../apps/web/vercel.json):
+   - **Install:** `cd ../.. && pnpm install`
+   - **Build:** `cd ../.. && pnpm turbo run build --filter=@bharatmart/web`
+4. Environment Variables (Production):
+   - `DATABASE_URL`, `DIRECT_URL`
+   - `AUTH_SECRET` (unique for web)
+   - `AUTH_URL` = `https://bharatmart-uk.vercel.app`
+   - `AUTH_TRUST_HOST` = `true`
+   - `NEXT_PUBLIC_MERCHANT_APP_URL` = your merchant project URL (after step below), e.g. `https://bharatmart-merchant.vercel.app`
+5. **Deployments → Redeploy** (clear cache optional).
+
+After this, `/` is the marketplace and `/login` is **customer** login only.
+
+## Create merchant + admin projects
+
+### Merchant (`bharatmart-merchant`)
+
+1. **Add New Project** → import the same `bharatmartuk/bharatmart-uk` repo.
+2. **Root Directory:** `apps/merchant`
+3. Build from [`apps/merchant/vercel.json`](../apps/merchant/vercel.json) (`--filter=@bharatmart/merchant`).
+4. Env:
+   - shared DB vars
+   - `AUTH_SECRET` (**different** from web)
+   - `AUTH_URL` = `https://<merchant-project>.vercel.app`
+   - `AUTH_TRUST_HOST` = `true`
+5. Deploy. Merchant login lives at `/login` on **that** URL only — not inside the storefront.
+
+### Admin (`bharatmart-admin`)
+
+1. **Add New Project** → same repo.
+2. **Root Directory:** `apps/admin`
+3. Build from [`apps/admin/vercel.json`](../apps/admin/vercel.json) (`--filter=@bharatmart/admin`).
+4. Env: same pattern with its own `AUTH_SECRET` / `AUTH_URL`.
+5. Deploy. Admin login is only on the admin URL.
+
+Then set `NEXT_PUBLIC_MERCHANT_APP_URL` on the **web** project to the merchant production URL and redeploy web so “Become a Seller” / “Merchant login” leave the customer UI.
 
 ## Build settings (each project)
 
 - **Install Command:** `cd ../.. && pnpm install`
-- **Build Command:** `cd ../.. && pnpm turbo run build --filter=@bharatmart/web`  
-  (swap the filter for merchant/admin)
+- **Build Command:** `cd ../.. && pnpm turbo run build --filter=@bharatmart/<web|merchant|admin>`
 - **Output Directory:** leave default (Next.js detects `.next`)
 - **Framework Preset:** Next.js
 
 ## Shared environment variables
 
-Set these on all three projects:
+Set on all three projects:
 
 - `DATABASE_URL`
 - `DIRECT_URL`
@@ -31,37 +73,27 @@ Set these on all three projects:
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
 
-## Required for Auth.js (fixes `/api/auth/session` 500)
+### Web-only
 
-Without these, production shows `MissingSecret` / “problem with the server configuration”:
+- `NEXT_PUBLIC_MERCHANT_APP_URL` — absolute merchant portal origin (no trailing slash)
 
-- `AUTH_SECRET` — generate with `openssl rand -base64 32`
-- `AUTH_URL` — the exact public URL of that app (e.g. `https://bharatmart-uk.vercel.app`)
+### Required for Auth.js
+
+- `AUTH_SECRET` — `openssl rand -base64 32` (prefer **one secret per app**)
+- `AUTH_URL` — exact public URL of that app
 - `AUTH_TRUST_HOST=true`
 
-Also ensure `DATABASE_URL` points at your Neon pooler URL so login/session DB lookups work.
-## Auth secret decision
+## Custom domains (later)
 
-Use **one shared `AUTH_SECRET`** across web/merchant/admin only if you intentionally want a shared Auth.js cookie/session namespace. Prefer **distinct `AUTH_SECRET` values per app** for fully separate sessions (recommended for this marketplace, because roles and dashboards are isolated).
-
-Also set per-app:
-
-- `AUTH_URL` (e.g. `https://bharatmart.uk`, `https://merchant.bharatmart.uk`, `https://admin.bharatmart.uk`)
-- `AUTH_TRUST_HOST=true`
-- Google OAuth credentials if enabled
-
-## Domains
-
-1. Confirm preview deployments on a test PR for each project.
-2. Then attach:
-   - `bharatmart.uk` → web
-   - `merchant.bharatmart.uk` → merchant
-   - `admin.bharatmart.uk` → admin
+- `bharatmart.uk` → web
+- `merchant.bharatmart.uk` → merchant
+- `admin.bharatmart.uk` → admin
 
 ## Stripe webhook
 
-Point Stripe webhooks to:
+Point Stripe webhooks to the **web** app:
 
-`https://bharatmart.uk/api/webhooks/stripe`
+`https://bharatmart-uk.vercel.app/api/webhooks/stripe`  
+(or your custom web domain)
 
 Event: `payment_intent.succeeded`

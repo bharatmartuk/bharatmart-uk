@@ -5,6 +5,7 @@ import { AuthService } from '@bharatmart/services'
 import { CartLink } from '@/components/cart/CartLink'
 import { HeaderAuthNav } from '@/components/layout/HeaderAuthNav'
 import { getCurrentUser } from '@/auth'
+import { merchantAppPath } from '@/lib/app-urls'
 
 export async function SiteHeader() {
   const user = await getCurrentUser()
@@ -42,12 +43,12 @@ export async function SiteHeader() {
         </form>
 
         <nav className="ml-auto flex shrink-0 items-center gap-1 md:gap-3">
-          <Link
+          <a
             className="hidden text-xs font-medium text-[#514534] transition hover:text-[#7f5700] lg:block"
-            href="http://localhost:3001/login"
+            href={merchantAppPath('/register-business')}
           >
             Become a Seller
-          </Link>
+          </a>
           <Button aria-label="Search" className="md:hidden" size="icon" variant="ghost">
             <Search className="h-5 w-5 text-[#7f5700]" />
           </Button>
