@@ -89,6 +89,23 @@ Set on all three projects:
 - `merchant.bharatmart.uk` → merchant
 - `admin.bharatmart.uk` → admin
 
+## Seed production (demo admin login)
+
+After `DATABASE_URL` points at Neon, seed once from your machine:
+
+```bash
+pnpm --filter @bharatmart/database db:seed
+```
+
+(Uses the same `DATABASE_URL` as in `packages/database/.env` / root `.env`.)
+
+Demo admin:
+
+- Email: `admin@bharatmart.uk`
+- Password: `Password123!` (capital **P** — not `password123!`)
+
+Admin credentials only work on the **admin** project URL. They will not sign into the merchant portal (role-gated).
+
 ## Stripe webhook
 
 Point Stripe webhooks to the **web** app:

@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@bharatmart/config": "workspace:*",
+    "@prisma/nextjs-monorepo-workaround-plugin": "^7.8.0",
     "@types/node": "^22.18.6",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
