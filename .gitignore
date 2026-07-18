@@ -1,0 +1,9 @@
+node_modules
+.next
+.turbo
+dist
+.env*.local
+.env
+*.tsbuildinfo
+.DS_Store
+packages/database/generated

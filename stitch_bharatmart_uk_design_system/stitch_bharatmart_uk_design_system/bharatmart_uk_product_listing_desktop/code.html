@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMarket UK | Diyas &amp; Festive Essentials</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#281900",
+                        "surface-container": "#f4ede4",
+                        "on-background": "#1e1b16",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "primary": "#7f5700",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#7f5700",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#80bf85",
+                        "surface-bright": "#fff8f0",
+                        "outline-variant": "#d6c4ad",
+                        "tertiary-fixed": "#b1f2b4",
+                        "secondary": "#a83635",
+                        "on-tertiary-container": "#0e4e21",
+                        "inverse-primary": "#ffba3e",
+                        "surface-dim": "#dfd9d0",
+                        "on-error": "#ffffff",
+                        "tertiary": "#2e6a39",
+                        "secondary-container": "#ff7670",
+                        "on-surface": "#1e1b16",
+                        "inverse-surface": "#33302a",
+                        "inverse-on-surface": "#f7f0e7",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e8e2d9",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#514534",
+                        "surface-container-low": "#f9f3ea",
+                        "surface": "#fff8f0",
+                        "primary-fixed": "#ffdeae",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#e8e2d9",
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "primary-container": "#e8a317",
+                        "secondary-fixed": "#ffdad7",
+                        "on-secondary-container": "#720b12",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fff8f0",
+                        "outline": "#837561",
+                        "on-primary-container": "#5b3d00",
+                        "on-secondary-fixed": "#410004",
+                        "on-primary-fixed-variant": "#604100",
+                        "surface-container-high": "#eee7de",
+                        "on-tertiary-fixed": "#002108",
+                        "primary-fixed-dim": "#ffba3e",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: #fff8f0;
+            color: #1e1b16;
+        }
+        /* Custom range slider styling */
+        input[type="range"] {
+            accent-color: #7f5700;
+        }
+        .product-card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 8px 24px rgba(65, 0, 4, 0.08);
+        }
+    </style>
+</head>
+<body class="font-Inter">
+<!-- Header Wrapper -->
+<header class="sticky top-0 w-full z-50 bg-surface-container-lowest shadow-sm px-margin-desktop py-4 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<h1 class="font-display-xl text-headline-lg text-primary font-bold">BharatMarket</h1>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-Inter text-body-lg text-primary font-bold border-b-2 border-primary pb-1" href="#">Home</a>
+<a class="font-Inter text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Groceries</a>
+<a class="font-Inter text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Fashion</a>
+<a class="font-Inter text-body-lg text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Electronics</a>
+</nav>
+</div>
+<div class="flex-1 max-w-xl px-8">
+<div class="relative">
+<input class="w-full bg-surface-container-low border-outline-variant focus:border-primary focus:ring-primary rounded-lg py-2.5 pl-10 pr-4 text-body-md" placeholder="Search for hand-painted diyas, spices..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<a class="text-secondary font-semibold text-body-md hover:underline" href="#">Become a Seller</a>
+<button class="relative text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-secondary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">3</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[28px]" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-desktop py-6">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-label-md text-on-surface-variant mb-8">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Pooja &amp; Festival</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary font-semibold">Diyas</span>
+</nav>
+<div class="flex gap-gutter">
+<!-- Left Sidebar Filters -->
+<aside class="w-64 flex-shrink-0">
+<div class="bg-surface-container-low rounded-xl p-gutter flex flex-col gap-6">
+<div class="border-b border-outline-variant pb-4">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-1">Filters</h2>
+<p class="text-label-md text-on-surface-variant">Refine your search</p>
+</div>
+<!-- Postcode -->
+<div>
+<label class="block text-label-md font-bold text-on-surface mb-2 uppercase tracking-wider">Delivery</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-outline-variant rounded-lg py-2 pl-3 pr-10 text-body-md focus:border-primary focus:ring-primary" placeholder="Enter Postcode" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-primary cursor-pointer">location_on</span>
+</div>
+</div>
+<!-- Price Range -->
+<div>
+<label class="block text-label-md font-bold text-on-surface mb-2 uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="payments">payments</span> Price Range
+                        </label>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer" type="range"/>
+<div class="flex justify-between mt-2 text-label-md text-on-surface-variant">
+<span>£0</span>
+<span>£100+</span>
+</div>
+</div>
+<!-- Merchants -->
+<div>
+<label class="block text-label-md font-bold text-on-surface mb-3 uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="storefront">storefront</span> Merchants
+                        </label>
+<div class="flex flex-col gap-2.5">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Vedic Roots</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Jaipur Art</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Silk Route</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Bikanervala</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+<span class="text-body-md text-on-surface-variant group-hover:text-primary transition-colors">Spice Bazaar</span>
+</label>
+</div>
+</div>
+<!-- Ratings -->
+<div>
+<label class="block text-label-md font-bold text-on-surface mb-3 uppercase tracking-wider flex items-center gap-2">
+<span class="material-symbols-outlined text-lg" data-icon="star">star</span> Ratings
+                        </label>
+<div class="flex flex-col gap-2">
+<button class="flex items-center gap-2 text-body-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="flex text-primary">
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-lg">star</span>
+</span>
+<span>&amp; Up</span>
+</button>
+<button class="flex items-center gap-2 text-body-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="flex text-primary">
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined fill-icon text-lg" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-lg">star</span>
+<span class="material-symbols-outlined text-lg">star</span>
+</span>
+<span>&amp; Up</span>
+</button>
+</div>
+</div>
+<!-- Availability Toggle -->
+<div class="flex items-center justify-between">
+<label class="text-label-md font-bold text-on-surface uppercase tracking-wider">In Stock Only</label>
+<button class="relative w-12 h-6 bg-primary rounded-full transition-colors flex items-center px-1">
+<span class="w-4 h-4 bg-white rounded-full translate-x-6 transition-transform"></span>
+</button>
+</div>
+<button class="w-full py-3 bg-secondary text-white font-semibold rounded-lg hover:bg-on-secondary-fixed-variant transition-colors Active:opacity-80">
+                        Apply Filters
+                    </button>
+</div>
+</aside>
+<!-- Main Results Area -->
+<section class="flex-1">
+<!-- Results Header -->
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-8 pb-4 border-b border-outline-variant">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface"><span class="font-bold text-primary">142</span> products in 'Diyas'</h2>
+<p class="text-body-md text-on-surface-variant">Showing results for your festive celebration</p>
+</div>
+<div class="mt-4 md:mt-0 flex items-center gap-4">
+<span class="text-label-md text-on-surface-variant font-semibold uppercase">Sort by:</span>
+<select class="bg-surface-container-lowest border-outline-variant rounded-lg text-body-md py-1.5 focus:border-primary focus:ring-primary min-w-[140px]">
+<option>Relevance</option>
+<option>Price: Low to High</option>
+<option>Price: High to Low</option>
+<option>Highest Rated</option>
+</select>
+</div>
+</div>
+<!-- Product Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="aspect-square relative bg-white overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Close-up shot of a hand-painted clay diya with intricate mandala patterns in vibrant saffron, gold, and turquoise. The diya is set against a clean white studio background with soft directional lighting that highlights the textured terracotta and glossy paint details. Minimalist and premium aesthetic for high-end e-commerce." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUItRI4b0FLtLf-AlbEJOhcwsUlAx4YlCW_w483Uthbi1xAeTipBxFCotMxLKgV7O6rRsU6jcJ-ZISCnBJPVOOi2ThlZTRSTJqCzTkP3Qryl-2_8CAFtmonow6lTRrevq37z1bQZnY51qOjbI_Cqw57eqrsbOBxdv3FyeX4jRDqJRlfv5EiEr45QwapyTs05Lw8_ktDKDHginpbUIIIqlQos12PAvlTy_NF4ipXw_A6zPFQ2Lm7mD1"/>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 px-2 py-1 bg-primary/90 text-white text-[10px] font-bold rounded uppercase tracking-tighter">Bestseller</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<p class="text-label-md text-on-surface-variant mb-1">Sold by <span class="font-semibold text-secondary">Vedic Roots</span></p>
+<h3 class="font-Inter font-bold text-body-lg text-on-surface mb-2 line-clamp-2">Hand-Painted Floral Terracotta Diya (Set of 4)</h3>
+<div class="flex items-center gap-1 mb-3">
+<span class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+<span class="text-label-md text-on-surface-variant">(120)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-title-lg text-secondary font-bold">£8.50</span>
+<span class="text-label-md text-outline line-through">£12.00</span>
+</div>
+<button class="w-full py-2.5 bg-tertiary text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-on-tertiary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    Add to Cart
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="aspect-square relative bg-white overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A majestic brass oil lamp (Akhand Diya) with an elegant glass chimney, standing on a polished marble surface. The brass has a warm golden sheen reflecting soft, warm ambient light. The background is a blurred, cozy home setting. High-quality product photography with deep shadows and golden highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv37ic9t3Oi6QN3TGa89xroQt1H18flO3NOyXOJHbD079A9fSXZXZxQGAUhI2S3jlrQLqwWK-p1JGTbPyd-CecscMY7sL7Tpt6MX1fzRKEkGkTWqkya-0zEKkl-Ahn3YGjLgcJvnrFgPlbA10zOp3xbFNlYEluQOMICU0jfBfewRrjkl7kuKa-cjeXCBSptPn32ccAYp8_M6xrAco45xiyThU8qXJYeSdSg0eV8S4E1Vy_DXgz_IUq"/>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<p class="text-label-md text-on-surface-variant mb-1">Sold by <span class="font-semibold text-secondary">Jaipur Art</span></p>
+<h3 class="font-Inter font-bold text-body-lg text-on-surface mb-2 line-clamp-2">Premium Brass Akhand Diya with Glass Cover</h3>
+<div class="flex items-center gap-1 mb-3">
+<span class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star_half</span>
+</span>
+<span class="text-label-md text-on-surface-variant">(85)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-title-lg text-secondary font-bold">£24.99</span>
+</div>
+<button class="w-full py-2.5 bg-tertiary text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-on-tertiary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    Add to Cart
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="aspect-square relative bg-white overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Traditional set of decorative clay lamps shaped like peacocks, painted with fine gold leaf and deep maroon accents. The lamps are arranged artistically on a wooden tray with rose petals scattered around. The lighting is low-key and dramatic, creating a warm, festive mood for Diwali or Puja." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiHgiGkjderlK416a5vLkpCLEjY7UNRNIc9J3kJEeu0fHHO3WbmAYv5kIKDLkVSz4BZ3fHC6C-iQ4l7O3crr2opC1nnHn7uPfTgSoQxq0xv6Qo9UFM8jQVcZIe7dFl5xSP_1b8l0dGcjkfcpJ6vEFLRy2lYYzno4cfMuM5hQx-tv8I0wpMarQSgaVD9cNXMAdfTaJU4ev_sbwhcaXIhsV_JG0Ns64TqKfIBKrPQ-0mq-VoLfoTUN09"/>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<p class="text-label-md text-on-surface-variant mb-1">Sold by <span class="font-semibold text-secondary">Silk Route</span></p>
+<h3 class="font-Inter font-bold text-body-lg text-on-surface mb-2 line-clamp-2">Decorative Peacock Clay Lamp - Handcrafted</h3>
+<div class="flex items-center gap-1 mb-3">
+<span class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm">star</span>
+</span>
+<span class="text-label-md text-on-surface-variant">(42)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-title-lg text-secondary font-bold">£12.99</span>
+</div>
+<button class="w-full py-2.5 bg-tertiary text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-on-tertiary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    Add to Cart
+                                </button>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm product-card-hover transition-all duration-300 flex flex-col group">
+<div class="aspect-square relative bg-white overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A collection of vibrant, multi-colored earthen tea light holders in various geometric shapes. Each holder is meticulously finished with a glossy lacquer and gold trim. Bright, high-key lighting creates a cheerful and modern marketplace feel. Clean composition with plenty of negative space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMtKrErvDpmnA8bGFJR38-IgZVUC1i4TjtczMXM2C71Y9m2CSrljlv1liWOKXRdKiZtd7Lse1JR869yb-wTJu3Kg9tHA8qNe3AxgfjMR3E4opZeVuBGDY4lPSj09ETCekazsEx7zqYrm9ChH8CRASrodWThB8GuoJdlF_j-EMJO07PR0BoJCWI3A53JjzGvVvm55_vqGrD74t3WmRvpu5AgaX7g9Q4uyuanKowg5HcY7JMI_HxieQv"/>
+<button class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<p class="text-label-md text-on-surface-variant mb-1">Sold by <span class="font-semibold text-secondary">Vedic Roots</span></p>
+<h3 class="font-Inter font-bold text-body-lg text-on-surface mb-2 line-clamp-2">Assorted Lacquer Earthen Tea Light Holders (Set of 6)</h3>
+<div class="flex items-center gap-1 mb-3">
+<span class="flex text-primary">
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 0;">star_half</span>
+</span>
+<span class="text-label-md text-on-surface-variant">(210)</span>
+</div>
+<div class="mt-auto">
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-title-lg text-secondary font-bold">£15.00</span>
+<span class="text-label-md text-outline line-through">£18.50</span>
+</div>
+<button class="w-full py-2.5 bg-tertiary text-white font-bold rounded-lg flex items-center justify-center gap-2 hover:bg-on-tertiary-fixed-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+                                    Add to Cart
+                                </button>
+</div>
+</div>
+</div>
+<!-- Additional Rows would follow... -->
+</div>
+<!-- Pagination -->
+<div class="mt-12 flex justify-center items-center gap-2">
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg bg-primary text-white font-bold">1</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-variant transition-colors">2</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-variant transition-colors">3</button>
+<span class="mx-2">...</span>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-variant transition-colors">12</button>
+<button class="w-10 h-10 rounded-lg border border-outline-variant flex items-center justify-center hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-margin-desktop bg-surface-container-highest border-t border-outline-variant p-margin-desktop">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="flex flex-col gap-4">
+<h2 class="font-display-xl text-headline-lg text-primary font-bold">BharatMarket</h2>
+<p class="font-Inter text-body-md text-on-surface-variant leading-relaxed">
+                        Bringing the essence of the Indian high street to your doorstep in the UK. Trusted by over 500+ local merchants.
+                    </p>
+<div class="flex gap-4">
+<a class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+<a class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">call</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-Inter font-bold text-on-surface mb-6 uppercase tracking-widest text-sm">Quick Links</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">About Us</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Merchant Login</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Shipping Policy</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Contact Support</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-Inter font-bold text-on-surface mb-6 uppercase tracking-widest text-sm">Our Policies</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Terms of Service</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Returns &amp; Refunds</a></li>
+<li><a class="font-Inter text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Sellers FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-Inter font-bold text-on-surface mb-6 uppercase tracking-widest text-sm">Stay Updated</h4>
+<p class="text-label-md text-on-surface-variant mb-4">Subscribe for festive offers and new arrivals.</p>
+<div class="flex gap-2">
+<input class="bg-surface-container-lowest border-outline-variant rounded-lg px-4 py-2 text-body-md w-full focus:border-primary focus:ring-primary" placeholder="Email address" type="email"/>
+<button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-Inter text-label-md text-on-surface-variant">© 2024 BharatMarket UK. All rights reserved.</p>
+<div class="flex items-center gap-4 grayscale opacity-60">
+<span class="material-symbols-outlined text-3xl">credit_card</span>
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+<span class="material-symbols-outlined text-3xl">contactless</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- Floating WhatsApp Button -->
+<a class="fixed bottom-6 right-6 w-14 h-14 bg-[#2F6B3A] rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform z-[100]" href="#" title="Chat with us">
+<span class="material-symbols-outlined text-[32px]">chat</span>
+</a>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mousedown', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('mouseup', () => {
+                btn.style.transform = 'scale(1)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+
+        // Hover lift logic already handled by CSS class 'product-card-hover'
+    </script>
+</body></html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK - Product Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#2e6a39",
+                    "primary-container": "#e8a317",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e8e2d9",
+                    "on-primary-fixed": "#281900",
+                    "secondary-fixed": "#ffdad7",
+                    "tertiary-fixed": "#b1f2b4",
+                    "primary-fixed-dim": "#ffba3e",
+                    "error": "#ba1a1a",
+                    "on-surface-variant": "#514534",
+                    "surface-bright": "#fff8f0",
+                    "on-tertiary-container": "#0e4e21",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffdeae",
+                    "on-primary-fixed-variant": "#604100",
+                    "on-background": "#1e1b16",
+                    "on-secondary-container": "#720b12",
+                    "tertiary-container": "#80bf85",
+                    "surface": "#fff8f0",
+                    "inverse-surface": "#33302a",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#ffba3e",
+                    "surface-container-high": "#eee7de",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "on-secondary-fixed": "#410004",
+                    "surface-container": "#f4ede4",
+                    "secondary": "#a83635",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#7f5700",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#d6c4ad",
+                    "on-tertiary-fixed": "#002108",
+                    "secondary-container": "#ff7670",
+                    "outline": "#837561",
+                    "surface-dim": "#dfd9d0",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "inverse-on-surface": "#f7f0e7",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "on-error-container": "#93000a",
+                    "background": "#fff8f0",
+                    "on-primary-container": "#5b3d00",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "surface-container-low": "#f9f3ea",
+                    "on-surface": "#1e1b16",
+                    "surface-variant": "#e8e2d9",
+                    "surface-tint": "#7f5700"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px",
+                    "gutter": "16px",
+                    "container-max": "1280px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "display-xl": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            user-select: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-tab { border-bottom: 2px solid #7f5700; color: #7f5700; }
+        .carousel-container { scroll-snap-type: x mandatory; }
+        .carousel-item { scroll-snap-align: start; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- Mobile Header (TopNavBar Anchor Implementation) -->
+<header class="fixed top-0 w-full z-50 bg-surface shadow-[0px_4px_12px_rgba(51,48,42,0.04)] h-16 flex items-center px-4 justify-between">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 text-on-surface-variant active:scale-95 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-xl text-title-lg text-primary font-bold tracking-tight">BharatMart UK</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-on-surface-variant active:scale-90 transition-transform relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-secondary text-on-secondary text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+</button>
+</div>
+</header>
+<main class="pt-16 max-w-container-max mx-auto">
+<!-- Simplified Breadcrumbs -->
+<nav class="px-4 py-3 flex items-center gap-2 font-label-md text-on-surface-variant opacity-70">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Diyas</span>
+</nav>
+<!-- Product Image Section -->
+<section class="relative bg-white">
+<div class="carousel-container flex overflow-x-auto hide-scrollbar">
+<div class="carousel-item flex-shrink-0 w-full aspect-square">
+<img class="w-full h-full object-contain" data-alt="Close-up of a beautifully hand-painted floral terracotta diya set of five, featuring vibrant Saffron and Deep Green motifs on a warm clay background. The lighting is soft and warm, reminiscent of a festive evening atmosphere. Professional product photography on a clean, light-mode white background, emphasizing the tactile texture of the hand-painted pottery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Dp-Ly23B0ZodhX9ixnHbpB5ha_R5vW9Pp4wZxFbaVMF69QUPl6Z6u7e67HzBBY1EY1KUdXuxaEq4p9LO1BGxqLCrCRmJe0XccKT-w7YgLC70Gky4Mp-MbaI9NW305KGCXNNj_lF-NhGEr39xn0KnVIXSDnScg1hfQyffEEiTJtaTGQd12llsiovngmxwhurymFG8hHelqDuZiuPc06XimZQwqNKSG2NFw9C6OVFIqm1lFKHu2cyh"/>
+</div>
+<div class="carousel-item flex-shrink-0 w-full aspect-square">
+<img class="w-full h-full object-contain" data-alt="Action shot of the terracotta diyas illuminated with tea lights, casting a warm golden glow on a polished wooden surface. The setting is a cozy interior with subtle festive Indian decorations in the background. The visual style is premium and lifestyle-oriented, using a rich, warm color palette that aligns with the BharatMart brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0y91Tq2-uGzdq9pt0pbimtikk95deDsTeDghNcXQPNJ_fsZpzHYrcZ14NG5NYnVKv0rH2IsE4nOsHh4VFC7sWq6JzXXPesei5ZA1MX0QIjryQayZWDosVMMYwXTt3lDuFM0ELrn57c8thm4Ruado-fbDnDDLwT1XFgKpK-S40Sh-MdtpvdIRAvIaqdV10MHrlZjRo0ka7pIGe9Hx675xHT9Xg_bQuC8p_XaUbvogCeYUxJxZyP25_"/>
+</div>
+</div>
+<!-- Thumbnails/Indicator -->
+<div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+<div class="w-2 h-2 rounded-full bg-surface-container-highest"></div>
+</div>
+<!-- Wishlist Button -->
+<button class="absolute top-4 right-4 p-3 bg-white/80 backdrop-blur-md rounded-full shadow-md text-secondary">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</section>
+<!-- Product Details -->
+<section class="px-4 py-6 bg-surface">
+<div class="flex flex-col gap-2">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface leading-tight">
+                    Hand-Painted Floral Terracotta Diya (Set of 5)
+                </h2>
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md text-secondary font-bold">£18.50</span>
+<div class="flex items-center gap-1 bg-tertiary-container/30 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-on-tertiary-container">4.8 (124 reviews)</span>
+</div>
+</div>
+</div>
+<!-- Merchant Info Card -->
+<div class="mt-6 p-4 bg-white rounded-xl border border-outline-variant shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A circular logo for Jaipur Art merchant, featuring elegant traditional Indian calligraphy and a minimalist pottery icon. The design is professional and clean, using a sophisticated palette of deep maroon and charcoal. This logo sits within a circular frame as per the BharatMart design system requirements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBf_F1QQ33667WF800JXvfXCqY_ZAQkBfJDwkVGYPhEM1Nz0xjz7PPfkcWQQpOTWgVONEpEC-lpdlUlFpWn32akJFSKPL1tFypefhOwZyw_g6zBr-kpX6Yn6w0fIGtvEFcUFPOqzTK-zIGLXYmeFyPhTkAMeI6b0E5z8Ag-Y0hVXbRZlk8E8laJTqdKMKDIfzTfRRmcv4a14Vrhe6qjtwtkwPG6swBW3bRm2BjkixiyKLXxti4Ga5pO"/>
+</div>
+<div>
+<p class="font-label-md text-on-surface-variant">Sold by</p>
+<p class="font-title-lg text-body-lg font-bold text-on-surface">Jaipur Art</p>
+</div>
+</div>
+<button class="px-4 py-2 border border-secondary text-secondary font-label-md rounded-lg active:scale-95 transition-transform">
+                    Visit Store
+                </button>
+</div>
+<!-- WhatsApp Chat Link -->
+<a class="mt-4 flex items-center justify-center gap-2 py-3 text-tertiary font-label-md hover:underline decoration-2 underline-offset-4" href="#">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+                Chat with Seller on WhatsApp
+            </a>
+</section>
+<!-- Collapsible Content (Accordion) -->
+<section class="mt-2 border-t border-outline-variant">
+<div class="bg-white">
+<!-- Description -->
+<details class="group border-b border-outline-variant" open="">
+<summary class="flex justify-between items-center p-4 cursor-pointer list-none">
+<span class="font-title-lg text-body-lg font-bold text-on-surface">Description</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-6 text-on-surface-variant font-body-md leading-relaxed">
+                        Exquisitely crafted by traditional artisans in Jaipur, these terracotta diyas feature intricate hand-painted floral motifs. Each piece is treated with high-quality organic pigments to ensure durability and a rich, festive finish. Perfect for Diwali celebrations or adding a touch of Indian heritage to your home decor.
+                    </div>
+</details>
+<!-- Specs -->
+<details class="group border-b border-outline-variant">
+<summary class="flex justify-between items-center p-4 cursor-pointer list-none">
+<span class="font-title-lg text-body-lg font-bold text-on-surface">Specifications</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-6">
+<div class="flex flex-col gap-3">
+<div class="flex justify-between font-body-md">
+<span class="text-on-surface-variant">Material</span>
+<span class="text-on-surface font-semibold">100% Terracotta Clay</span>
+</div>
+<div class="flex justify-between font-body-md">
+<span class="text-on-surface-variant">Quantity</span>
+<span class="text-on-surface font-semibold">Set of 5 Diyas</span>
+</div>
+<div class="flex justify-between font-body-md">
+<span class="text-on-surface-variant">Craft</span>
+<span class="text-on-surface font-semibold">Hand-Painted Floral</span>
+</div>
+</div>
+</div>
+</details>
+<!-- Shipping -->
+<details class="group border-b border-outline-variant">
+<summary class="flex justify-between items-center p-4 cursor-pointer list-none">
+<span class="font-title-lg text-body-lg font-bold text-on-surface">Shipping & Returns</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</summary>
+<div class="px-4 pb-6 text-on-surface-variant font-body-md">
+                        Express 2-day shipping available across the UK. Hassle-free returns within 14 days of delivery. Environmentally friendly packaging used for all fragile items.
+                    </div>
+</details>
+</div>
+</section>
+<!-- Reviews Section -->
+<section class="mt-8 px-4">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Customer Reviews</h3>
+<div class="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant">
+<div class="flex items-center gap-4 mb-6">
+<div class="text-center">
+<div class="text-4xl font-extrabold text-primary">4.8</div>
+<div class="text-[10px] text-on-surface-variant uppercase tracking-widest">Out of 5</div>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] w-3">5</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[85%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] w-3">4</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[10%]"></div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] w-3">3</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[3%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Review Item -->
+<div class="border-t border-outline-variant pt-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-label-md font-bold text-on-surface">Anita M.</p>
+<div class="flex gap-0.5 text-primary-container">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<span class="font-label-md text-on-surface-variant">2 days ago</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Absolutely stunning craftsmanship. The colors are even more vibrant in person. Packaged very carefully for shipping.</p>
+</div>
+</div>
+</section>
+<!-- More from Merchant -->
+<section class="mt-12">
+<div class="px-4 flex justify-between items-end mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">More from Jaipur Art</h3>
+<a class="text-primary font-label-md font-bold uppercase tracking-wider" href="#">See All</a>
+</div>
+<div class="flex gap-4 overflow-x-auto px-4 hide-scrollbar carousel-container">
+<!-- Product Card 1 -->
+<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant carousel-item">
+<div class="aspect-square bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="A hand-crafted blue pottery vase from Jaipur, featuring delicate floral patterns and a high-gloss finish. The vase is showcased on a minimalist white pedestal with warm, direct lighting that highlights its intricate details and premium quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQZ_BUNbl5tdVYHt6_DBRgrBWhfmxuxJ0ehv2g_lKmpsTQvG0iQmrSz5Yu3BnDZhnOSR1c3zebU1YVMysGNU5NYyKJ-V6SoqT57wsbwPu6Zc60e2NjvL2YHVcx2ff8bD2WaQljj73KP2NJOjljOgmGH8DxwSn5yns7HIY5iNqYxJ60zEC5DeVZa6VhSiOko71Uw0MJEeo92YZUTRCwmICAgIHB7rwV9LejdMYKEgSrBn_JiCWCV0Ta"/>
+</div>
+<div class="p-3">
+<p class="font-body-md font-semibold text-on-surface line-clamp-1">Blue Pottery Vase</p>
+<p class="text-secondary font-bold">£24.00</p>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant carousel-item">
+<div class="aspect-square bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="Intricately carved wooden jewelry box with brass inlay work, reflecting traditional Rajasthani craftsmanship. The box is shown slightly open, revealing its velvet lining. The background is a clean, modern high-street setting, emphasizing a blend of heritage and contemporary luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBABDexLSgTtnZ2Mqheb67GfzIyxk0PkHwON3sas-BrYz9Yvq3R716VGEz69gc1xvczQYzK-dXpAIiTT3Dktg3QEyqEFQW_b7DHCEHp2ibAsTr0sPNtwBaGuof9bZt9AflSAP6bMr1H34wwjyYG1MNhqVBTf0-XjCrmL2gcJ79hlNNd1I_yO7MfrHEmRtA7YWOzbuCJU6KSuI1aoWOGrA_aAnb9OXe7QnHAY31AqnSVpwFoRhyglgj3"/>
+</div>
+<div class="p-3">
+<p class="font-body-md font-semibold text-on-surface line-clamp-1">Brass Inlay Box</p>
+<p class="text-secondary font-bold">£32.00</p>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant carousel-item">
+<div class="aspect-square bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="Set of hand-printed block cotton napkins with indigo floral patterns, neatly folded on a rustic wooden table. The lighting is soft and natural, emphasizing the organic texture of the high-quality cotton fabric." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvaYWohf7ZPqjy4iPUnDwP6sNDLDowOOXgWLXXIbP2bu3gBGH0d4QhijTo1RSfZEGSgZ1UkOcOxGD1PdONlc8qqLQA71o1KpwicAZmCofgr0Hz90sUWILCesVAEjn5hdhpTieFIgw0gZrkKFsyAB9gY8maKmt_B1X70N2UwDoG6uyJaTNlhr-XckGp2va8FHNO3Tf_DN-e8bWy-nwT42o_RzRHRT8rVapb4216wiOuUMpEq2ZZmvAF"/>
+</div>
+<div class="p-3">
+<p class="font-body-md font-semibold text-on-surface line-clamp-1">Indigo Napkin Set</p>
+<p class="text-secondary font-bold">£15.50</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Recommendations -->
+<section class="mt-12 mb-12">
+<div class="px-4 mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface">You May Also Like</h3>
+</div>
+<div class="flex gap-4 overflow-x-auto px-4 hide-scrollbar carousel-container">
+<!-- Recommendation 1 -->
+<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant carousel-item">
+<div class="aspect-square bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="Traditional cotton toran wall hanging with colorful embroidery and mirror work, perfect for Indian festive door decoration. The visual style is bright and celebratory, following the BharatMart Saffron and Green color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVk5ckwXK-YAl_U89qo661AsFbRXLojElb9SJJ_ktOwo2F7IcfW-IIjf1v_ZhWh3K0__O9eDgBWVhign3re4aysmOTH-r8-JYNoCF8LGvgVT7eHwE-TsWG32W6DKiQ1O6WUfB1IAET4JacR0RPqA4Jf6-IMc9RhmAWiIM4sP4f6JhIeemjrTaT3w8z_H8q7Pb9-0SEiexjZiz3LOTRNWkJfPjltBPqNx3n6nBh1r9C1Ut5qFlwesGR"/>
+</div>
+<div class="p-3">
+<p class="font-body-md font-semibold text-on-surface line-clamp-1">Embroidered Toran</p>
+<p class="text-secondary font-bold">£12.99</p>
+</div>
+</div>
+<!-- Recommendation 2 -->
+<div class="flex-shrink-0 w-40 bg-white rounded-xl overflow-hidden shadow-sm border border-outline-variant carousel-item">
+<div class="aspect-square bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="A set of aromatic sandalwood incense sticks in premium packaging, presented with a modern brass incense holder. The mood is serene and peaceful, emphasizing a clean, high-end wellness experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNCRi-Qsx8Z2u1U6qW2LLl1FKZeZqs97eZUuNaYeUIIRSrbzXqY96oyklM0PYO37ji-HTUmE374mw3tGREkuDo3xBFtNrciQYfPY1uyt2i_6DexLE_5PzGmFBh1FDyxEl8UQU5WVmYyHDUIgO2qcl-QNOee16iLN7bfycyQDBN6W-7mNfmyhXkylfzpzuPvHV1M0Tp8eo2P6GmX2gP1Bzg42D115bJmE5e-xDMZiclXDd94EQG5zz1"/>
+</div>
+<div class="p-3">
+<p class="font-body-md font-semibold text-on-surface line-clamp-1">Sandalwood Incense</p>
+<p class="text-secondary font-bold">£9.50</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Copyright (Anchor Implementation) -->
+<footer class="bg-surface-container-low py-8 px-4 border-t border-outline-variant text-center">
+<p class="font-body-md text-on-surface-variant">© 2024 BharatMart UK. Community-rooted, professional high-street commerce.</p>
+</footer>
+<!-- Floating Sticky CTA Bar (Bottom) -->
+<div class="fixed bottom-0 left-0 w-full bg-white shadow-[0px_-8px_24px_rgba(51,48,42,0.08)] px-4 py-4 z-50 flex items-center gap-4">
+<div class="flex items-center border border-outline rounded-lg h-12">
+<button class="px-3 h-full text-on-surface-variant active:bg-surface-container transition-colors" onclick="decrementQty()">
+<span class="material-symbols-outlined text-[18px]">remove</span>
+</button>
+<input class="w-10 text-center border-none bg-transparent font-bold text-on-surface focus:ring-0" id="qty-input" readonly="" type="number" value="1"/>
+<button class="px-3 h-full text-on-surface-variant active:bg-surface-container transition-colors" onclick="incrementQty()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+</button>
+</div>
+<button class="flex-1 h-12 bg-tertiary text-white font-title-lg text-body-lg font-bold rounded-lg active:scale-95 transition-all shadow-md flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">shopping_bag</span>
+            Add to Cart
+        </button>
+</div>
+<!-- Floating WhatsApp Button (Floating Action Button Suppression Logic Exception for Direct Product Help) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform z-40">
+<svg fill="currentColor" height="32" viewbox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72.937 3.659 1.431 5.63 1.432h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"></path>
+</svg>
+</button>
+<script>
+        function incrementQty() {
+            const input = document.getElementById('qty-input');
+            input.value = parseInt(input.value) + 1;
+        }
+        function decrementQty() {
+            const input = document.getElementById('qty-input');
+            if(parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+        // Simple scroll interaction for header shadow
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,20 @@
+{
+  "name": "bharatmart-uk",
+  "private": true,
+  "packageManager": "pnpm@11.10.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
+    "clean": "node -e \"const fs=require('fs');const path=require('path');function rm(p){try{fs.rmSync(p,{recursive:true,force:true})}catch{}}function walk(dir){for(const e of fs.readdirSync(dir,{withFileTypes:true})){const full=path.join(dir,e.name);if(e.name==='node_modules'||e.name==='.next'||e.name==='dist'){rm(full)}else if(e.isDirectory()&&e.name!=='.git'){walk(full)}}}walk('.')\""
+  },
+  "devDependencies": {
+    "@bharatmart/config": "workspace:*",
+    "eslint": "^9.39.2",
+    "prettier": "^3.9.5",
+    "turbo": "^2.10.5",
+    "typescript": "^5.9.3"
+  }
+}

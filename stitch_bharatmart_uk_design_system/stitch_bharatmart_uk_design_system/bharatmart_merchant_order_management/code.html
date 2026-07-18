@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK - Merchant Order Management</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f9f3ea",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#604100",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "on-tertiary-container": "#0e4e21",
+                        "tertiary-fixed": "#b1f2b4",
+                        "surface-container-highest": "#e8e2d9",
+                        "secondary-fixed": "#ffdad7",
+                        "tertiary-container": "#80bf85",
+                        "on-secondary-fixed": "#410004",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e8e2d9",
+                        "surface-dim": "#dfd9d0",
+                        "surface-tint": "#7f5700",
+                        "background": "#fff8f0",
+                        "on-background": "#1e1b16",
+                        "on-secondary-container": "#720b12",
+                        "primary-fixed": "#ffdeae",
+                        "on-primary-fixed": "#281900",
+                        "tertiary": "#2e6a39",
+                        "on-tertiary-fixed": "#002108",
+                        "surface-container": "#f4ede4",
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eee7de",
+                        "outline": "#837561",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#ffba3e",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-surface-variant": "#514534",
+                        "secondary": "#a83635",
+                        "primary-container": "#e8a317",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "secondary-container": "#ff7670",
+                        "surface": "#fff8f0",
+                        "inverse-surface": "#33302a",
+                        "outline-variant": "#d6c4ad",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1e1b16",
+                        "on-primary-container": "#5b3d00",
+                        "inverse-primary": "#ffba3e",
+                        "surface-bright": "#fff8f0",
+                        "inverse-on-surface": "#f7f0e7",
+                        "primary": "#7f5700"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-desktop": "64px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "title-lg": ["Inter"],
+                        "display-xl": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "headline-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff8f0;
+            color: #1e1b16;
+        }
+        .order-table-row:hover {
+            background-color: #f9f3ea;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d6c4ad; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- SIDE NAVIGATION BAR (Predicted Component) -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col py-base overflow-y-auto z-40 bg-surface dark:bg-surface-dim shadow-sm border-r border-outline-variant/30" id="sidebar">
+<!-- Brand Header -->
+<div class="px-6 py-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white shadow-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">storefront</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary leading-tight">Merchant Center</h1>
+<p class="text-xs text-on-surface-variant font-medium">Premium High-Street</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 space-y-1">
+<!-- Loop logic simplified for HTML output -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-medium">Products</span>
+</a>
+<!-- Active State: Orders -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-low transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<span class="font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-medium">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-medium">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-medium">Store Settings</span>
+</a>
+</nav>
+<!-- CTA & Footer -->
+<div class="px-4 py-6 mt-auto border-t border-outline-variant/20">
+<button class="w-full py-3 px-4 mb-6 bg-primary text-on-primary font-bold rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm">
+<span class="material-symbols-outlined">add</span>
+<span>Add New Product</span>
+</button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="text-sm font-medium">Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:text-secondary transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TOP APP BAR (Predicted Component) -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 flex justify-between items-center px-margin-desktop z-30 bg-white dark:bg-surface-container-highest shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Orders</h2>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<nav class="flex gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-title-lg text-title-lg" href="#">Overview</a>
+<a class="text-on-surface-variant hover:text-primary transition-all font-title-lg text-title-lg" href="#">Reports</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-sm font-medium">Oct 2024</span>
+</button>
+<div class="relative">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">notifications</button>
+<span class="absolute -top-1 -right-1 w-4 h-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full">3</span>
+</div>
+<div class="flex items-center gap-2 pl-4 border-l border-outline-variant/30">
+<div class="text-right">
+<p class="text-sm font-bold text-on-surface">The Spice Emporium</p>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider">Premium Merchant</p>
+</div>
+<button class="material-symbols-outlined text-4xl text-on-surface-variant hover:text-primary transition-all">account_circle</button>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-64 mt-16 p-margin-desktop min-h-screen">
+<div class="max-w-container-max mx-auto">
+<!-- Welcome/Stats Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">Order Management</h3>
+<p class="text-on-surface-variant">Review and manage your high-street deliveries.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 bg-white border border-outline-variant text-on-surface rounded-xl flex items-center gap-2 font-medium hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">download</span> Export CSV
+                    </button>
+<button class="px-5 py-2.5 bg-primary text-on-primary rounded-xl flex items-center gap-2 font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">sync</span> Refresh Data
+                    </button>
+</div>
+</div>
+<!-- Filters Section -->
+<div class="bg-white rounded-2xl p-gutter shadow-sm mb-8 border border-outline-variant/20">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<!-- Status Filter Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+<button class="px-4 py-2 rounded-full bg-primary-container text-on-primary-container font-bold text-sm whitespace-nowrap">All Orders (42)</button>
+<button class="px-4 py-2 rounded-full hover:bg-surface-container-high text-on-surface-variant font-medium text-sm whitespace-nowrap transition-all">New (5)</button>
+<button class="px-4 py-2 rounded-full hover:bg-surface-container-high text-on-surface-variant font-medium text-sm whitespace-nowrap transition-all">Processing (12)</button>
+<button class="px-4 py-2 rounded-full hover:bg-surface-container-high text-on-surface-variant font-medium text-sm whitespace-nowrap transition-all">Shipped (18)</button>
+<button class="px-4 py-2 rounded-full hover:bg-surface-container-high text-on-surface-variant font-medium text-sm whitespace-nowrap transition-all">Delivered (7)</button>
+<button class="px-4 py-2 rounded-full hover:bg-surface-container-high text-on-surface-variant font-medium text-sm whitespace-nowrap transition-all">Cancelled (0)</button>
+</div>
+<!-- Search and Secondary Filters -->
+<div class="flex items-center gap-3">
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20" placeholder="Search order, customer..." type="text"/>
+</div>
+<button class="p-2 bg-surface-container-low rounded-xl text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-all">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Orders Data Table -->
+<div class="bg-white rounded-2xl shadow-sm border border-outline-variant/20 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low/50">
+<tr>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Order Number</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Customer</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Items</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Total</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Status</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10">Order Date</th>
+<th class="px-6 py-4 font-bold text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/10 text-center">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Example Row 1 -->
+<tr class="order-table-row transition-colors">
+<td class="px-6 py-5 font-bold text-primary">#BM-9842</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">RK</div>
+<span class="font-medium">Rajesh K.</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">3 items</td>
+<td class="px-6 py-5 font-bold text-on-surface">£54.50</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary-container/20 text-on-primary-container text-xs font-bold rounded-full border border-primary-container/30 uppercase tracking-tighter">New</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 25, 2024</td>
+<td class="px-6 py-5 text-center">
+<button class="px-4 py-1.5 border border-secondary text-secondary rounded-lg text-xs font-bold hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<!-- Example Row 2 -->
+<tr class="order-table-row transition-colors">
+<td class="px-6 py-5 font-bold text-primary">#BM-9840</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">PM</div>
+<span class="font-medium">Priya M.</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">1 item</td>
+<td class="px-6 py-5 font-bold text-on-surface">£18.99</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-tertiary-container/20 text-on-tertiary-container text-xs font-bold rounded-full border border-tertiary-container/30 uppercase tracking-tighter">Shipped</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 24, 2024</td>
+<td class="px-6 py-5 text-center">
+<button class="px-4 py-1.5 border border-secondary text-secondary rounded-lg text-xs font-bold hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<!-- Example Row 3 -->
+<tr class="order-table-row transition-colors">
+<td class="px-6 py-5 font-bold text-primary">#BM-9421</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">AS</div>
+<span class="font-medium">Arjun S.</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">2 items</td>
+<td class="px-6 py-5 font-bold text-on-surface">£122.00</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-xs font-bold rounded-full border border-outline-variant/30 uppercase tracking-tighter">Processing</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 24, 2024</td>
+<td class="px-6 py-5 text-center">
+<button class="px-4 py-1.5 border border-secondary text-secondary rounded-lg text-xs font-bold hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<!-- Example Row 4 -->
+<tr class="order-table-row transition-colors">
+<td class="px-6 py-5 font-bold text-primary">#BM-9388</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">SH</div>
+<span class="font-medium">Sarah H.</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">5 items</td>
+<td class="px-6 py-5 font-bold text-on-surface">£340.25</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-tertiary text-white text-xs font-bold rounded-full border border-tertiary uppercase tracking-tighter">Delivered</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 23, 2024</td>
+<td class="px-6 py-5 text-center">
+<button class="px-4 py-1.5 border border-secondary text-secondary rounded-lg text-xs font-bold hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<!-- Example Row 5 -->
+<tr class="order-table-row transition-colors">
+<td class="px-6 py-5 font-bold text-primary">#BM-9370</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-xs font-bold text-on-surface-variant">DM</div>
+<span class="font-medium">Deepak M.</span>
+</div>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">2 items</td>
+<td class="px-6 py-5 font-bold text-on-surface">£42.00</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-tertiary-container/20 text-on-tertiary-container text-xs font-bold rounded-full border border-tertiary-container/30 uppercase tracking-tighter">Shipped</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant">Oct 22, 2024</td>
+<td class="px-6 py-5 text-center">
+<button class="px-4 py-1.5 border border-secondary text-secondary rounded-lg text-xs font-bold hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between bg-surface-container-low/30">
+<p class="text-sm text-on-surface-variant">Showing <span class="font-bold text-on-surface">1 - 5</span> of 42 orders</p>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-on-primary font-bold text-sm">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white text-sm transition-all">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white text-sm transition-all">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg border border-outline-variant hover:bg-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Help Button -->
+<div class="fixed bottom-margin-desktop right-margin-desktop z-50">
+<button class="w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all">
+<svg class="w-7 h-7 fill-current" viewbox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.539 2.016 2.041-.541c.979.581 2.028.944 3.247.944 3.182 0 5.767-2.587 5.768-5.766 0-3.181-2.586-5.706-5.768-5.706zm3.337 8.016c-.144.405-.833.722-1.144.757-.27.031-.62.062-1.844-.438-1.564-.641-2.55-2.221-2.63-2.321-.08-.101-.643-.855-.643-1.63 0-.775.405-1.155.55-1.306.145-.151.319-.189.426-.189s.213.003.304.007c.094.003.221-.035.348.274.126.31.433 1.054.471 1.13.038.076.063.164.013.265-.051.101-.076.164-.151.253-.076.088-.159.197-.228.265-.078.077-.159.16-.068.316.091.156.405.669.87 1.082.599.533 1.105.698 1.261.775.156.076.248.063.34-.044s.393-.456.498-.611c.105-.156.211-.131.356-.076.145.055.918.433 1.076.512.158.079.263.118.301.181.039.063.039.363-.105.768z"></path>
+</svg>
+</button>
+</div>
+<!-- Micro-interaction Scripts -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Ripple effect/scale effect for buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => {
+                    btn.classList.add('scale-95');
+                });
+                btn.addEventListener('mouseup', () => {
+                    btn.classList.remove('scale-95');
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.classList.remove('scale-95');
+                });
+            });
+
+            // Smooth interaction for filter tabs
+            const filterTabs = document.querySelectorAll('.flex.items-center.gap-2.overflow-x-auto button');
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => {
+                        t.classList.remove('bg-primary-container', 'text-on-primary-container', 'font-bold');
+                        t.classList.add('hover:bg-surface-container-high', 'text-on-surface-variant', 'font-medium');
+                    });
+                    tab.classList.add('bg-primary-container', 'text-on-primary-container', 'font-bold');
+                    tab.classList.remove('hover:bg-surface-container-high', 'text-on-surface-variant', 'font-medium');
+                });
+            });
+        });
+    </script>
+</body></html>

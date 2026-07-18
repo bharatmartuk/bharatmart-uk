@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Product | BharatMart UK Merchant</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "secondary-container": "#ff7670",
+                        "primary": "#7f5700",
+                        "outline-variant": "#d6c4ad",
+                        "on-surface-variant": "#514534",
+                        "tertiary-fixed": "#b1f2b4",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "on-primary-container": "#5b3d00",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "primary-fixed": "#ffdeae",
+                        "on-secondary-fixed": "#410004",
+                        "surface-container-highest": "#e8e2d9",
+                        "primary-fixed-dim": "#ffba3e",
+                        "surface-bright": "#fff8f0",
+                        "on-primary-fixed": "#281900",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#33302a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e8e2d9",
+                        "on-tertiary-fixed": "#002108",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#80bf85",
+                        "surface-container": "#f4ede4",
+                        "inverse-primary": "#ffba3e",
+                        "secondary": "#a83635",
+                        "on-primary": "#ffffff",
+                        "background": "#fff8f0",
+                        "tertiary": "#2e6a39",
+                        "on-tertiary-container": "#0e4e21",
+                        "on-secondary-container": "#720b12",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "surface-dim": "#dfd9d0",
+                        "outline": "#837561",
+                        "surface-container-high": "#eee7de",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-container": "#e8a317",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#7f5700",
+                        "on-surface": "#1e1b16",
+                        "surface-container-low": "#f9f3ea",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f7f0e7",
+                        "on-primary-fixed-variant": "#604100",
+                        "surface": "#fff8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #fff8f0;
+            font-family: 'Inter', sans-serif;
+        }
+        .form-card {
+            background: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0px 4px 12px rgba(43, 34, 25, 0.04);
+            border: 1px solid #e8e2d9;
+        }
+        .rich-text-editor {
+            min-height: 200px;
+            border: 1px solid #d6c4ad;
+            border-radius: 0.5rem;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6c4ad;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low dark:bg-surface-container-low flex flex-col h-screen py-gutter px-base w-64 fixed left-0 top-0 overflow-y-auto z-40 border-r border-outline-variant">
+<div class="mb-8 px-4">
+<h1 class="text-title-lg font-title-lg text-primary dark:text-primary-fixed-dim">BharatMart UK</h1>
+<p class="text-label-md font-label-md text-on-surface-variant">Merchant Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Products is Active -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-high" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">local_offer</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant transition-colors duration-200 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Store Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-4">
+<button class="w-full py-2 px-4 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+                View Live Store
+            </button>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0 ml-64">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface shadow-sm flex justify-between items-center px-margin-desktop py-4 sticky top-0 z-50 w-full">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Add New Product</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-high rounded-full px-4 py-1.5 w-64 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full ml-2" placeholder="Search orders..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all duration-150">notifications</button>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a South Asian business owner in a modern UK office setting. The merchant is wearing a crisp white shirt, smiling warmly at the camera. Soft natural lighting emphasizes a clean, trustworthy, and welcoming atmosphere for a premium marketplace service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChHpq6yFqIt2elBml7iMDa6TQnQSVSqD_bo8f1WgIMthwtPHLXMCbq5hnN0kZwpaN1WUnwASvcBEN1dSZTTmQ0BtF7J56LC24TjjOTo29wpj8XthlcDaj16pbd5bADyCQuFc9m3l97Dph6BE08cqdsj38fOPe1ohiPCLaUCZhqySCKhaoV-miT6i7pv8wxsRYC9J-BjzdeJM1n2AYFjbPg0l8wVcD86LM6UwkK2VfkPw2ss0UDHfDG"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface hidden lg:block">Arjun Sharma</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="p-8 max-w-7xl mx-auto w-full">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Form Fields -->
+<div class="lg:col-span-8 space-y-6">
+<!-- General Information Card -->
+<section class="form-card p-6">
+<h3 class="font-title-lg text-title-lg mb-6 border-b border-surface-container-highest pb-4 text-on-surface">General Information</h3>
+<div class="space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Product Name</label>
+<input class="w-full px-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md" placeholder="e.g. Premium Basmati Rice - 5kg" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Category</label>
+<select class="w-full px-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md appearance-none">
+<option>Select Category</option>
+<option>Groceries &amp; Staples</option>
+<option>Snacks &amp; Sweets</option>
+<option>Fashion &amp; Apparel</option>
+<option>Home &amp; Living</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">SKU</label>
+<input class="w-full px-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md" placeholder="BM-UK-12345" type="text"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Description</label>
+<div class="rich-text-editor flex flex-col">
+<div class="bg-surface-container-high p-2 border-b border-outline-variant rounded-t-lg flex gap-4 overflow-x-auto">
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">format_bold</button>
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">format_italic</button>
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">format_list_bulleted</button>
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">format_list_numbered</button>
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">link</button>
+<button class="material-symbols-outlined p-1 hover:bg-surface-container-highest rounded">image</button>
+</div>
+<textarea class="flex-1 w-full p-4 bg-transparent border-none focus:ring-0 text-body-md resize-none" placeholder="Describe your product heritage, quality, and usage..."></textarea>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing & Inventory Card -->
+<section class="form-card p-6">
+<h3 class="font-title-lg text-title-lg mb-6 border-b border-surface-container-highest pb-4 text-on-surface">Pricing &amp; Inventory</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Price (£)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-body-md">£</span>
+<input class="w-full pl-8 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1">Stock Quantity</label>
+<input class="w-full px-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-primary focus:border-primary text-body-md" placeholder="0" type="number"/>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Media & Secondary Settings -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Media Upload Card -->
+<section class="form-card p-6">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-title-lg text-title-lg text-on-surface">Media</h3>
+<span class="text-label-md text-on-surface-variant">0 / 6 images</span>
+</div>
+<div class="space-y-4">
+<!-- Main Image Upload -->
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-8 flex flex-col items-center justify-center bg-surface-container-low hover:bg-surface-container-high transition-colors cursor-pointer text-center group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2 group-hover:text-primary">cloud_upload</span>
+<p class="font-label-md text-label-md text-on-surface mb-1">Drop main image here</p>
+<p class="text-label-md text-on-surface-variant scale-90">JPG, PNG, WEBP (Max 2MB)</p>
+</div>
+<!-- Small Thumbnails Grid -->
+<div class="grid grid-cols-3 gap-3">
+<div class="aspect-square bg-surface-container-high border border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+<div class="aspect-square bg-surface-container-high border border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+<div class="aspect-square bg-surface-container-high border border-outline-variant rounded-lg flex items-center justify-center cursor-pointer hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant">add</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Status & Visibility Card -->
+<section class="form-card p-6">
+<h3 class="font-title-lg text-title-lg mb-6 text-on-surface">Publishing Settings</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Product Status</p>
+<p class="text-label-md text-on-surface-variant">Switch between active and draft</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="pt-4 border-t border-surface-container-highest">
+<p class="font-label-md text-label-md text-on-surface mb-3">Visibility</p>
+<div class="space-y-2">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary w-4 h-4" name="visibility" type="radio"/>
+<span class="text-body-md text-on-surface">Public (Visible to all UK customers)</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="text-primary focus:ring-primary w-4 h-4" name="visibility" type="radio"/>
+<span class="text-body-md text-on-surface">Hidden (Only available via direct link)</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer Actions -->
+<footer class="mt-12 mb-20 flex justify-end items-center gap-4 py-6 border-t border-outline-variant bg-surface-bright sticky bottom-0 z-30">
+<button class="px-8 py-2.5 rounded-lg border border-secondary text-secondary font-label-md text-label-md hover:bg-secondary-fixed transition-colors">
+                    Save as Draft
+                </button>
+<button class="px-10 py-2.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md shadow-md hover:opacity-90 transition-transform active:scale-95">
+                    Publish Product
+                </button>
+</footer>
+</main>
+</div>
+<!-- Floating Help Button -->
+<div class="fixed bottom-6 right-6 z-50">
+<button class="w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+</button>
+</div>
+<script>
+        // Simple micro-interaction for status toggle or any form feedback
+        document.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.closest('.form-card').style.boxShadow = '0px 8px 24px rgba(127, 87, 0, 0.08)';
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.closest('.form-card').style.boxShadow = '0px 4px 12px rgba(43, 34, 25, 0.04)';
+            });
+        });
+    </script>
+</body></html>

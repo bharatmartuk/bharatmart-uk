@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Merchant Verification Detail | BharatMart Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .sidebar-active-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #b22b1d; /* BharatMart Maroon */
+        }
+        .high-density-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#ffdad4",
+                      "on-tertiary-container": "#b08d5b",
+                      "on-surface-variant": "#44474e",
+                      "inverse-surface": "#2d3133",
+                      "on-error-container": "#93000a",
+                      "primary-container": "#1a2b4b",
+                      "inverse-on-surface": "#eff1f3",
+                      "status-success": "#10b981",
+                      "secondary-container": "#fe624e",
+                      "on-background": "#191c1e",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#e0e3e5",
+                      "on-tertiary-fixed-variant": "#5d4217",
+                      "outline-variant": "#c5c6cf",
+                      "inverse-primary": "#b6c6ef",
+                      "surface-dim": "#d8dadc",
+                      "primary-fixed": "#d8e2ff",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#191c1e",
+                      "surface-container-high": "#e6e8ea",
+                      "status-pending": "#f59e0b",
+                      "surface-bright": "#f7f9fb",
+                      "tertiary-fixed": "#ffddb1",
+                      "secondary-fixed-dim": "#ffb4a8",
+                      "background": "#f7f9fb",
+                      "status-error": "#ef4444",
+                      "primary-fixed-dim": "#b6c6ef",
+                      "tertiary-fixed-dim": "#e8c08a",
+                      "outline": "#75777f",
+                      "tertiary-container": "#3e2700",
+                      "surface-tint": "#4e5e81",
+                      "sidebar-navy": "#1a2b4b",
+                      "on-primary-container": "#8293b8",
+                      "surface-variant": "#e0e3e5",
+                      "secondary": "#b22b1d",
+                      "tertiary": "#231400",
+                      "on-secondary-fixed": "#410000",
+                      "surface": "#f7f9fb",
+                      "on-secondary": "#ffffff",
+                      "on-secondary-container": "#650000",
+                      "on-primary": "#ffffff",
+                      "primary": "#031635",
+                      "action-maroon": "#800000",
+                      "error": "#ba1a1a",
+                      "on-primary-fixed-variant": "#364768",
+                      "on-tertiary-fixed": "#291800",
+                      "on-secondary-fixed-variant": "#8f0f07",
+                      "on-primary-fixed": "#081b3a",
+                      "surface-container": "#eceef0",
+                      "surface-container-low": "#f2f4f6",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "sidebar-width": "260px",
+                      "container-padding": "24px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "table-cell-padding": "8px 12px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "table-header": ["Inter"],
+                      "headline-sm": ["Montserrat"],
+                      "display-lg": ["Montserrat"],
+                      "headline-md": ["Montserrat"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "table-header": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary/20">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-sidebar-navy flex flex-col py-container-padding z-50">
+<div class="px-6 mb-10 flex items-center gap-3">
+<span class="font-headline-md text-headline-md font-bold text-on-primary">BharatMart</span>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto">
+<div class="px-4 py-2 opacity-50 text-on-primary font-label-caps uppercase text-[10px] tracking-widest">Main Menu</div>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 border-l-4 border-secondary bg-primary-container text-on-primary font-bold" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-md">Merchants</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md">Users</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-body-md">Categories</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">branding_watermark</span>
+<span class="font-body-md">Banners</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-body-md">Orders</span>
+</a>
+<div class="mt-8 px-4 py-2 opacity-50 text-on-primary font-label-caps uppercase text-[10px] tracking-widest">Support</div>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-body-md">Support Tickets</span>
+</a>
+<a class="relative flex items-center gap-3 px-6 py-3 text-on-primary-container opacity-80 hover:bg-primary-container hover:opacity-100 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="px-6 py-4 mt-auto border-t border-on-primary/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-on-primary text-[10px] font-bold">AD</div>
+<div class="flex flex-col">
+<span class="text-on-primary font-body-sm font-semibold">Admin Hub</span>
+<span class="text-on-primary/60 text-[10px]">Operations v2.4</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-container-padding z-40 ml-sidebar-width">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-colors rounded-lg">
+<span class="material-symbols-outlined text-primary">menu_open</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm font-semibold text-primary">Admin Control Center</h1>
+<div class="ml-8 hidden md:flex items-center bg-surface-container-low px-3 py-1.5 rounded-lg border border-outline-variant w-80">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full outline-none placeholder:text-on-surface-variant/50" placeholder="Search merchants or documents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer p-1 pl-2 hover:bg-surface-container-low rounded-lg transition-colors group">
+<div class="text-right">
+<p class="text-body-sm font-semibold text-primary leading-none">John Doe</p>
+<p class="text-[10px] text-on-surface-variant leading-none mt-1">Super Admin</p>
+</div>
+<img class="w-9 h-9 rounded-full bg-surface-container-highest object-cover border border-outline-variant" data-alt="Close-up professional headshot of a middle-aged male administrator with a sharp, focus-driven expression, set against a neutral corporate background. The lighting is crisp and uniform, reflecting a modern enterprise office environment with soft cool tones and professional clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD30Q18lcKyIunacmZRn3ogZYXRwhs1rtH_1igXdBZSVnfUt4gJw_Dw0ziHlJWoDARZw5x570ycGQf7Ye2ctv-YzC6P94QWok09OyZSMBlUsQCm2IxRwwoCl8Ce090TvjoiCh0atvcmiFVVNcgcXNtKCFm4PdkkyCI2_KDiMMBrm_C2_iHiBFN78NWpZRn4AuOl4-fl3F6JxshUvRP2nckAK_QGkuP2XO5_66cTkB-uFmrY9tWdmZC3"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width pt-24 pb-20 px-container-padding min-h-screen">
+<!-- Page Title & Breadcrumbs -->
+<div class="mb-8 flex justify-between items-end">
+<div>
+<nav class="flex text-[10px] text-on-surface-variant font-label-caps uppercase tracking-widest mb-2 gap-2 items-center">
+<a class="hover:text-primary" href="#">Merchants</a>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<a class="hover:text-primary" href="#">Verification Queue</a>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary font-bold">Detail View</span>
+</nav>
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Merchant Verification: Patel's Premium Spices</h2>
+<div class="flex items-center gap-2 mt-2">
+<span class="px-2 py-0.5 bg-status-pending/10 text-status-pending text-[10px] font-bold uppercase tracking-wider rounded border border-status-pending/20">Pending Review</span>
+<span class="text-body-sm text-on-surface-variant">Applied on Oct 24, 2024</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline text-primary font-semibold text-body-sm hover:bg-surface-container-low transition-all">Download All Docs</button>
+<button class="px-4 py-2 bg-secondary text-on-secondary font-semibold text-body-sm hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span>
+                    Audit Log
+                </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Left Column: Business Details & Documents (70%) -->
+<div class="col-span-8 space-y-8">
+<!-- Business Details Section -->
+<section class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg shadow-sm">
+<div class="flex items-center gap-2 mb-6 pb-4 border-b border-outline-variant">
+<span class="material-symbols-outlined text-primary">business</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Business Details</h3>
+</div>
+<div class="grid grid-cols-2 gap-y-6 gap-x-8">
+<div>
+<label class="font-body-sm font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Business Name</label>
+<p class="text-body-lg text-primary font-semibold">Patel's Premium Spices</p>
+</div>
+<div>
+<label class="font-body-sm font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Business Type</label>
+<p class="text-body-lg text-primary">Grocery & Specialty Spices</p>
+</div>
+<div class="col-span-2">
+<label class="font-body-sm font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Registered Address</label>
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-base mt-1">location_on</span>
+<p class="text-body-lg text-primary leading-relaxed">12 High Street, Kensington,<br/>London, W8 5PX, United Kingdom</p>
+</div>
+</div>
+<div>
+<label class="font-body-sm font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Contact Phone</label>
+<p class="text-body-lg text-primary">+44 20 7123 4567</p>
+</div>
+<div>
+<label class="font-body-sm font-bold text-on-surface-variant uppercase tracking-wider block mb-1">Email Address</label>
+<p class="text-body-lg text-secondary underline">contact@patelspices.co.uk</p>
+</div>
+</div>
+</section>
+<!-- Verification Documents Section -->
+<section class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg shadow-sm">
+<div class="flex items-center gap-2 mb-6 pb-4 border-b border-outline-variant">
+<span class="material-symbols-outlined text-primary">description</span>
+<h3 class="font-headline-sm text-headline-sm text-primary">Verification Documents</h3>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<!-- Business Registration -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden transition-all hover:ring-2 hover:ring-secondary/20">
+<div class="p-4 bg-surface border-b border-outline-variant flex justify-between items-center">
+<span class="font-body-sm font-bold text-primary">Business Registration</span>
+<button class="flex items-center gap-1 text-[10px] font-bold text-secondary uppercase hover:underline">
+<span class="material-symbols-outlined text-sm">open_in_full</span> View Full Size
+                                </button>
+</div>
+<div class="h-64 bg-white p-4 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-contain bg-center bg-no-repeat shadow-inner border border-outline-variant" data-alt="A high-resolution scanning of a formal UK business registration certificate. The document features elegant serif typography, official government stamps in blue ink, and detailed legal text on high-quality off-white paper. The image is captured with professional overhead lighting, emphasizing the authentic texture and official seals in a modern administrative office setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_PzmJdPRxi_aCVbanBRTPT_b9T28GK2rNzcKxQHKW54Wo-zpE71fpmE3Ck9nJRxeJkMgewXv40UwTPeu88rFJdKxTln7gVkuPu7TRvBBciFcHGqlvnckzfreOMzYDjy_xqxiZ3xW8rxZkCCqcdEMjMoYv7xRKEXeRWp97s4BbJeSh3XsfK0REDPZV9e95iakf2IGvKVSnsd-vlIC6nQIOkLaq0sERIX49MsxPqlg_i5Z1q5zSOLXN')"></div>
+</div>
+</div>
+<!-- ID Proof -->
+<div class="group relative bg-surface-container-low border border-outline-variant rounded-lg overflow-hidden transition-all hover:ring-2 hover:ring-secondary/20">
+<div class="p-4 bg-surface border-b border-outline-variant flex justify-between items-center">
+<span class="font-body-sm font-bold text-primary">ID Proof (Passport)</span>
+<button class="flex items-center gap-1 text-[10px] font-bold text-secondary uppercase hover:underline">
+<span class="material-symbols-outlined text-sm">open_in_full</span> View Full Size
+                                </button>
+</div>
+<div class="h-64 bg-white p-4 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-contain bg-center bg-no-repeat shadow-inner border border-outline-variant" data-alt="A clean, professionally photographed UK biometric passport page. The image shows the personal data page with clear text, holographic security features shimmering under soft studio light, and a blurred placeholder for the portrait photo. The background is a sterile, light grey surface, reflecting a secure and authoritative document verification environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB8-wgZ1GHw9CEM7O16aKpokOdroNTPoEbBu6WKVvnNxDl1-sRFv2K58N-ENdb7486AfpBgBGlo8gHNRTJoaFeS1WfPwFflquh8-28NwiUm-SFQWLPZ9OjUBCWVZrXBwbDGvfLnVdXebagHWi4ed4HTC_374kUnJ_iGf7UNvKBtL7L2jQbJPXhUsip4XLuWrT5ZEPiiRBDNe9DLkCgxNk1vYUXBGkMDyEvJQfgP7L4B0toj8UF6nTvP')"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Sticky Sidebar (30%) -->
+<aside class="col-span-4 sticky top-24 space-y-6">
+<!-- Verification Checklist -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4 border-b border-outline-variant pb-3">Verification Checklist</h3>
+<div class="space-y-4">
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary transition-all" type="checkbox"/>
+<span class="text-body-md text-on-surface font-medium group-hover:text-primary">Business Name Matches Documents</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary transition-all" type="checkbox"/>
+<span class="text-body-md text-on-surface font-medium group-hover:text-primary">ID Verified & Unexpired</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low transition-colors cursor-pointer group">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary transition-all" type="checkbox"/>
+<span class="text-body-md text-on-surface font-medium group-hover:text-primary">Address Verified (Utility/Gov Doc)</span>
+</label>
+</div>
+</div>
+<!-- Internal Notes -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-4 border-b border-outline-variant pb-3">Internal Notes</h3>
+<textarea class="w-full h-32 p-3 text-body-md bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all placeholder:text-on-surface-variant/50 resize-none" placeholder="Add administrative notes regarding this merchant..."></textarea>
+<p class="text-[10px] text-on-surface-variant mt-2 italic">Notes are only visible to internal staff members.</p>
+</div>
+<!-- Decision Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg shadow-sm border-t-4 border-t-primary">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-6">Decision Panel</h3>
+<div class="hidden mb-6 animate-in fade-in slide-in-from-top-4 duration-300" id="rejection-panel">
+<label class="font-body-sm font-bold text-status-error uppercase tracking-wider block mb-2">Reason for Rejection</label>
+<select class="w-full mb-3 p-2 bg-white border border-status-error/30 rounded text-body-sm focus:ring-status-error outline-none">
+<option>Incomplete Documentation</option>
+<option>Document Mismatch</option>
+<option>Expired Identification</option>
+<option>Fraudulent Activity Suspected</option>
+<option>Other (Specify Below)</option>
+</select>
+<textarea class="w-full h-24 p-2 text-body-sm bg-white border border-status-error/30 rounded focus:ring-status-error outline-none resize-none" placeholder="Detailed explanation for merchant..."></textarea>
+</div>
+<div class="flex flex-col gap-3">
+<button class="w-full py-4 bg-status-success text-white font-bold text-body-md hover:brightness-95 transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2" onclick="approveMerchant()">
+<span class="material-symbols-outlined">check_circle</span>
+                            Approve Merchant
+                        </button>
+<button class="w-full py-4 border-2 border-status-error text-status-error font-bold text-body-md hover:bg-status-error hover:text-white transition-all active:scale-[0.98] flex items-center justify-center gap-2" id="reject-trigger" onclick="toggleRejection()">
+<span class="material-symbols-outlined">cancel</span>
+                            Reject Merchant
+                        </button>
+<button class="hidden w-full py-2 text-on-surface-variant font-semibold text-body-sm hover:underline" id="cancel-rejection" onclick="toggleRejection(false)">
+                            Cancel & Back
+                        </button>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="absolute bottom-0 right-0 w-[calc(100%-260px)] bg-surface-container-low border-t border-outline-variant flex justify-between items-center p-table-cell-padding ml-sidebar-width">
+<div class="text-on-surface-variant font-body-sm">
+            © 2024 BharatMart Operations Hub v2.4.0
+        </div>
+<div class="flex gap-6">
+<a class="text-on-surface-variant font-body-sm hover:text-secondary underline transition-all" href="#">System Status</a>
+<a class="text-on-surface-variant font-body-sm hover:text-secondary underline transition-all" href="#">API Docs</a>
+<a class="text-on-surface-variant font-body-sm hover:text-secondary underline transition-all" href="#">Release Notes</a>
+</div>
+</footer>
+<script>
+        function toggleRejection(forceShow) {
+            const panel = document.getElementById('rejection-panel');
+            const rejectTrigger = document.getElementById('reject-trigger');
+            const cancelBtn = document.getElementById('cancel-rejection');
+            
+            if (forceShow === false || !panel.classList.contains('hidden')) {
+                panel.classList.add('hidden');
+                cancelBtn.classList.add('hidden');
+                rejectTrigger.classList.remove('bg-status-error', 'text-white');
+                rejectTrigger.innerHTML = '<span class="material-symbols-outlined">cancel</span> Reject Merchant';
+            } else {
+                panel.classList.remove('hidden');
+                cancelBtn.classList.remove('hidden');
+                rejectTrigger.classList.add('bg-status-error', 'text-white');
+                rejectTrigger.innerHTML = 'Confirm Rejection';
+            }
+        }
+
+        function approveMerchant() {
+            if(confirm('Are you sure you want to approve Patel\'s Premium Spices? This will enable their storefront immediately.')) {
+                alert('Merchant successfully approved and notified.');
+                window.location.reload();
+            }
+        }
+    </script>
+</body></html>

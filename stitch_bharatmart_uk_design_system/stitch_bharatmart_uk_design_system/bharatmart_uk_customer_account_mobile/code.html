@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK - My Orders</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#fff8f0",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#2e6a39",
+                    "inverse-on-surface": "#f7f0e7",
+                    "on-secondary-fixed": "#410004",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#d6c4ad",
+                    "secondary-container": "#ff7670",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "primary": "#7f5700",
+                    "on-secondary-container": "#720b12",
+                    "on-primary-container": "#5b3d00",
+                    "secondary": "#a83635",
+                    "surface-tint": "#7f5700",
+                    "on-primary-fixed": "#281900",
+                    "tertiary-fixed": "#b1f2b4",
+                    "on-tertiary-container": "#0e4e21",
+                    "on-tertiary": "#ffffff",
+                    "secondary-fixed": "#ffdad7",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "on-surface": "#1e1b16",
+                    "on-tertiary-fixed": "#002108",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "outline": "#837561",
+                    "surface-container-high": "#eee7de",
+                    "primary-fixed": "#ffdeae",
+                    "on-primary-fixed-variant": "#604100",
+                    "on-error-container": "#93000a",
+                    "on-background": "#1e1b16",
+                    "surface-container-highest": "#e8e2d9",
+                    "surface-variant": "#e8e2d9",
+                    "primary-fixed-dim": "#ffba3e",
+                    "inverse-primary": "#ffba3e",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "tertiary-container": "#80bf85",
+                    "surface-dim": "#dfd9d0",
+                    "on-error": "#ffffff",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "surface-container": "#f4ede4",
+                    "primary-container": "#e8a317",
+                    "surface-container-low": "#f9f3ea",
+                    "inverse-surface": "#33302a",
+                    "surface-bright": "#fff8f0",
+                    "on-surface-variant": "#514534",
+                    "background": "#fff8f0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px",
+                    "gutter": "16px",
+                    "container-max": "1280px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "display-xl": ["Montserrat"]
+            },
+            "fontSize": {
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .order-card-shadow {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .active-tab-indicator {
+            height: 3px;
+            width: 24px;
+            border-radius: 99px;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface flex flex-col min-h-screen">
+<!-- TopNavBar: Sticky Mobile Header -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest shadow-[0px_4px_12px_rgba(0,0,0,0.04)] px-4 py-4 flex justify-between items-center md:hidden">
+<div class="flex items-center gap-3">
+<button class="p-2 text-on-surface-variant" onclick="toggleSidebar()">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-xl text-display-xl font-bold text-primary text-[20px] leading-none">BharatMart UK</h1>
+</div>
+<div class="flex items-center gap-4 text-primary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-20 pb-24 px-4 max-w-md mx-auto w-full">
+<div class="mb-6">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">My Orders</h2>
+<div class="flex gap-4 mt-4 overflow-x-auto no-scrollbar pb-1">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md whitespace-nowrap">All Orders</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">To Ship</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">To Receive</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface-variant rounded-full font-label-md text-label-md whitespace-nowrap">Completed</button>
+</div>
+</div>
+<!-- Order List -->
+<div class="space-y-4">
+<!-- Order Card 1: Delivered -->
+<article class="bg-surface-container-lowest rounded-xl p-4 order-card-shadow flex flex-col gap-4 border border-outline-variant/30">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Oct 12, 2024 • #BM-UK-98231</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="storefront">storefront</span>
+<span class="font-title-lg text-body-lg font-semibold">Desi Spices & Co.</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-container rounded-md font-label-md text-[10px] uppercase tracking-wider font-bold">Delivered</span>
+</div>
+<div class="flex gap-3 overflow-x-auto no-scrollbar py-1">
+<div class="min-w-[64px] h-16 bg-surface-container-low rounded-lg border border-outline-variant flex items-center justify-center p-1 overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A professional product shot of high-quality Indian basmati rice in premium packaging, set against a clean white background with soft, bright light. The image has a modern minimalist aesthetic with high contrast and natural warm tones of the grain." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApNBQmUWnNq55C1dzpvx45zonUNdmcZk5w5D_l2CuBAPRSi-8DpHTF5JNFtHViPQQ3Qv3UXBqWIokPDOqeZugItL3NhD83Rgm3_NjMZZM7trgH4PoV-x842Z6fj110B5x863U22wUdOZ-xcFh8dX1pFAMX7GrUl4Y62AE8fapWAwanj6GdfUllVJuyhmL_ZUBxEH98UWbW_vmYD04cQvdD2YvaMmC9VtxYIXXp9duZu4jEfG1ogu4v"/>
+</div>
+<div class="min-w-[64px] h-16 bg-surface-container-low rounded-lg border border-outline-variant flex items-center justify-center p-1 overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A premium presentation of a glass jar of traditional Indian mango pickle, glowing under warm studio lights against a pure white background. The jar looks tactile and inviting, representing a luxury high-street marketplace aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzTeQ2JovB0BULs00qXC83-8ZnJaZGLRT3IjSqi7ybK1z-Jr7r5olt0TvHNAgTsDYBhmOwIFH43kXHUTuLeXhEpR_a5VPUafbe1EDGQUytHvlpwgiTKFDv4uGgKNUjznOLV4MM0vlJd0v5Mvy7s2iKKVR3jzj5VJwuV2sLYfXoghIXPVJdckKdlUPi7o6bM-5qV_RgvNST84VaFnBIe59kC9GzPouuGJaeF9XnqaO4Xf0aRuNRbDu7"/>
+</div>
+<div class="flex-grow flex flex-col justify-center">
+<p class="font-body-md text-body-md text-on-surface line-clamp-1">Basmati Rice, Achar & 2 others</p>
+<p class="font-title-lg text-body-lg font-bold text-secondary">£24.50</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md border border-outline-variant transition-all active:scale-95">View Invoice</button>
+<button class="flex-1 py-2 rounded-lg bg-tertiary text-on-tertiary font-label-md text-label-md transition-all active:scale-95">Review Items</button>
+</div>
+</article>
+<!-- Order Card 2: Shipped -->
+<article class="bg-surface-container-lowest rounded-xl p-4 order-card-shadow flex flex-col gap-4 border border-outline-variant/30">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Oct 14, 2024 • #BM-UK-98440</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="storefront">storefront</span>
+<span class="font-title-lg text-body-lg font-semibold">Jaipur Handlooms</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant rounded-md font-label-md text-[10px] uppercase tracking-wider font-bold">Shipped</span>
+</div>
+<div class="flex gap-3 py-1">
+<div class="min-w-[64px] h-16 bg-surface-container-low rounded-lg border border-outline-variant flex items-center justify-center p-1 overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A luxury hand-woven silk scarf with intricate Indian patterns, draped elegantly on a white minimalist surface. The lighting is soft and professional, highlighting the texture and rich colors of the fabric in a premium e-commerce style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9l1h3CS25cIcmP6wh9-iNfbz04N20H_Ow_4-LOWdVm3j4joyh6rPkj11gB-FzdZRytunwfCxetce8b0BMi_oOAvLb_8aDqUYFd0kUTEE1hwmWHjMz0RYPf3gzlF8bLsIml67Z8mcfyxvS2KHGvCYlK1oilt6k1wclw30KLjYk-i0WZF8_oNKQD1iO61xSuYnR4831FDk3-DD33A55-koyUnz8qYrlNcKliWrCBUYb2u0OV3F3ZR4I"/>
+</div>
+<div class="flex-grow flex flex-col justify-center">
+<p class="font-body-md text-body-md text-on-surface">Royal Silk Handloom Scarf</p>
+<p class="font-title-lg text-body-lg font-bold text-secondary">£18.99</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md border border-outline-variant transition-all active:scale-95">View Invoice</button>
+<button class="flex-1 py-2 rounded-lg bg-primary-container text-on-primary-container font-label-md text-label-md font-semibold transition-all active:scale-95">Track Order</button>
+</div>
+</article>
+<!-- Order Card 3: Processing -->
+<article class="bg-surface-container-lowest rounded-xl p-4 order-card-shadow flex flex-col gap-4 border border-outline-variant/30 opacity-90">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">Oct 15, 2024 • #BM-UK-98512</span>
+<div class="flex items-center gap-1 mt-1 text-on-surface">
+<span class="material-symbols-outlined text-[18px]" data-icon="storefront">storefront</span>
+<span class="font-title-lg text-body-lg font-semibold">The Festive Hub</span>
+</div>
+</div>
+<span class="px-2 py-1 bg-surface-container-highest text-on-surface-variant rounded-md font-label-md text-[10px] uppercase tracking-wider font-bold">Processing</span>
+</div>
+<div class="flex gap-3 py-1">
+<div class="min-w-[64px] h-16 bg-surface-container-low rounded-lg border border-outline-variant flex items-center justify-center p-1 overflow-hidden">
+<img class="w-full h-full object-contain" data-alt="A set of artistic handcrafted clay diyas (oil lamps) for Diwali, arranged neatly on a clean cream background. The scene is bright and professional, evoking a festive but high-end retail experience for a modern Indian market in the UK." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJsALPjiW9eKib6UcMFLKF7xi2QM995WVyEzue_XRH2nfIGFtgPmBSi7xn5itV3UWO_NvJm1TI-_dh4aRDtGxDrkkXW0laRAsmyJKzFEs_qWuTp_UUq5Qh0KCACuipHj_UfGL0MSOrVdjDZTaRnuVvtjdvU6zTnEnNx9bf7oSn_nJSyGxMzHaun2Y6TZnsjQYOWZnYz0o32528rZsf_iQTm1MoP5guaMRyFE42f7SU1kEJSGBqmAUw"/>
+</div>
+<div class="flex-grow flex flex-col justify-center">
+<p class="font-body-md text-body-md text-on-surface">Handcrafted Puja Thali Set</p>
+<p class="font-title-lg text-body-lg font-bold text-secondary">£45.00</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md border border-outline-variant transition-all active:scale-95">View Invoice</button>
+<button class="flex-1 py-2 rounded-lg bg-secondary-fixed-dim text-on-secondary-fixed rounded-lg font-label-md text-label-md font-semibold transition-all active:scale-95">Processing</button>
+</div>
+</article>
+</div>
+</main>
+<!-- SideNavBar / Account Drawer Overlay -->
+<div class="fixed inset-0 bg-black/40 z-[60] hidden transition-opacity duration-300" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<aside class="fixed left-0 top-0 h-full w-72 z-[70] bg-surface-bright flex flex-col -translate-x-full transition-transform duration-300 ease-in-out border-r border-outline-variant shadow-[0px_8px_24px_rgba(168,54,53,0.08)]" id="sidebar">
+<!-- Header Info -->
+<div class="p-6 bg-surface-container-low border-b border-outline-variant/30">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-16 h-16 rounded-full border-2 border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly man in his 30s with a warm smile, wearing a modern business casual outfit. The lighting is soft and flattering against a neutral high-key background, representing a reliable and trustworthy customer profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC70m74290qXNXQzjYrhmmw9BtyUyDZ0881KZ5Y3A34AenC-y3QqEAdp12geEKd54chv_0WFt_gTENdetQumnIMSVOuGyZ23ZKbg3bWRUnYy6m-pzfDlfDPlBjoUzEgNy30GbKxMRB8Olky7sqQ82ALS0Dl5vJDUICS_om8jnvCyCF-gaZcmdxe5Zx24bvV78exHuDL0Btyprpa8mvZ4xEKERphAV8613xMZ4-Xw-6eXQFOkFgj96vh"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary text-[18px]">Namaste</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">Welcome back to BharatMart</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-grow py-4 overflow-y-auto">
+<div class="px-4 mb-2">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest text-[10px] mb-2 px-2">Account Hub</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-lg font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span>Orders</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span>Wishlist</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span>Addresses</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span>Followed Stores</span>
+</a>
+</div>
+</div>
+<div class="px-4 mt-6">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest text-[10px] mb-2 px-2">Settings & Help</p>
+<div class="space-y-1">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Account Settings</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-container-low rounded-lg font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-6 mt-auto border-t border-outline-variant/30">
+<button class="w-full py-3 flex items-center justify-center gap-2 border border-outline text-secondary font-label-md text-label-md rounded-xl transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </button>
+</div>
+</aside>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant/10 px-4 pt-3 pb-6 flex justify-around items-center md:hidden shadow-[0px_-4px_12px_rgba(0,0,0,0.02)]">
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-md text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-label-md text-[10px]">Categories</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-secondary font-bold relative" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long" data-weight="fill">receipt_long</span>
+<span class="font-label-md text-[10px]">Orders</span>
+<div class="absolute -bottom-2 bg-secondary active-tab-indicator"></div>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+<span class="font-label-md text-[10px]">Wishlist</span>
+</a>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant" onclick="toggleSidebar()">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-md text-[10px]">Account</span>
+</button>
+</nav>
+<!-- Floating WhatsApp Button -->
+<a class="fixed bottom-24 right-6 w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-lg z-40 transition-transform hover:scale-110 active:scale-90" href="https://wa.me/something">
+<svg class="w-8 h-8 fill-current" viewbox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.412 2.503 1.112 3.487l-.751 2.233 2.309-.738a5.745 5.745 0 0 0 3.1 0.89h.001c3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm3.453 8.35c-.15.422-.751.765-1.042.812-.274.043-.615.074-1.12-.132-1.22-.505-2.004-1.745-2.065-1.826-.06-.082-.49-.652-.49-1.244 0-.591.31-.882.422-1.003.111-.121.243-.151.324-.151.082 0 .165.002.233.004.072.003.17.027.26.244.09.217.311.758.337.813.027.055.045.118.008.191-.037.073-.056.119-.111.182-.055.064-.117.144-.167.194-.055.056-.113.116-.048.226.065.111.288.476.618.77.426.378.784.496.896.551.112.055.178.046.244-.03.066-.075.281-.328.356-.441.075-.112.15-.094.254-.055.105.038.663.313.777.37.113.056.189.083.216.13.027.047.027.272-.124.694z"></path>
+</svg>
+</a>
+<script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const isHidden = sidebar.classList.contains('-translate-x-full');
+            
+            if (isHidden) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        // Active state persistence for scrolling and interactions
+        document.querySelectorAll('article').forEach(card => {
+            card.addEventListener('click', () => {
+                // Mock interaction for visual feedback
+                card.classList.add('scale-[0.98]');
+                setTimeout(() => card.classList.remove('scale-[0.98]'), 100);
+            });
+        });
+    </script>
+</body></html>

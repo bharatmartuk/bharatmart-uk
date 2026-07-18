@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMarket | Premium Indian Groceries &amp; Fashion UK</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#281900",
+                    "surface-container": "#f4ede4",
+                    "on-background": "#1e1b16",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "primary": "#7f5700",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#7f5700",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#80bf85",
+                    "surface-bright": "#fff8f0",
+                    "outline-variant": "#d6c4ad",
+                    "tertiary-fixed": "#b1f2b4",
+                    "secondary": "#a83635",
+                    "on-tertiary-container": "#0e4e21",
+                    "inverse-primary": "#ffba3e",
+                    "surface-dim": "#dfd9d0",
+                    "on-error": "#ffffff",
+                    "tertiary": "#2e6a39",
+                    "secondary-container": "#ff7670",
+                    "on-surface": "#1e1b16",
+                    "inverse-surface": "#33302a",
+                    "inverse-on-surface": "#f7f0e7",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#e8e2d9",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#514534",
+                    "surface-container-low": "#f9f3ea",
+                    "surface": "#fff8f0",
+                    "primary-fixed": "#ffdeae",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "on-secondary": "#ffffff",
+                    "surface-container-highest": "#e8e2d9",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "primary-container": "#e8a317",
+                    "secondary-fixed": "#ffdad7",
+                    "on-secondary-container": "#720b12",
+                    "on-tertiary": "#ffffff",
+                    "background": "#fff8f0",
+                    "outline": "#837561",
+                    "on-primary-container": "#5b3d00",
+                    "on-secondary-fixed": "#410004",
+                    "on-primary-fixed-variant": "#604100",
+                    "surface-container-high": "#eee7de",
+                    "on-tertiary-fixed": "#002108",
+                    "primary-fixed-dim": "#ffba3e",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "64px",
+                    "container-max": "1280px",
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "display-xl": ["Montserrat"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Montserrat"],
+                    "body-lg": ["Inter"],
+                    "title-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Montserrat"]
+            },
+            "fontSize": {
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Mobile-first card shadow */
+        .product-card-shadow {
+            box-shadow: 0px 4px 12px rgba(29, 27, 22, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="sticky top-0 w-full z-50 flex items-center justify-between px-4 py-3 bg-surface-container-lowest shadow-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-xl text-headline-md font-bold text-primary tracking-tight">BharatMarket</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface relative">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-secondary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">2</span>
+</button>
+<button class="p-2 text-on-surface">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Search Bar Sub-Header -->
+<div class="bg-surface-container-lowest px-4 pb-3 shadow-sm">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border-none rounded-xl text-body-md focus:ring-2 focus:ring-primary/20 transition-all outline-none" placeholder="Search for diyas, incense, sweets..." type="text"/>
+</div>
+</div>
+<!-- Sticky Filter/Sort Bar -->
+<nav class="sticky top-[109px] z-40 bg-surface-container-lowest border-b border-outline-variant/30 flex items-center divide-x divide-outline-variant/30">
+<button class="flex-1 py-3 flex items-center justify-center gap-2 font-label-md text-on-surface active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+            Filter
+        </button>
+<button class="flex-1 py-3 flex items-center justify-center gap-2 font-label-md text-on-surface active:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-[20px]">swap_vert</span>
+            Sort By
+        </button>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow px-4">
+<!-- Breadcrumbs -->
+<nav class="py-4 flex items-center gap-2 overflow-x-auto hide-scrollbar whitespace-nowrap">
+<a class="text-label-md text-on-surface-variant hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<a class="text-label-md text-on-surface-variant hover:text-primary" href="#">Pooja</a>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="text-label-md font-bold text-primary">Diyas</span>
+</nav>
+<!-- Results Info -->
+<div class="mb-4 flex items-center justify-between">
+<h2 class="font-headline-lg-mobile text-on-surface">Pooja Diyas</h2>
+<p class="text-label-md text-on-surface-variant">142 products</p>
+</div>
+<!-- Product Grid (2 Columns) -->
+<div class="grid grid-cols-2 gap-3 mb-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden product-card-shadow flex flex-col group active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A professional product photograph of a handcrafted brass diya with intricate filigree patterns, set against a soft warm cream background with subtle ambient shadows. The lighting is bright and warm, highlighting the polished gold texture of the brass. The overall aesthetic is clean, premium, and traditional, fitting an upscale Indian marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAd7cvpu30ifEwU6LrzgmuWBQAsGZY3DbRZ9lZrwPvHLpocxMzcoU1Gsg_dBhpbjs_yaWrJQONJ68dJwl68ZDQCGBQmfAyV0s_vFlGo-XPsw5hZq_4daCPgO0S6EO2wNrFwMoWIBY6L7JTYhpOOZeXvV84pyNFb9785V-TCXxFdUGjENv_QhhX8VEcbWF0eyFUeJq_c2FIlaMLk3KMwKmtA7wJDLtY0RZ5yaajnzpztC15Ob_o3i_i2"/>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-secondary active:scale-125 transition-transform">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 px-2 py-0.5 bg-secondary text-white text-[10px] rounded font-bold uppercase tracking-wider">Top Rated</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="text-label-md text-on-surface-variant mb-1">Rajputana Crafts</p>
+<h3 class="font-body-md font-bold text-on-surface leading-tight mb-2 line-clamp-2">Hand-Carved Traditional Brass Diya (Medium)</h3>
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px] text-primary filled-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] font-bold text-on-surface">4.9</span>
+<span class="text-[12px] text-outline-variant">(82)</span>
+</div>
+<div class="mt-auto flex items-center justify-between gap-1">
+<span class="font-title-lg text-secondary">£14.50</span>
+<button class="bg-tertiary text-white h-8 w-8 rounded-lg flex items-center justify-center active:bg-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden product-card-shadow flex flex-col group active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A collection of five colorful terracotta diyas painted with traditional floral motifs in vibrant blues, reds, and yellows. The diyas are arranged artistically on a clean white surface with soft, high-key lighting. The style is modern minimalist yet culturally rich, focusing on the tactile quality of the clay and the vivid colors of the paint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrkay-mqWSXjG0VsWk3o2YDIrAhf8_x-vwZXShJzzsv4R9KGAvXXS0CMpmfBL6DRuq3O2eQoi0nitFYhkc-9MAvXjgeOVw20U0fvaKEjNHvWI6tReydm-KPjmCglW6qcXL1b2p8KjHOmhq1zyAJX0-GNFcRPky3hPAF7XgqjfTbADUJLiDTIUa3PKfOmo9nGtRiSMiVO40arQ0pK3MfHNoto4ZGGYJckP7hYNWMu6nkma-wNj5z3mu"/>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="text-label-md text-on-surface-variant mb-1">Earth &amp; Clay</p>
+<h3 class="font-body-md font-bold text-on-surface leading-tight mb-2 line-clamp-2">Hand-Painted Terracotta Diya Set (Pack of 5)</h3>
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px] text-primary filled-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] font-bold text-on-surface">4.7</span>
+<span class="text-[12px] text-outline-variant">(124)</span>
+</div>
+<div class="mt-auto flex items-center justify-between gap-1">
+<span class="font-title-lg text-secondary">£8.99</span>
+<button class="bg-tertiary text-white h-8 w-8 rounded-lg flex items-center justify-center active:bg-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden product-card-shadow flex flex-col group active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A premium pure silver diya with a simple, elegant bowl design and a sturdy base. The silver reflects a soft studio light, creating brilliant highlights and clean shadows. The product is centered on a minimalist grey-toned surface that emphasizes the luxury and purity of the silver material. Highly professional e-commerce photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9k2nCq6uKUoRcLa64Dyo91zr7Z-VQAmX32ZNHVKbcb6T5Xsuvq03IaTmme_tEVdiqSF5Lqz7dcv9PEL_lyteMcIOEfEezWEzhDr-AO507jR0hWEh05hjzBssooVfI14szOEy6gz39NEnHSrnPMOYnmHgoRmouix--6E_mwXy9k_fjCrlwQprIYyHLLOX6pnh6sOjGqJkelr0xHpCOdeXEkim3RwilUkpgXg-2U7dpdTjbEkih13vX"/>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="text-label-md text-on-surface-variant mb-1">Silver Heritage</p>
+<h3 class="font-body-md font-bold text-on-surface leading-tight mb-2 line-clamp-2">Pure Silver Puja Diya (Chandi)</h3>
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px] text-primary filled-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] font-bold text-on-surface">5.0</span>
+<span class="text-[12px] text-outline-variant">(12)</span>
+</div>
+<div class="mt-auto flex items-center justify-between gap-1">
+<div class="flex flex-col">
+<span class="font-title-lg text-secondary">£45.00</span>
+</div>
+<button class="bg-tertiary text-white h-8 w-8 rounded-lg flex items-center justify-center active:bg-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl overflow-hidden product-card-shadow flex flex-col group active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A modern electric diya lamp made of polished copper with a warm LED glow, designed to look like a traditional flame. The image is shot in a cozy, modern living room setting with a blurred background of festive decorations. The focus is sharp on the copper finish and the soft golden light it emits. The atmosphere is warm, inviting, and celebratory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7EeNj46mR_Y4KYt_9awQZhSjnopdDne4W0LYQ_V6jasK9MQBhKtLosD-nLz-HxGrOunyXHalhbWVHYlZJVX-5odTBojkixvwwO76ixb1pAWsd3tzV16exY3w0aEoj65esQlFQYZqEUYSy1_RGmxQWaQCH2wiNcQF2vJ_H-Fxj22MKMSlvM-mFRG8jrz_Dl3gOyK6HUEjuPUMpNRQbQ8k2caBsxxuBcafS-9SDdjGQQoXreOvbafLA"/>
+<button class="absolute top-2 right-2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]">favorite</span>
+</button>
+<div class="absolute top-2 left-2 px-2 py-0.5 bg-primary text-on-primary-fixed text-[10px] rounded font-bold uppercase tracking-wider">Sale</div>
+</div>
+<div class="p-3 flex flex-col flex-grow">
+<p class="text-label-md text-on-surface-variant mb-1">Modern Rituals</p>
+<h3 class="font-body-md font-bold text-on-surface leading-tight mb-2 line-clamp-2">Electric Copper LED Diya Lamp</h3>
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px] text-primary filled-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[12px] font-bold text-on-surface">4.5</span>
+<span class="text-[12px] text-outline-variant">(56)</span>
+</div>
+<div class="mt-auto flex items-center justify-between gap-1">
+<div class="flex flex-col">
+<span class="text-[10px] line-through text-outline-variant">£22.00</span>
+<span class="font-title-lg text-secondary">£18.50</span>
+</div>
+<button class="bg-tertiary text-white h-8 w-8 rounded-lg flex items-center justify-center active:bg-on-tertiary-container transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Load More Button -->
+<div class="flex justify-center pb-12">
+<button class="w-full py-4 px-6 border-2 border-primary text-primary font-bold rounded-xl flex items-center justify-center gap-2 active:bg-primary/5 transition-colors">
+                Load More Products
+                <span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</main>
+<!-- Floating Action Button: WhatsApp -->
+<button class="fixed bottom-6 right-6 w-14 h-14 bg-tertiary text-white rounded-full flex items-center justify-center shadow-lg z-50 active:scale-90 transition-transform">
+<svg class="w-7 h-7" fill="currentColor" viewbox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.522-2.961-2.638-.087-.117-.708-.941-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.001.332.005c.108.004.254-.041.397.303.145.348.495 1.205.54 1.292.044.087.073.188.015.305-.058.117-.087.188-.173.289l-.26.303c-.087.087-.179.181-.077.354.102.174.454.746.973 1.208.671.597 1.239.782 1.412.869.174.087.275.073.376-.044.101-.117.433-.506.549-.68.116-.174.231-.145.39-.087s1.011.477 1.184.564c.174.087.289.13.332.202.045.072.045.419-.1.824z"></path>
+</svg>
+</button>
+<!-- Footer -->
+<footer class="w-full border-t border-outline-variant bg-surface-container-highest p-4 pb-8">
+<div class="flex flex-col gap-6">
+<div>
+<h4 class="font-display-xl text-headline-lg text-primary mb-2">BharatMarket</h4>
+<p class="text-body-md text-on-surface-variant">Bringing the warmth of Indian markets to your doorstep in the UK.</p>
+</div>
+<div class="grid grid-cols-2 gap-y-4">
+<a class="text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">About Us</a>
+<a class="text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Merchant Login</a>
+<a class="text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Shipping Policy</a>
+<a class="text-label-md text-on-surface-variant hover:text-primary transition-all" href="#">Contact Support</a>
+</div>
+<div class="pt-6 border-t border-outline-variant/30">
+<div class="flex gap-4 mb-4">
+<a class="text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">language</span>
+</a>
+<a class="text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+</div>
+<p class="text-label-md text-on-surface-variant">© 2024 BharatMarket UK. All rights reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for Wishlist button
+        document.querySelectorAll('button .material-symbols-outlined').forEach(icon => {
+            if (icon.textContent === 'favorite') {
+                icon.parentElement.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const isFilled = icon.style.fontVariationSettings.includes("'FILL' 1");
+                    if (isFilled) {
+                        icon.style.fontVariationSettings = "'FILL' 0";
+                        icon.classList.remove('text-secondary');
+                    } else {
+                        icon.style.fontVariationSettings = "'FILL' 1";
+                        icon.classList.add('text-secondary');
+                        
+                        // Small bounce animation
+                        icon.parentElement.classList.add('scale-125');
+                        setTimeout(() => icon.parentElement.classList.remove('scale-125'), 200);
+                    }
+                });
+            }
+        });
+
+        // Add to cart click feedback
+        document.querySelectorAll('.bg-tertiary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const originalIcon = this.innerHTML;
+                this.innerHTML = '<span class="material-symbols-outlined">check</span>';
+                this.classList.replace('bg-tertiary', 'bg-primary');
+                setTimeout(() => {
+                    this.innerHTML = originalIcon;
+                    this.classList.replace('bg-primary', 'bg-tertiary');
+                }, 1000);
+            });
+        });
+    </script>
+</body></html>

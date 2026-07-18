@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=390, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK | Premium Indian Marketplace</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "surface-container": "#f4ede4",
+                    "on-tertiary-fixed": "#002108",
+                    "primary-fixed-dim": "#ffba3e",
+                    "surface-container-low": "#f9f3ea",
+                    "tertiary-container": "#80bf85",
+                    "on-surface-variant": "#514534",
+                    "primary-container": "#e8a317",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "on-background": "#1e1b16",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#ffdad7",
+                    "on-tertiary-container": "#0e4e21",
+                    "surface-dim": "#dfd9d0",
+                    "inverse-surface": "#33302a",
+                    "surface-container-highest": "#e8e2d9",
+                    "surface-tint": "#7f5700",
+                    "on-primary-container": "#5b3d00",
+                    "on-primary-fixed": "#281900",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "primary": "#7f5700",
+                    "inverse-on-surface": "#f7f0e7",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#ff7670",
+                    "secondary": "#a83635",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#b1f2b4",
+                    "outline": "#837561",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#604100",
+                    "surface-bright": "#fff8f0",
+                    "surface-variant": "#e8e2d9",
+                    "on-secondary-container": "#720b12",
+                    "surface-container-high": "#eee7de",
+                    "primary-fixed": "#ffdeae",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "inverse-primary": "#ffba3e",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fff8f0",
+                    "background": "#fff8f0",
+                    "on-secondary-fixed": "#410004",
+                    "tertiary": "#2e6a39",
+                    "on-surface": "#1e1b16",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "outline-variant": "#d6c4ad"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "margin-desktop": "64px",
+                    "gutter": "16px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "title-lg": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "display-xl": ["Montserrat"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-dot { background-color: #7f5700; width: 24px; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md selection:bg-primary-container">
+<!-- TopNavBar (Mobile) -->
+<header class="fixed top-0 w-full z-50 bg-surface shadow-[0px_4px_12px_rgba(0,0,0,0.04)] h-16 flex items-center justify-between px-4">
+<div class="flex items-center gap-3">
+<button class="p-2 -ml-2 text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="font-headline-md text-headline-md font-extrabold text-primary tracking-tight">BharatMart UK</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="p-2 text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="p-2 text-on-surface-variant relative active:scale-90 transition-transform">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="absolute top-1 right-1 bg-secondary text-on-secondary text-[10px] font-bold px-1.5 py-0.5 rounded-full">3</span>
+</button>
+<button class="p-2 text-on-surface-variant active:scale-90 transition-transform">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<main class="pt-16 pb-24 overflow-x-hidden">
+<!-- Hero Banner Stack -->
+<section class="relative w-full aspect-[4/5] overflow-hidden">
+<div class="absolute inset-0 flex transition-transform duration-500" id="hero-slider">
+<div class="min-w-full h-full relative">
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+<div class="w-full h-full" data-alt="A vibrant lifestyle photograph of a traditional Indian festival celebration in a modern UK home. A family is seen wearing elegant silk sarees and kurtas, surrounded by glowing brass diyas and colorful marigold garlands. The lighting is warm and cinematic, emphasizing rich textures of gold and deep maroon fabrics. The overall mood is joyous, festive, and premium, reflecting the BharatMart brand identity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCSyfmYknNc9HecHky6ttyvZ8Q_w1wN9Vw9EFCn82JbmussdCDBHakkHgI_hVPCgkbWg4kdcXBH7ywTzdIVnVHWVy38x8fByuSiLhwoLlLuiF7XPHHl7kWaWA8WY5CoWtC5cKYp5k6IuXF8Nbbn7ntbl5CxClDsbsszqYm4HBrmQ4eT7NJu4WmY0duBMWH12LR-8nx2fU4qbEMQ3nSskpy2-JljBsyx8Ef8VYA7tb_B1eLszQUlHLB')"></div>
+<div class="absolute bottom-12 left-4 z-20 text-white max-w-[80%]">
+<p class="font-label-md text-label-md uppercase tracking-widest text-primary-fixed-dim mb-2">New Season Arrival</p>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile mb-4">Authentic Silk Sarees &amp; Festive Wear</h1>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-semibold active:scale-95 transition-transform">Shop Collection</button>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 z-20 flex gap-2">
+<div class="h-1 w-6 bg-white/40 rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim active-dot rounded-full"></div>
+</div>
+<div class="h-1 w-2 bg-white/40 rounded-full"></div>
+<div class="h-1 w-2 bg-white/40 rounded-full"></div>
+</div>
+</section>
+<!-- Category Grid (4x2) -->
+<section class="px-4 py-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-title-lg text-title-lg text-on-surface">Shop by Category</h2>
+<a class="text-primary text-label-md font-semibold" href="#">View All</a>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Cat 1 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional studio product shot of a variety of high-quality Indian lentils and spices in glass bowls. The composition is clean and minimalist on a pure white background, showcasing the vibrant oranges and yellows of the food. Soft, natural lighting highlights the textures of the grains, creating a fresh and appetizing look for a premium grocery marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDReLzeQi5YjVMncZaho-dCE7LY78WLDRo7aKN5TtDpsmgcWkZT8LlDNpzdUmdlTafO2S3VwUx7i4j1gPXr_E0Xvthy6u05SBckqhERNCGb-4G0dmovevrRw7c5LFJQ6w6LH8rmNST9vJFkO0dcWdvHKnWGN1DkJQ3YKYW6kdTZnhByz8LSCd_UTIHcZfjaYGwxfosccXX7yP7i1HiRtWpcGrCWmkHY7kUYHbc9VWrFlwZSKf2sScs1"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Groceries</span>
+</div>
+<!-- Cat 2 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Close-up of traditional Indian milk-based sweets like Gulab Jamun and Kaju Katli arranged on a brass platter. The sweets look glistening and fresh, decorated with silver leaf and chopped pistachios. Warm, inviting lighting creates a celebratory and rich atmosphere, suitable for a high-end dessert boutique." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1CYCm_nz6FiTwx3wWN8-Qf7LY7Aqwo_1rg1skOmnfXQc6feucai-EipMrKSwFDeV2xFPCM4_BFVK8m8NgqgScJRTYYxKKR0yWY9HoXOsA5ldFw8xCyaCIECrs7HnwKr3upZ7sixC70X2gLZ2keTnwNCxNxiatWWSCO3O-zh2BayLhxQrxAnhyjHPhmj9zsQw9guFdJ1oujgBCkT97CvwpuasqMn4ato5Zi--VGY5Uw0dEbOJV_6Z2"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Sweets</span>
+</div>
+<!-- Cat 3 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A collection of ornate Pooja items including a brass lamp, incense holder, and a small Ganesh idol placed on a wooden surface with scattered rose petals. The lighting is soft and spiritual, with a subtle glow from the lamp casting gentle shadows. The mood is serene and respectful, reflecting traditional Indian wellness and spirituality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZY1QWsJXvvfRUK3DYlVjqvZi1VkMEt6YYMFS-z0FwXYq8sisvXinWFZCMvSiwiuBj_6dL7hjRNYIIpQ6Um6MlCUSlnHUr-IctgBrDcAl5mjHMUuwEaFqS8J_hkwjxa4ef3HjyQ-d8doKqQuH7lu-BM5Yqu11VkYW_M_pI9fSAAx2Dr9Q9lUd5XVvqUSMPvG06nIUpVYstyhyHsVaDTy0p-aRycrwOYp2GqtD8v-Yryttc0jDBL6AL"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Pooja</span>
+</div>
+<!-- Cat 4 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="An elegant close-up of intricate gold Indian jewellery, including a necklace and earrings with ruby and emerald accents, displayed on a velvet cushion. The lighting is focused and brilliant, making the gold sparkle. The style is opulent and high-end, evoking a sense of luxury and traditional craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvLEoutR0TzqbmmP7mYiGmx7XEtIj6axz3U-s1j5ZSUXqZNNhsxQnFi34Rdziti6OnMu7rEoNG2XYciN9NwQZ6dH4d_ZPrckDuXEsqc_jTIq1qVh2D3ODbIWEZxw4M2uhOniQBFyhjG4urGuzSwi3Y0AlSHT8M0_v0GYVIY_nYbcBd5Qh6ZI8r-8PmHdHKNgSHDOuPTMh20kCnXYF4bJkEr086k4_EvpA_c74_kalZSF0dRQVoft50"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Jewellery</span>
+</div>
+<!-- Cat 5 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A stack of beautifully folded, colorful Indian sarees in silk and cotton fabrics. The colors range from saffron to deep maroon and forest green, showing detailed embroidery and border patterns. The lighting is clear and bright, emphasizing the high-quality textile textures for a fashion catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgN08ShsRHmaWosygDCMf9r0YwbPf1rMm5gWUF5y_H4bUy9NVAAalC7fIc0-YPZvUFylbc-cOMvccOXHzkd-aEBTCIy4qdl8x8pmq05odqAxR2NQB8H_2kF__O-0LYa0m5RBs8bCxVn3j-lsf_PBtr8NDUPCeO75KSgzqVqKJrU8-BWPqwsI8ywfh3doOBjDtsK6GCbOdNZQL1LkBp9GXOIZRsY6MiOuuIl71Uh6iPQlTQL5Vhhkdx"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Clothing</span>
+</div>
+<!-- Cat 6 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Modern glass bottles of Ayurvedic oils and herbal supplements arranged with fresh ingredients like turmeric and amla. The aesthetic is clean, medical yet organic, with a soft cream background and light wood accents. The lighting is diffused and calming, suggesting purity and natural wellness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-qzfDWbzRmwwo03dn0waDRXCv3_150FAXipWd_T9mpxLlffDnJhDDYbeYCjmhl-9UnTapd-foZj2l1bj1Jg9AxLQL9wOucFKHQfQq4aku-LmSQe8ov2Be_NwGTK6b5pVTXh7tguw6ANAAWZe6OLUTJpiJh92tVho38pBxeFsiW4IVoWz97tnu5JXXt63CGESXcmDYN1EHtoQ6LCHtAnLdLXouqbUl-gKhBtHvbNc_m5oamgKVRCGt"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Wellness</span>
+</div>
+<!-- Cat 7 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A stylish flat lay of Indian kitchenware, featuring stainless steel thali sets and copper vessels on a clean stone countertop. The lighting is bright and modern, highlighting the metallic sheen and clean lines of the cookware. The composition is organized and premium, perfect for a high-quality home goods section." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmUJuruvslMZPGrww6ucZMgWm4ICb5TXgLFelBZzNTDdXPUPJXJ__rM9ORg5yjn3BrCzXP0OBcEHt6PdqgWvmdjP__3OlXKnBh7Gxw9gpITuofbvkqYZ6X4eud9DpGJlbDuuDWkMGVM4V2Wtqz2ez91pmXneRoyF4ml5uSWkuygQfE_78tJ_xjkVVCkQqrkXbx_D5Jv8wNEd6uZY7hgLG9M64wwFWbZ--r3CNva9G_I8TCFEm_n60m"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Kitchen</span>
+</div>
+<!-- Cat 8 -->
+<div class="flex flex-col items-center gap-2">
+<div class="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center shadow-sm active:scale-95 transition-transform overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A festive assortment of traditional Indian snacks like Bhujia and Gathiya in contemporary snack packaging. The scene includes a cup of masala chai in a modern ceramic mug. The lighting is warm and casual, creating a cozy and familiar atmosphere for a snacks and beverages category." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABgBdCtbrfEy5VD3SJc7MZg4n2aj5Ti5rjRoKfQi0bOg4m6sGh_k0sAPpkR6bymwL_lZ1kXQGwTBxckEI6Af_7B7uGPIrWEB3WacrdXhoPd9dEAUBO3O6-_8uVyXG2QcUCAD0dmWu8w6j0lYoBz1TX90E7XPkCe7S6MbbkhTTqsPdd5eQH4rMSx57Goi-pjhljNySSCIW5jCsskmZKPazZ_wLleIz-fa-76Pw3ScVlYIl7cYict7aT"/>
+</div>
+<span class="text-[10px] font-medium text-center leading-tight">Snacks</span>
+</div>
+</div>
+</section>
+<!-- Trending Products (2 Columns) -->
+<section class="bg-surface-container-low py-8 px-4">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-title-lg text-title-lg text-on-surface">Trending Now</h2>
+<button class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-label-md font-bold">SALE</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Product Card 1 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(0,0,0,0.04)] active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A premium 5kg bag of authentic aged Basmati Rice, with a modern and elegant packaging design featuring gold and maroon motifs. The product is photographed in a high-key studio setting with soft shadows, highlighting the premium quality and clear grain visibility. The background is a clean off-white cream tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQKsiC4PTAYvdt3V1cp5MFFmK7C9xAeDpcgSZK_dITPJcyj3uJoGZQrf0viNWmHK-lVda6IwsYW5ffRErlQUKXfYTOb6n9X6Z-qRQ8wp3gImWGbY0cxGdv0eOeINsZ4BwOOZNdSChFb_TAYrRuvBSO5SMyLLoOnIAeCmZVpxy6_I2AEZK8ZFF-MbSforgGRmtLzK77OokuZ584ddmYmRiuyeF_y-gnk4-cs09hMVAQJz0PRi7FcNvF"/>
+<button class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full backdrop-blur-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-error">favorite</span>
+</button>
+</div>
+<div class="p-3">
+<p class="font-label-md text-label-md text-on-surface-variant truncate">Royal Aged Basmati Rice</p>
+<p class="font-bold text-secondary mt-1">£12.99</p>
+<p class="text-[10px] text-on-surface-variant/70 mt-1 italic">Sold by: Krishna Foods</p>
+<button class="w-full mt-3 bg-tertiary text-on-tertiary py-2 rounded-lg text-label-md font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+                            ADD
+                        </button>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface rounded-xl overflow-hidden shadow-[0px_4px_12px_rgba(0,0,0,0.04)] active:scale-[0.98] transition-transform">
+<div class="relative aspect-square">
+<img class="w-full h-full object-cover" data-alt="A set of handcrafted terra cotta diyas painted with intricate floral patterns in vibrant blue and saffron. The diyas are arranged on a rustic wooden surface with a soft-focus background of marigold petals. The lighting is warm and directional, creating a sense of tactile craftsmanship and tradition for home decor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt08e2N-fLjd2NkzVYF0WkRjZKzwLmRUHUJ0DEJP92XzPhWy1MDP8TeE6v1FAGgd-XITf5lNKb__Y4ACZiTrdUnQyKw9vKRN3Wq44zFfvcYGrIDseFydhdXMPGhaB7UiSSXllRKSXZchBIU8ejN72TMmyXP8DhnTFZpyxdrCwvBixTjZJ50jswFSkqbeaCYixPN3ryGKWgBwpwEGrvBiuOUh7j_H2WvNBh8Vf3akbhodFHGfhNrEcW"/>
+<button class="absolute top-2 right-2 p-1.5 bg-white/80 rounded-full backdrop-blur-sm shadow-sm">
+<span class="material-symbols-outlined text-[18px]">favorite</span>
+</button>
+</div>
+<div class="p-3">
+<p class="font-label-md text-label-md text-on-surface-variant truncate">Hand-painted Diya Set</p>
+<p class="font-bold text-secondary mt-1">£8.50</p>
+<p class="text-[10px] text-on-surface-variant/70 mt-1 italic">Sold by: Artisan India</p>
+<button class="w-full mt-3 bg-tertiary text-on-tertiary py-2 rounded-lg text-label-md font-bold flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+                            ADD
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Merchant Spotlight Carousel (Stacked Cards) -->
+<section class="px-4 py-8">
+<h2 class="font-title-lg text-title-lg text-on-surface mb-6">Top Rated Merchants</h2>
+<div class="flex flex-col gap-4">
+<div class="bg-surface border border-outline-variant p-4 rounded-xl flex items-center gap-4 active:bg-surface-container-high transition-colors">
+<div class="w-16 h-16 rounded-full border-2 border-primary-container p-0.5 shrink-0">
+<img class="w-full h-full rounded-full object-cover" data-alt="A minimalist logo for a premium Indian merchant named 'Saffron Heritage'. The logo features a stylized saffron flower icon in gold on a deep charcoal background. The design is modern, professional, and sophisticated, reflecting a high-trust merchant brand in the UK marketplace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNslmDSPak8lHXafbPF_9YrrKk37txz0NLdiZ8p3NgRobVpTA7qCbcmtyespzC6k32EoK5pEA-sAasVYdTVwW34tbe35jKkkgNH-OE0-1aoL7aDTJIK1T0gmBiNCLaK7Sreo8bYQdPpvhu0RFXGGkZo3Jg8hMr1NtxZ96ndHElNnkEFXw6pfN6fQfOv9izOkjCzKKMUNIcMWqPjnu8g3MmCVhfzlFDGkvkS0M5-r_mcGOGTMicemRw"/>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-on-surface">Saffron Heritage</h3>
+<p class="text-[11px] text-on-surface-variant line-clamp-1">Authentic spices and pantry staples...</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-[14px] fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[11px] font-semibold text-on-surface">4.9</span>
+<span class="text-[11px] text-on-surface-variant">(1.2k)</span>
+</div>
+</div>
+<button class="border border-secondary text-secondary px-3 py-1.5 rounded-lg text-label-md font-bold">Visit</button>
+</div>
+<div class="bg-surface border border-outline-variant p-4 rounded-xl flex items-center gap-4 active:bg-surface-container-high transition-colors">
+<div class="w-16 h-16 rounded-full border-2 border-primary-container p-0.5 shrink-0">
+<img class="w-full h-full rounded-full object-cover" data-alt="A luxury logo for 'Silk &amp; Stones' boutique, featuring a combination of elegant serif typography and an abstract textile weave pattern in silver and deep maroon. The aesthetic is fashion-forward yet grounded in tradition, representing a premium clothing and jewellery merchant." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlAery5GvPAZE6HJ0pQu6W0dnR608C23PWhDBj7pUWhqYZfJpc9v3sWUXUBOlNyw-Xtg1qMEZej8vDYogxy-tG2yeEskKOYXb5RIrLXlC_yG3r9cA2OtWHcKJVg6JepGol0pR4TH6JtvwA-mzHR1AfN2FEIVopSZOhNnjyHSe2SIJVidUOpajkfnl-cP6lkocDzH2fgkrO2nh2S57Cf_aLjGSdzZxGDQfk-rqTlD4CNaS4YZiUAQlz"/>
+</div>
+<div class="flex-1">
+<h3 class="font-bold text-on-surface">Silk &amp; Stones</h3>
+<p class="text-[11px] text-on-surface-variant line-clamp-1">Designer sarees and bridal jewellery...</p>
+<div class="flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-primary text-[14px] fill-icon" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-[11px] font-semibold text-on-surface">4.8</span>
+<span class="text-[11px] text-on-surface-variant">(850)</span>
+</div>
+</div>
+<button class="border border-secondary text-secondary px-3 py-1.5 rounded-lg text-label-md font-bold">Visit</button>
+</div>
+</div>
+</section>
+<!-- Newsletter / Community Section -->
+<section class="bg-primary-container mx-4 rounded-2xl p-6 relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full blur-2xl"></div>
+<div class="relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-primary-container mb-2">Join the Community</h2>
+<p class="text-body-md text-on-primary-container/80 mb-6">Get weekly recipes, festive offers and more directly in your inbox.</p>
+<div class="flex flex-col gap-3">
+<input class="w-full px-4 py-3 rounded-lg bg-surface border-none focus:ring-2 focus:ring-primary shadow-inner" placeholder="Email Address" type="email"/>
+<button class="w-full bg-primary text-on-primary font-bold py-3 rounded-lg active:scale-95 transition-transform">Subscribe Now</button>
+</div>
+</div>
+</section>
+<!-- Footer (Mobile Optimized) -->
+<footer class="bg-surface-container mt-12 py-10 px-4">
+<div class="mb-8">
+<span class="font-headline-md text-headline-md font-extrabold text-primary block mb-2">BharatMart UK</span>
+<p class="text-on-surface-variant text-body-md leading-relaxed">Premium Indian marketplace bringing the best of home to your doorstep across the UK.</p>
+</div>
+<div class="space-y-2 mb-8">
+<div class="border-b border-outline-variant">
+<button class="w-full flex justify-between items-center py-4 text-on-surface font-semibold" onclick="toggleAccordion('footer-shop')">
+                        Shop
+                        <span class="material-symbols-outlined transition-transform" id="footer-shop-icon">expand_more</span>
+</button>
+<div class="hidden pb-4 space-y-2 text-on-surface-variant" id="footer-shop">
+<a class="block hover:text-primary" href="#">Groceries</a>
+<a class="block hover:text-primary" href="#">Sweets &amp; Snacks</a>
+<a class="block hover:text-primary" href="#">Clothing &amp; Sarees</a>
+<a class="block hover:text-primary" href="#">Jewellery</a>
+</div>
+</div>
+<div class="border-b border-outline-variant">
+<button class="w-full flex justify-between items-center py-4 text-on-surface font-semibold" onclick="toggleAccordion('footer-company')">
+                        Company
+                        <span class="material-symbols-outlined transition-transform" id="footer-company-icon">expand_more</span>
+</button>
+<div class="hidden pb-4 space-y-2 text-on-surface-variant" id="footer-company">
+<a class="block hover:text-primary" href="#">About Us</a>
+<a class="block hover:text-primary" href="#">Contact Us</a>
+<a class="block hover:text-primary" href="#">Privacy Policy</a>
+<a class="block hover:text-primary" href="#">Terms of Service</a>
+</div>
+</div>
+<div class="border-b border-outline-variant">
+<button class="w-full flex justify-between items-center py-4 text-on-surface font-semibold" onclick="toggleAccordion('footer-sell')">
+                        Sell on BharatMart
+                        <span class="material-symbols-outlined transition-transform" id="footer-sell-icon">expand_more</span>
+</button>
+<div class="hidden pb-4 space-y-2 text-on-surface-variant" id="footer-sell">
+<a class="block hover:text-primary font-bold" href="#">Become a Seller</a>
+<a class="block hover:text-primary" href="#">Merchant Login</a>
+<a class="block hover:text-primary" href="#">Merchant Support</a>
+</div>
+</div>
+</div>
+<div class="flex justify-center gap-6 mb-8 text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">public</span>
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">share</span>
+<span class="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">chat</span>
+</div>
+<p class="text-center text-[11px] text-on-surface-variant/60 font-medium tracking-tight">
+                © 2024 BharatMart UK. All rights reserved.
+            </p>
+</footer>
+</main>
+<!-- SideNavBar / BottomNav for Mobile -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface shadow-[0px_-4px_12px_rgba(0,0,0,0.04)] flex justify-around items-center py-3 px-2 border-t border-outline-variant/30 md:hidden">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-icon" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-[10px] font-medium">Categories</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium">Orders</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="text-[10px] font-medium">Cart</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Account</span>
+</a>
+</nav>
+<!-- Floating WhatsApp Button -->
+<a class="fixed bottom-24 right-4 z-50 bg-[#2F6B3A] text-white p-3.5 rounded-full shadow-[0px_8px_24px_rgba(46,106,57,0.3)] active:scale-90 transition-transform flex items-center justify-center" href="https://wa.me/your-number">
+<svg class="lucide lucide-message-circle" fill="none" height="28" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+</a>
+<script>
+        function toggleAccordion(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                el.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Simple Hero Slider interaction
+        let slideIndex = 0;
+        const slider = document.getElementById('hero-slider');
+        // Add auto-play logic if desired
+        /*
+        setInterval(() => {
+            slideIndex = (slideIndex + 1) % 3;
+            slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }, 5000);
+        */
+    </script>
+</body></html>

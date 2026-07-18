@@ -1,0 +1,20 @@
+{
+  "name": "@bharatmart/config",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.nextjs.json": "./tsconfig.nextjs.json",
+    "./eslint-preset": "./eslint-preset.js",
+    "./prettier": "./prettier.config.js"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-tailwindcss": "^0.6.14"
+  }
+}

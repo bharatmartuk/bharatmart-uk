@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Admin - Global Order Monitoring</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Montserrat:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "sidebar-navy": "#1a2b4b",
+                "on-primary": "#ffffff",
+                "status-pending": "#f59e0b",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff",
+                "status-error": "#ef4444",
+                "secondary-container": "#fe624e",
+                "secondary": "#b22b1d",
+                "surface-container-high": "#e6e8ea",
+                "secondary-fixed": "#ffdad4",
+                "on-tertiary": "#ffffff",
+                "surface-tint": "#4e5e81",
+                "outline": "#75777f",
+                "surface-bright": "#f7f9fb",
+                "on-secondary-container": "#650000",
+                "inverse-on-surface": "#eff1f3",
+                "surface-variant": "#e0e3e5",
+                "primary-fixed": "#d8e2ff",
+                "on-primary-fixed-variant": "#364768",
+                "tertiary-fixed-dim": "#e8c08a",
+                "tertiary-fixed": "#ffddb1",
+                "tertiary": "#231400",
+                "surface-container-highest": "#e0e3e5",
+                "on-tertiary-fixed": "#291800",
+                "status-success": "#10b981",
+                "outline-variant": "#c5c6cf",
+                "primary-container": "#1a2b4b",
+                "tertiary-container": "#3e2700",
+                "on-tertiary-fixed-variant": "#5d4217",
+                "on-secondary": "#ffffff",
+                "on-surface": "#191c1e",
+                "surface-container": "#eceef0",
+                "on-primary-container": "#8293b8",
+                "action-maroon": "#800000",
+                "on-surface-variant": "#44474e",
+                "secondary-fixed-dim": "#ffb4a8",
+                "inverse-surface": "#2d3133",
+                "on-tertiary-container": "#b08d5b",
+                "primary-fixed-dim": "#b6c6ef",
+                "on-secondary-fixed-variant": "#8f0f07",
+                "primary": "#031635",
+                "on-error": "#ffffff",
+                "inverse-primary": "#b6c6ef",
+                "on-background": "#191c1e",
+                "surface-dim": "#d8dadc",
+                "surface": "#f7f9fb",
+                "on-primary-fixed": "#081b3a",
+                "background": "#f7f9fb",
+                "error-container": "#ffdad6",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "on-secondary-fixed": "#410000"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "fontFamily": {
+                "table-header": ["Inter"],
+                "display-lg": ["Montserrat"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Montserrat"],
+                "label-caps": ["Inter"],
+                "body-sm": ["Inter"],
+                "headline-sm": ["Montserrat"]
+            },
+            "fontSize": {
+                "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                "label-caps": ["11px", { "lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "700" }],
+                "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+                "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1a2b4b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4e5e81;
+            border-radius: 3px;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .status-pill {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-sidebar-navy flex flex-col z-50">
+<!-- Brand Header -->
+<div class="px-6 py-8">
+<h1 class="font-display-lg text-display-lg text-surface-container-lowest">BharatMart</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container tracking-widest mt-1">OPERATIONS HUB</p>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 overflow-y-auto custom-scrollbar">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="store">store</span>
+<span class="font-body-md text-body-md">Merchants</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span class="font-body-md text-body-md">Categories</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="branding_watermark">branding_watermark</span>
+<span class="font-body-md text-body-md">Banners</span>
+</a>
+</li>
+<!-- ACTIVE ITEM: Orders -->
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-surface-container-lowest border-l-4 border-secondary bg-primary-container active:scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-body-md text-body-md font-semibold">Orders</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="confirmation_number">confirmation_number</span>
+<span class="font-body-md text-body-md">Support Tickets</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Footer Tab -->
+<div class="p-4 border-t border-primary-container">
+<a class="flex items-center gap-3 px-2 py-2 text-outline-variant hover:text-surface-container-lowest transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">System Status</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-[260px] flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="h-16 flex justify-between items-center px-6 bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Global Order Monitoring</h2>
+<div class="hidden md:flex bg-surface-container-low rounded-lg px-3 py-1.5 items-center gap-2 border border-outline-variant">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48 font-body-md" placeholder="Quick search order ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-body-sm font-semibold text-primary leading-none">Admin Profile</p>
+<p class="text-[10px] text-outline uppercase tracking-wider">Super Admin</p>
+</div>
+<img class="h-10 w-10 rounded-full bg-surface-container-high border border-outline-variant object-cover" data-alt="Professional corporate headshot of a female administrative executive in a minimalist studio setting, wearing a tailored navy blue blazer. High-end lighting creates soft shadows on a neutral light gray background, conveying authority and confidence in a modern enterprise SaaS environment. The image uses sharp focus and a clean, business-oriented aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeVMisCx4sT7N7pEBFKYvc-uRgwRalnVvFBqYpCxQ_Ig11vUsiRC9qElohnvQ_ws1XWZVbpneNaVJDEkzspqcH6z82gI0tjl3HcD1gtFlo5eu1TXSxDa3b_RFzL__LwR7Lu_gVFPtCmh5JnXp67z7l02yAf-1mzh-DDSbgEV9tMNZWyKGuCeZXeNAnLSfYtr0IgnlbhLNQJ20cMiLetnTjk-7D-_J7PDnVJH9Dj8CrizVIhfGTwxZQ"/>
+</div>
+</div>
+</header>
+<!-- Tool/Filter Bar -->
+<section class="px-6 py-4 bg-surface-bright border-b border-outline-variant flex flex-wrap items-center gap-4">
+<!-- Status Filter -->
+<div class="flex flex-col gap-1">
+<label class="font-body-sm text-body-sm font-bold text-on-surface-variant">Order Status</label>
+<select class="bg-surface-container-lowest border border-outline-variant rounded px-3 py-1.5 text-body-sm font-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none">
+<option>All Statuses</option>
+<option>New</option>
+<option>Processing</option>
+<option>Shipped</option>
+<option>Delivered</option>
+<option>Cancelled</option>
+</select>
+</div>
+<!-- Merchant Filter -->
+<div class="flex flex-col gap-1">
+<label class="font-body-sm text-body-sm font-bold text-on-surface-variant">Merchant</label>
+<div class="relative">
+<input class="bg-surface-container-lowest border border-outline-variant rounded px-3 py-1.5 text-body-sm font-body-md w-64 focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none" placeholder="Search merchants..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1.5 text-outline text-sm" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+<!-- Date Range Picker -->
+<div class="flex flex-col gap-1">
+<label class="font-body-sm text-body-sm font-bold text-on-surface-variant">Date Range</label>
+<div class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant rounded px-3 py-1.5">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="calendar_today">calendar_today</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-md p-0 w-44" type="text" value="Oct 01, 2024 - Oct 31, 2024"/>
+</div>
+</div>
+<!-- Flagged Only Toggle -->
+<div class="flex items-center gap-3 ml-auto pt-5">
+<span class="font-body-sm text-body-sm font-bold text-on-surface-variant">Flagged Only</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-outline-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary"></div>
+</label>
+</div>
+<!-- Export Button -->
+<button class="mt-5 flex items-center gap-2 bg-primary-container text-white px-4 py-2 rounded font-body-sm font-semibold hover:bg-primary transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                Export CSV
+            </button>
+</section>
+<!-- Main Content Area: High-Density Table -->
+<section class="flex-1 overflow-auto bg-surface p-6">
+<div class="bg-white border border-outline-variant rounded shadow-sm overflow-hidden flex flex-col h-full">
+<!-- Table Header -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant sticky top-0 z-10">
+<tr>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Order #</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Customer</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Merchant</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Total</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Status</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase text-center">Flags</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase">Date</th>
+<th class="p-table-cell-padding font-table-header text-table-header text-outline-variant uppercase text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-on-surface">
+<!-- Row 1 -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9842</td>
+<td class="p-table-cell-padding">Rajesh K.</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">The Spice Emporium</td>
+<td class="p-table-cell-padding font-semibold">£54.50</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-status-success/10 text-status-success">New</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="material-symbols-outlined text-status-error text-[20px]" data-icon="report" style="font-variation-settings: 'FILL' 1;">report</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 25, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9841</td>
+<td class="p-table-cell-padding">Anita M.</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">Jaipur Textiles Co.</td>
+<td class="p-table-cell-padding font-semibold">£124.99</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-blue-100 text-blue-700">Shipped</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="text-outline-variant">—</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 25, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9840</td>
+<td class="p-table-cell-padding">Suresh Raina</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">Gourmet India</td>
+<td class="p-table-cell-padding font-semibold">£12.20</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-status-pending/10 text-status-pending">Processing</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="material-symbols-outlined text-status-pending text-[20px]" data-icon="history">history</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 24, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9839</td>
+<td class="p-table-cell-padding">Deepika P.</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">The Spice Emporium</td>
+<td class="p-table-cell-padding font-semibold">£89.00</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-status-error/10 text-status-error">Cancelled</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="text-outline-variant">—</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 24, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9838</td>
+<td class="p-table-cell-padding">Vikram S.</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">Royal Tea Blends</td>
+<td class="p-table-cell-padding font-semibold">£31.40</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-status-success/10 text-status-success">Delivered</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="text-outline-variant">—</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 24, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Additional Rows to demonstrate density -->
+<tr class="zebra-stripe border-b border-outline-variant hover:bg-surface-container transition-colors">
+<td class="p-table-cell-padding font-semibold text-primary">#BM-9837</td>
+<td class="p-table-cell-padding">Priya G.</td>
+<td class="p-table-cell-padding text-on-surface-variant italic">Handloom Heritage</td>
+<td class="p-table-cell-padding font-semibold">£245.00</td>
+<td class="p-table-cell-padding">
+<span class="status-pill bg-status-pending/10 text-status-pending">New</span>
+</td>
+<td class="p-table-cell-padding text-center">
+<span class="material-symbols-outlined text-status-error text-[20px]" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 24, 2024</td>
+<td class="p-table-cell-padding text-right">
+<button class="p-1 hover:bg-surface-container-high rounded text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination -->
+<div class="mt-auto border-t border-outline-variant px-6 py-3 bg-surface-container-low flex justify-between items-center">
+<p class="text-body-sm text-outline">Showing 1 to 25 of 1,284 orders</p>
+<div class="flex items-center gap-2">
+<button class="p-1 hover:bg-surface-container-high rounded border border-outline-variant disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-white rounded text-body-sm font-semibold">1</button>
+<button class="px-3 py-1 hover:bg-surface-container-high rounded text-body-sm text-on-surface-variant">2</button>
+<button class="px-3 py-1 hover:bg-surface-container-high rounded text-body-sm text-on-surface-variant">3</button>
+<span class="text-outline">...</span>
+<button class="px-3 py-1 hover:bg-surface-container-high rounded text-body-sm text-on-surface-variant">52</button>
+<button class="p-1 hover:bg-surface-container-high rounded border border-outline-variant">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="flex justify-between items-center py-3 px-6 bg-surface-container-lowest border-t border-outline-variant">
+<p class="font-body-sm text-body-sm text-outline">
+                © 2024 BharatMart Operations. System v4.2.0-stable
+            </p>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
+<span class="font-body-sm text-body-sm text-status-success font-semibold">All Systems Operational</span>
+</div>
+<div class="flex gap-4">
+<a class="font-body-sm text-body-sm text-outline hover:text-primary transition-colors" href="#">API Docs</a>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</div>
+</footer>
+</main>
+<!-- Notification Micro-interaction Script -->
+<script>
+        // Simple micro-interaction for the toggle switch
+        const toggle = document.querySelector('input[type="checkbox"]');
+        toggle.addEventListener('change', (e) => {
+            if(e.target.checked) {
+                console.log('Filtering for flagged orders only...');
+                // In a real app, this would trigger a table re-render or API call
+            }
+        });
+
+        // Search highlight effect
+        const searchInput = document.querySelector('input[placeholder="Quick search order ID..."]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('border-primary');
+            searchInput.parentElement.classList.remove('border-outline-variant');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('border-primary');
+            searchInput.parentElement.classList.add('border-outline-variant');
+        });
+    </script>
+</body></html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Register - BharatMart UK</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Shared Components Logic & Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f9f3ea",
+                    "surface-container": "#f4ede4",
+                    "on-surface-variant": "#514534",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffba3e",
+                    "tertiary-container": "#80bf85",
+                    "inverse-primary": "#ffba3e",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "on-primary-fixed-variant": "#604100",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#ff7670",
+                    "on-tertiary-fixed": "#002108",
+                    "surface-container-highest": "#e8e2d9",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fff8f0",
+                    "on-surface": "#1e1b16",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#7f5700",
+                    "background": "#fff8f0",
+                    "on-primary-container": "#5b3d00",
+                    "surface-container-high": "#eee7de",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f7f0e7",
+                    "secondary": "#a83635",
+                    "on-tertiary-container": "#0e4e21",
+                    "surface-variant": "#e8e2d9",
+                    "primary": "#7f5700",
+                    "on-background": "#1e1b16",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#ffdeae",
+                    "on-secondary-container": "#720b12",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "secondary-fixed": "#ffdad7",
+                    "inverse-surface": "#33302a",
+                    "tertiary": "#2e6a39",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "outline-variant": "#d6c4ad",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#410004",
+                    "tertiary-fixed": "#b1f2b4",
+                    "surface": "#fff8f0",
+                    "outline": "#837561",
+                    "on-primary-fixed": "#281900",
+                    "surface-dim": "#dfd9d0",
+                    "primary-container": "#e8a317",
+                    "tertiary-fixed-dim": "#96d69a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "container-max": "1280px",
+                    "base": "8px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "title-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-xl": ["Montserrat"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        
+        .festive-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+            background-blend-mode: overlay;
+        }
+
+        .auth-card {
+            box-shadow: 0px 8px 24px rgba(41, 0, 4, 0.08);
+            backdrop-filter: blur(8px);
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #ffdeae;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body-md festive-pattern">
+<!-- Top Navigation Shell (Limited for Auth) -->
+<header class="bg-surface border-b border-outline-variant w-full fixed top-0 z-50">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto">
+<div class="font-display-xl text-display-xl font-bold text-primary">
+                BharatMart UK
+            </div>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:opacity-80" href="#">
+                Back to Home
+            </a>
+</div>
+</header>
+<main class="flex-grow flex items-center justify-center pt-24 pb-12 px-margin-mobile">
+<!-- Centered Registration Card -->
+<div class="auth-card bg-surface-container-lowest border border-outline-variant rounded-xl w-full max-w-[480px] p-8 md:p-10">
+<!-- Logo / Brand Branding -->
+<div class="text-center mb-8">
+<h1 class="font-headline-lg text-headline-lg text-primary mb-2">Join BharatMart</h1>
+<p class="font-body-md text-on-surface-variant">Experience the best of Bharat, delivered to your UK home.</p>
+</div>
+<!-- Tab Toggle -->
+<div class="flex bg-surface-container-low p-1 rounded-lg mb-8">
+<button class="flex-1 py-2 text-center font-label-md text-on-surface-variant hover:text-primary transition-all">
+                    Login
+                </button>
+<button class="flex-1 py-2 text-center font-label-md bg-surface-container-lowest text-primary font-bold shadow-sm rounded-md border border-outline-variant/30">
+                    Create Account
+                </button>
+</div>
+<form class="space-y-5" onsubmit="event.preventDefault();">
+<!-- Full Name -->
+<div class="space-y-1.5">
+<label class="block font-label-md text-on-surface-variant" for="full_name">Full Name</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg py-3 pl-11 pr-4 font-body-md text-on-surface focus:border-primary transition-all" id="full_name" placeholder="Rajesh Kumar" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="space-y-1.5">
+<label class="block font-label-md text-on-surface-variant" for="email">Email Address</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">mail</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg py-3 pl-11 pr-4 font-body-md text-on-surface focus:border-primary transition-all" id="email" placeholder="rajesh@example.co.uk" type="email"/>
+</div>
+</div>
+<!-- Phone Number -->
+<div class="space-y-1.5">
+<label class="block font-label-md text-on-surface-variant" for="phone">Phone Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">call</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg py-3 pl-11 pr-4 font-body-md text-on-surface focus:border-primary transition-all" id="phone" placeholder="+44 7000 000000" type="tel"/>
+</div>
+</div>
+<!-- Password -->
+<div class="space-y-1.5">
+<label class="block font-label-md text-on-surface-variant" for="password">Password</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">lock</span>
+<input class="w-full bg-surface-bright border border-outline-variant rounded-lg py-3 pl-11 pr-12 font-body-md text-on-surface focus:border-primary transition-all" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-outline hover:text-on-surface" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+<!-- Terms -->
+<div class="flex items-start gap-3 pt-2">
+<div class="flex items-center h-5">
+<input class="w-4 h-4 text-secondary border-outline-variant rounded focus:ring-secondary/20" id="terms" type="checkbox"/>
+</div>
+<label class="font-label-md text-on-surface-variant leading-tight" for="terms">
+                        I agree to the <a class="text-secondary hover:underline" href="#">Terms of Service</a> and <a class="text-secondary hover:underline" href="#">Privacy Policy</a>.
+                    </label>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-secondary text-white font-title-lg py-4 rounded-lg shadow-sm hover:bg-on-secondary-fixed-variant active:scale-[0.98] transition-all duration-200" type="submit">
+                    Create Account
+                </button>
+</form>
+<!-- Divider -->
+<div class="relative my-8">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<div class="relative flex justify-center text-label-md">
+<span class="px-3 bg-surface-container-lowest text-on-surface-variant">OR CONTINUE WITH</span>
+</div>
+</div>
+<!-- Social Action -->
+<button class="w-full flex items-center justify-center gap-3 bg-white border border-outline-variant py-3 rounded-lg font-body-md text-on-surface hover:bg-surface transition-colors active:opacity-80" type="button">
+<img class="w-5 h-5" data-alt="Official Google 'G' icon with high-quality vector rendering on a clean white background, maintaining professional brand standards for a high-trust login experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuYiiZ9IZtGFMOTH_qopIiDd-B9h_mNYFRnKHZI-IdqufOMxG7gKRgrwLQGFYQt-YnhFYdXd1taf3twCQqMeY4y13qAvXXqRmKwW4PeZ2jDJ4qH8AVIxxGe0QAUP75BlVNyX8t7oOWg28d8VJaqyNscFQD0MslZEa_hQNl_xiqb2RD1lr90Bhg6ZR8TWm_V3qHoRVGQkaRrp8W3uYZYwDYYmaM5QTRKmEzXqa3Ljyvzl6Uy0UOKgKJ"/>
+                Continue with Google
+            </button>
+<!-- Support / Footer -->
+<p class="mt-8 text-center font-body-md text-on-surface-variant">
+                Already have an account? <a class="text-secondary font-bold hover:underline" href="#">Sign In</a>
+</p>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="w-full py-12 px-margin-mobile md:px-margin-desktop flex flex-col items-center gap-base bg-surface-container-lowest border-t border-outline-variant">
+<div class="font-display-xl text-display-xl text-primary mb-2">BharatMart UK</div>
+<nav class="flex flex-wrap justify-center gap-6 mb-4">
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Terms of Service</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Shipping Info</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Returns</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all duration-200" href="#">Contact Support</a>
+</nav>
+<div class="text-on-surface dark:text-on-surface-variant font-body-md text-body-md opacity-70">
+            © 2024 BharatMart UK. All rights reserved. Secure SSL Encrypted.
+        </div>
+</footer>
+<!-- Floating Helper -->
+<button class="fixed bottom-6 right-6 bg-tertiary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-on-tertiary-container transition-all active:scale-90 z-50">
+<span class="material-symbols-outlined" data-weight="fill">chat</span>
+</button>
+<script>
+        // Password Visibility Toggle Interaction
+        document.querySelector('button[type="button"] .material-symbols-outlined').parentElement.addEventListener('click', function() {
+            const input = document.getElementById('password');
+            const icon = this.querySelector('.material-symbols-outlined');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        });
+
+        // Form Focus Visual Polish
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="password"]');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.querySelector('.material-symbols-outlined').style.color = '#7f5700'; // Primary
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.querySelector('.material-symbols-outlined').style.color = '#837561'; // Outline
+            });
+        });
+    </script>
+</body></html>

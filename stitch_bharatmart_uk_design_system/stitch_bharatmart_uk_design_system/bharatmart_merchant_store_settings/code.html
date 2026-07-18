@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Merchant - Store Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#dfd9d0",
+                        "background": "#fff8f0",
+                        "inverse-on-surface": "#f7f0e7",
+                        "tertiary-container": "#80bf85",
+                        "error-container": "#ffdad6",
+                        "outline": "#837561",
+                        "surface-container-low": "#f9f3ea",
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#5b3d00",
+                        "secondary": "#a83635",
+                        "on-primary": "#ffffff",
+                        "surface": "#fff8f0",
+                        "on-surface": "#1e1b16",
+                        "tertiary": "#2e6a39",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "surface-container-highest": "#e8e2d9",
+                        "tertiary-fixed": "#b1f2b4",
+                        "secondary-fixed": "#ffdad7",
+                        "surface-tint": "#7f5700",
+                        "on-surface-variant": "#514534",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed": "#281900",
+                        "inverse-primary": "#ffba3e",
+                        "on-tertiary-fixed": "#002108",
+                        "on-tertiary-container": "#0e4e21",
+                        "outline-variant": "#d6c4ad",
+                        "surface-container": "#f4ede4",
+                        "on-background": "#1e1b16",
+                        "primary-container": "#e8a317",
+                        "secondary-container": "#ff7670",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "surface-container-high": "#eee7de",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "inverse-surface": "#33302a",
+                        "primary-fixed": "#ffdeae",
+                        "surface-variant": "#e8e2d9",
+                        "primary-fixed-dim": "#ffba3e",
+                        "primary": "#7f5700",
+                        "on-secondary-container": "#720b12",
+                        "on-primary-fixed-variant": "#604100",
+                        "on-secondary-fixed": "#410004",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#fff8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "base": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "headline-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "title-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab-indicator {
+            height: 3px;
+            background-color: #7f5700;
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            border-radius: 3px 3px 0 0;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f4ede4;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d6c4ad;
+            border-radius: 10px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #7f5700 !important;
+            box-shadow: 0 0 0 2px rgba(127, 87, 0, 0.1);
+        }
+        .toggle-switch {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background: #d6c4ad;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .toggle-switch:checked {
+            background: #2e6a39;
+        }
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
+        }
+        .toggle-switch:checked::before {
+            left: 23px;
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-surface custom-scrollbar">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface border-r border-outline-variant shadow-sm z-50 flex flex-col py-6 px-4">
+<div class="mb-10 px-2">
+<h1 class="font-display-xl text-primary font-bold text-[32px]">BharatMart</h1>
+<div class="flex items-center gap-3 mt-4 p-3 bg-surface-container-low rounded-xl border border-outline-variant">
+<img class="w-10 h-10 rounded-full object-cover" data-alt="A premium, professional circular logo for an Indian merchant called BharatMart, featuring gold and maroon patterns reminiscent of traditional textiles but rendered with a sharp, modern minimalist aesthetic on a clean white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiDjXOo4FdwAbqQknbmVc0GOb6HEVL2o4VPRzGOoR2QwwZLLo8en9-xK8nnhiwasfUhvmHBUWKl-gi1xiCEfdXDoaFZD-hFSFLi0lNzqPyv1L6E-lBCUGutbv6eGr3gQkQpJ0Xl8OCuZOOOqt742JZgzJnJmNc2OfEec536_H4uUxp-1rdpUOFrdRBDxKOQwsTDK2I4zb4g-PJinexFVfACLvfzWE6lsnUIkvB5zlxbH-t5A2QA37X"/>
+<div>
+<p class="font-title-lg text-[14px] leading-tight font-bold">Merchant Center</p>
+<p class="text-on-surface-variant text-[12px]">BharatMart Seller</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-body-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">warehouse</span>
+<span class="font-body-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-body-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 rounded-lg" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container font-semibold rounded-lg shadow-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Store Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-md">Log out</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] bg-surface border-b border-outline-variant shadow-sm z-40 h-16 flex justify-between items-center px-8">
+<h2 class="font-headline-md text-primary font-bold">Store Settings</h2>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right">
+<p class="font-body-md font-semibold group-hover:text-primary transition-colors">Anil Kumar</p>
+<p class="text-[12px] text-on-surface-variant">Admin Account</p>
+</div>
+<span class="material-symbols-outlined text-[32px] text-on-surface-variant group-hover:text-primary transition-colors">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Container -->
+<main class="ml-64 pt-16 min-h-screen bg-background">
+<div class="max-w-[1000px] mx-auto py-10 px-8">
+<!-- Tabs Navigation -->
+<div class="flex border-b border-outline-variant mb-8 bg-surface-container-low rounded-t-xl overflow-hidden shadow-sm">
+<button class="tab-button relative px-8 py-4 font-semibold text-primary border-r border-outline-variant transition-all hover:bg-surface-container" id="btn-profile" onclick="switchTab('profile')">
+                    Store Profile
+                    <div class="active-tab-indicator" id="indicator-profile"></div>
+</button>
+<button class="tab-button relative px-8 py-4 font-medium text-on-surface-variant border-r border-outline-variant transition-all hover:bg-surface-container" id="btn-delivery" onclick="switchTab('delivery')">
+                    Delivery Areas
+                    <div class="active-tab-indicator hidden" id="indicator-delivery"></div>
+</button>
+<button class="tab-button relative px-8 py-4 font-medium text-on-surface-variant border-r border-outline-variant transition-all hover:bg-surface-container" id="btn-payout" onclick="switchTab('payout')">
+                    Payout Details
+                    <div class="active-tab-indicator hidden" id="indicator-payout"></div>
+</button>
+<button class="tab-button relative px-8 py-4 font-medium text-on-surface-variant transition-all hover:bg-surface-container" id="btn-notifications" onclick="switchTab('notifications')">
+                    Notifications
+                    <div class="active-tab-indicator hidden" id="indicator-notifications"></div>
+</button>
+</div>
+<!-- Tab Content: Store Profile -->
+<section class="tab-content space-y-8 animate-in fade-in duration-300" id="content-profile">
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant">
+<h3 class="font-title-lg text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">storefront</span>
+                        Basic Information
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+<div class="col-span-1 space-y-2">
+<label class="block font-label-md text-on-surface-variant">Store Logo</label>
+<div class="relative group w-32 h-32">
+<img class="w-full h-full rounded-full border-2 border-outline-variant object-cover group-hover:opacity-80 transition-opacity" data-alt="A clean circular merchant logo featuring a modern Saffron and Maroon graphic design on a white background, representing a high-end Indian grocery boutique with minimalist line art of a grain stalk." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9u8ls-6wMrM6QSAMKDY2-h874SOQEUzkWvJVoHAKR6_SiXCX4Et0rTs8YBjYx-Xg-_v81d1yg1fZHx3YkH4d-VgFvp_r3asZookhhlhOukG2HUgsjMzlDzpoar-NZ069COyLpLsDoMydct-cAZ1QzdHY2VtEpoiYT9DsIwrUIMMm24GEV0wnSUY4DWP6uYHyV4-e7RwoOmwSJAYnkw9d9cENj4Bthbtq7qZVPXPvca2Q60khJISmj"/>
+<button class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/20 rounded-full transition-opacity text-white">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</div>
+<p class="text-[12px] text-on-surface-variant">Min 500x500px, PNG or JPG</p>
+</div>
+<div class="col-span-2 space-y-4">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Store Name</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md" type="text" value="BharatMart Premium Grocers"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Short Description</label>
+<textarea class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg font-body-md" rows="3">Quality Indian groceries and specialty spices delivered directly to your doorstep. We specialize in authentic heritage products.</textarea>
+</div>
+</div>
+</div>
+<div class="space-y-2 mb-8">
+<label class="block font-label-md text-on-surface-variant mb-1">Store Banner Image</label>
+<div class="relative h-48 w-full group rounded-xl overflow-hidden border-2 border-dashed border-outline-variant flex flex-col items-center justify-center bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="A wide panoramic banner for a premium Indian merchant, showing an artistic close-up of vibrant, high-quality spices, grains, and traditional brass utensils on a rustic white table, captured with cinematic depth-of-field and soft, warm afternoon lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB9EksfI623llcKneVpB-KucB8cjDev1zKNnaf02IE3ODzBfGNh8ZGTq_JIg7tdU5UMjy5ku5NFiJJl6eWXveoC5fzZnIyVEpYMZTg82Xvou_foWi4Ay_FUFiqbglPeJxOLAnp9QzrEz2e8xWKMoYKJd9aUWUIf9LKpAFYnuAprRjftQwbrDXK_RfMMgzoyBQo8Lj6l9LjD4qn2sdp8lo4iM-nqE3l_JnuMOi3h7JjR0b2iI9pN0Cy"/>
+<div class="relative z-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-[40px]">upload_file</span>
+<span class="font-semibold text-primary">Replace Banner Image</span>
+</div>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-8">
+<h4 class="font-body-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">schedule</span>
+                            Business Hours
+                        </h4>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<script>
+                                const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+                                document.write(days.map(day => `
+                                    <div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+                                        <span class="font-body-md font-medium w-24">${day}</span>
+                                        <div class="flex items-center gap-2">
+                                            <input type="time" value="09:00" class="text-[12px] border-none bg-transparent focus:ring-0">
+                                            <span class="text-on-surface-variant text-[12px]">to</span>
+                                            <input type="time" value="20:00" class="text-[12px] border-none bg-transparent focus:ring-0">
+                                        </div>
+                                    </div>
+                                `).join(''));
+                            </script>
+</div>
+</div>
+<div class="mt-10 flex justify-end">
+<button class="px-10 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-lg hover:shadow-xl hover:opacity-90 active:scale-95 transition-all">
+                            Save Profile Changes
+                        </button>
+</div>
+</div>
+</section>
+<!-- Tab Content: Delivery Areas -->
+<section class="tab-content hidden space-y-8 animate-in slide-in-from-right-4 duration-300" id="content-delivery">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Postcode Management -->
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">location_on</span>
+                                Service Postcodes
+                            </h3>
+<button class="text-primary font-bold flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-[20px]">add_circle</span> Add New
+                            </button>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg group">
+<span class="font-body-md">NW10 - Park Royal</span>
+<button class="text-error opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg group">
+<span class="font-body-md">W12 - Shepherds Bush</span>
+<button class="text-error opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg group">
+<span class="font-body-md">UB1 - Southall</span>
+<button class="text-error opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<div class="flex justify-between items-center p-3 bg-surface-container-low rounded-lg group">
+<span class="font-body-md">HA0 - Wembley</span>
+<button class="text-error opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Delivery Rules -->
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant">
+<h3 class="font-title-lg text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">local_shipping</span>
+                            Delivery Fee Rules
+                        </h3>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-2">Standard Delivery Fee</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">£</span>
+<input class="w-full pl-8 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg" type="number" value="5.00"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<input checked="" class="w-5 h-5 text-primary border-outline-variant rounded focus:ring-primary" id="free-delivery" type="checkbox"/>
+<label class="font-body-md font-medium" for="free-delivery">Enable Free Delivery over threshold</label>
+</div>
+<div class="ml-8">
+<label class="block font-label-md text-on-surface-variant mb-2">Minimum Order for Free Delivery</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">£</span>
+<input class="w-full pl-8 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg" type="number" value="50.00"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="px-10 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-lg hover:shadow-xl transition-all">Update Delivery Terms</button>
+</div>
+</section>
+<!-- Tab Content: Payout Details -->
+<section class="tab-content hidden space-y-8 animate-in slide-in-from-right-4 duration-300" id="content-payout">
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant">
+<div class="flex items-start justify-between mb-10">
+<div>
+<h3 class="font-title-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance</span>
+                                Financial Details
+                            </h3>
+<p class="text-on-surface-variant mt-1">This information is used for your weekly store payouts.</p>
+</div>
+<div class="flex items-center gap-2 bg-error-container/20 text-on-error-container px-4 py-2 rounded-full text-[12px] font-bold">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+                            Encrypted &amp; Secure
+                        </div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Bank Name</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg" type="text" value="HSBC United Kingdom"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Account Holder Name</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg" type="text" value="BharatMart Wholesale Ltd"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Sort Code</label>
+<input class="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-lg" type="text" value="40-00-12"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Account Number</label>
+<div class="relative">
+<input class="w-full px-4 py-3 bg-surface-dim/30 border border-outline-variant rounded-lg text-on-surface-variant font-mono" disabled="" type="password" value="88273641"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-primary font-bold text-[12px] uppercase">Reveal</button>
+</div>
+</div>
+</div>
+<div class="mt-10 p-4 bg-primary-container/10 border border-primary-container rounded-lg flex gap-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<p class="text-[13px] text-on-primary-container">Changes to payout details will trigger a 48-hour security hold on your next transfer to protect your store from unauthorized access.</p>
+</div>
+<div class="mt-8 flex justify-end gap-4">
+<button class="px-8 py-3 bg-outline-variant/30 text-on-surface font-semibold rounded-lg hover:bg-outline-variant/50 transition-colors">Cancel</button>
+<button class="px-10 py-3 bg-secondary text-on-secondary font-bold rounded-lg shadow-lg hover:shadow-xl transition-all">Verify &amp; Update</button>
+</div>
+</div>
+</section>
+<!-- Tab Content: Notifications -->
+<section class="tab-content hidden space-y-8 animate-in slide-in-from-right-4 duration-300" id="content-notifications">
+<div class="bg-surface p-8 rounded-xl shadow-sm border border-outline-variant max-w-2xl">
+<h3 class="font-title-lg text-on-surface mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">notifications_active</span>
+                        Notification Preferences
+                    </h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between py-4 border-b border-outline-variant">
+<div>
+<p class="font-body-lg font-semibold">Email Alerts</p>
+<p class="text-on-surface-variant text-[14px]">Receive order invoices and summary reports via email.</p>
+</div>
+<input checked="" class="toggle-switch" type="checkbox"/>
+</div>
+<div class="flex items-center justify-between py-4 border-b border-outline-variant">
+<div>
+<p class="font-body-lg font-semibold">WhatsApp Notifications</p>
+<p class="text-on-surface-variant text-[14px]">Get instant order pings on your registered business WhatsApp.</p>
+</div>
+<input checked="" class="toggle-switch" type="checkbox"/>
+</div>
+<div class="flex items-center justify-between py-4 border-b border-outline-variant">
+<div>
+<p class="font-body-lg font-semibold">Low Stock Alerts</p>
+<p class="text-on-surface-variant text-[14px]">Get notified when product inventory falls below 5 units.</p>
+</div>
+<input class="toggle-switch" type="checkbox"/>
+</div>
+<div class="flex items-center justify-between py-4">
+<div>
+<p class="font-body-lg font-semibold">New Order Alerts</p>
+<p class="text-on-surface-variant text-[14px]">Dashboard popups and sound alerts for incoming orders.</p>
+</div>
+<input checked="" class="toggle-switch" type="checkbox"/>
+</div>
+</div>
+<div class="mt-10 flex justify-end">
+<button class="px-10 py-3 bg-primary text-on-primary font-bold rounded-lg shadow-lg hover:shadow-xl transition-all">Save Preferences</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action: WhatsApp Support -->
+<a class="fixed bottom-6 right-6 w-14 h-14 bg-[#2F6B3A] rounded-full flex items-center justify-center text-white shadow-2xl hover:scale-110 transition-transform active:scale-90 z-50 group" href="https://wa.me/yournumber" target="_blank">
+<svg fill="currentColor" height="30" viewbox="0 0 16 16" width="30" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"></path>
+</svg>
+<span class="absolute right-full mr-4 bg-surface px-3 py-1 rounded-lg shadow-md text-on-surface text-[12px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">Help Center</span>
+</a>
+<script>
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            // Reset all indicators
+            document.querySelectorAll('.active-tab-indicator').forEach(indicator => {
+                indicator.classList.add('hidden');
+            });
+            // Reset all buttons style
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('text-primary', 'font-semibold');
+                btn.classList.add('text-on-surface-variant', 'font-medium');
+            });
+
+            // Show selected content
+            document.getElementById('content-' + tabId).classList.remove('hidden');
+            // Show indicator
+            document.getElementById('indicator-' + tabId).classList.remove('hidden');
+            // Update button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-on-surface-variant', 'font-medium');
+            activeBtn.classList.add('text-primary', 'font-semibold');
+        }
+
+        // Micro-interactions for form inputs
+        document.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('focus', () => {
+                el.parentElement.classList.add('scale-[1.01]');
+                el.parentElement.classList.add('transition-transform');
+            });
+            el.addEventListener('blur', () => {
+                el.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+</body></html>

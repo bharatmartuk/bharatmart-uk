@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout | BharatMart UK</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fff8f0",
+                        "on-tertiary-fixed": "#002108",
+                        "primary-container": "#e8a317",
+                        "surface-variant": "#e8e2d9",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-container": "#720b12",
+                        "surface-container-high": "#eee7de",
+                        "background": "#fff8f0",
+                        "primary-fixed-dim": "#ffba3e",
+                        "on-tertiary-container": "#0e4e21",
+                        "on-background": "#1e1b16",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f9f3ea",
+                        "on-primary-fixed-variant": "#604100",
+                        "surface-tint": "#7f5700",
+                        "secondary-container": "#ff7670",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "on-primary-container": "#5b3d00",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#d6c4ad",
+                        "surface-container-highest": "#e8e2d9",
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#410004",
+                        "surface-container": "#f4ede4",
+                        "inverse-primary": "#ffba3e",
+                        "tertiary-container": "#80bf85",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "outline": "#837561",
+                        "secondary-fixed": "#ffdad7",
+                        "tertiary-fixed": "#b1f2b4",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#2e6a39",
+                        "secondary": "#a83635",
+                        "inverse-surface": "#33302a",
+                        "primary": "#7f5700",
+                        "surface-dim": "#dfd9d0",
+                        "on-primary-fixed": "#281900",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdeae",
+                        "on-surface-variant": "#514534",
+                        "on-error": "#ffffff",
+                        "surface": "#fff8f0",
+                        "inverse-on-surface": "#f7f0e7",
+                        "on-surface": "#1e1b16"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "headline-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+        .address-card.active {
+            border-color: #7f5700;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 12px rgba(30, 27, 22, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top Navigation Bar (Simplified) -->
+<header class="bg-surface sticky top-0 z-50 border-b border-outline-variant">
+<div class="flex justify-between items-center h-16 px-margin-mobile">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant active:opacity-60 transition-opacity">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="font-display-xl text-title-lg font-bold text-primary">BharatMart UK</div>
+<div class="w-10"></div> <!-- Spacer for symmetry -->
+</div>
+</header>
+<main class="max-w-md mx-auto px-margin-mobile pt-6 space-y-8">
+<!-- Step Indicator -->
+<div class="flex items-center justify-between px-4">
+<div class="flex flex-col items-center gap-1">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-body-md">1</div>
+<span class="font-label-md text-label-md text-primary">Delivery</span>
+</div>
+<div class="flex-1 h-[2px] bg-outline-variant mx-2 -mt-5"></div>
+<div class="flex flex-col items-center gap-1 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold text-body-md">2</div>
+<span class="font-label-md text-label-md">Payment</span>
+</div>
+<div class="flex-1 h-[2px] bg-outline-variant mx-2 -mt-5"></div>
+<div class="flex flex-col items-center gap-1 opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-bold text-body-md">3</div>
+<span class="font-label-md text-label-md">Review</span>
+</div>
+</div>
+<!-- Section: Delivery Address -->
+<section class="space-y-4">
+<div class="flex justify-between items-center">
+<h2 class="font-headline-md text-title-lg">Delivery Address</h2>
+<button class="text-secondary font-label-md font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">add</span> Add New
+                </button>
+</div>
+<div class="space-y-3">
+<!-- Address Card 1 (Active) -->
+<div class="address-card active border-2 rounded-xl p-4 cursor-pointer relative transition-all" onclick="selectAddress(this)">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<p class="font-bold text-on-surface">Home</p>
+<p class="text-on-surface-variant text-body-md">12 High Street, Wembley<br/>London, HA9 7AJ<br/>United Kingdom</p>
+<p class="text-on-surface-variant text-body-md pt-2">+44 7700 900077</p>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Address Card 2 -->
+<div class="address-card border border-outline-variant rounded-xl p-4 cursor-pointer bg-surface-container-low transition-all" onclick="selectAddress(this)">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<p class="font-bold text-on-surface">Office</p>
+<p class="text-on-surface-variant text-body-md">45 Canary Wharf, Level 12<br/>London, E14 5AB</p>
+</div>
+<div class="w-6 h-6 border-2 border-outline-variant rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Payment Method -->
+<section class="space-y-4">
+<h2 class="font-headline-md text-title-lg">Payment Method</h2>
+<div class="bg-white rounded-xl p-4 shadow-sm border border-outline-variant space-y-4">
+<div class="flex items-center gap-3 pb-2 border-b border-outline-variant">
+<span class="material-symbols-outlined text-secondary">lock</span>
+<span class="font-body-md font-semibold">Secure Card Payment</span>
+</div>
+<div class="space-y-4">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Cardholder Name</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2" placeholder="e.g. ARJUN PATEL" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-1">Card Number</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2 pl-10" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">credit_card</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="block font-label-md text-on-surface-variant mb-1">Expiry (MM/YY)</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2" placeholder="MM/YY" type="text"/>
+</div>
+<div class="flex-1">
+<label class="block font-label-md text-on-surface-variant mb-1">CVV</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg focus:ring-primary focus:border-primary px-3 py-2" placeholder="***" type="password"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Order Summary (Grouped by Merchant) -->
+<section class="space-y-4">
+<h2 class="font-headline-md text-title-lg">Order Summary</h2>
+<!-- Merchant 1 -->
+<div class="bg-white rounded-xl p-4 border border-outline-variant space-y-3">
+<div class="flex items-center gap-2 pb-2 border-b border-outline-variant">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A circular logo of a traditional Indian spice merchant, featuring a simplified saffron-colored mortar and pestle icon on a clean white background, professional and community-focused brand aesthetic for BharatMart UK." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAe0jIb8YLWCc6MlS5Iz6nqCLaI8aQX8tc4UYBILoMvYrhW-VEQzXUT6Z8YvxGtdlmEzuyxivb19MV_2J7VVmBwn5HhmlsZ23Fso7eHkHiFnfE4OfE69-nzYQtKioxohChsRiHtJ1thTG4SOBybq97K5L6dw5X_mdJPdCRNngY4y6Z-HmaFfxTWMoXkiNJ0r0TZwnqbenlbc-pNhRDk8_5sZmw2VqhFhHYhUmNQa7SRhin3AC5VPb7c"/>
+</div>
+<span class="font-body-md font-bold text-primary">Royal Spice Mill</span>
+</div>
+<div class="flex gap-3">
+<div class="w-16 h-16 bg-surface-container rounded-lg shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium 1kg bag of high-quality Basmati Rice, isolated on a pure white background with professional product lighting. The packaging is elegant with traditional motifs and clear typography, reflecting a high-end UK e-commerce grocery experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3LKSTAlp_pTWD1qvxON1OPHd0MM9v4EO-5JSTDB1sB3qjIUjZ9HNV-lVaUc6OSpPhy9goZCadoK7JBc1WeYQMGS1opNYk-ohwWHFHjHRIuDg7LHGtScz4YNu-oLkQywVKHPjhTxP6V4G4XXckVMxPlffItiF9iEHwBTQD1viK5oyJVheu88WWRFRNpqIsTryoegoSLIKQPwqEpVIEapmqBG7lU_t2LwqN9PMdEbG8_s2lgEjIcNJX"/>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-medium text-on-surface">Premium Aged Basmati Rice (1kg)</p>
+<div class="flex justify-between items-center mt-1">
+<span class="text-on-surface-variant text-label-md">Qty: 2</span>
+<span class="font-bold text-on-surface">£14.50</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Merchant 2 -->
+<div class="bg-white rounded-xl p-4 border border-outline-variant space-y-3">
+<div class="flex items-center gap-2 pb-2 border-b border-outline-variant">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A minimalist logo for a textile and home decor merchant, showcasing a stylized gold-colored loom or thread motif against a deep maroon background, evoking quality craftsmanship and tactile warmth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcBC1nsLEmFNhDy97G1JHCux-dLyuoIAMGgZffmCn2oyRdTlia_lgi-vohJ7B9WwV8uOMkfX3Cr1WsBLJ1AhWb6ZTRd7bSlEJgw9ACS_d-iCGC0J5FXoT1MLCAgil5qO3Pzd9XQBJXDQr996vpAaOirC5eOp6HENafFyPnD1O-a_OBlKmO60L6aQGmCXHh7zO7dYS2pgJUggPs5V8zhVjo87Cm8AUT14FjXLDSp9Rq_x-DKDWloGK1"/>
+</div>
+<span class="font-body-md font-bold text-primary">Vedic Home Crafts</span>
+</div>
+<div class="flex gap-3">
+<div class="w-16 h-16 bg-surface-container rounded-lg shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An ornate, handcrafted brass diya (oil lamp) with intricate traditional carvings, photographed in a modern minimalist setting. Warm ambient light glints off the polished metal surfaces, creating a tactile and homey atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVEZdDpA68wHDRtNFFBoWR-CKO-Jnkvqv1Wk9wQWWafvxS4_XT9hFz7OopwrKANpYI3h7yIvWXooWlQZoAqWHxLJHUKNqGb4y255AqSqSABUhGaaRDHJDyjy7b2YHb857ngqQJqCMKd4tpRlu7W-fD3Lk5mYBUdgWDNAuOdBIJsoeKHmaGHRxA3AJsaOYNX_TUmy-gs0VeJqfPnUDd9GHOM23qgkDdAqmDj8ozGez68KC7d0qscRga"/>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-medium text-on-surface">Handcrafted Brass Diya</p>
+<div class="flex justify-between items-center mt-1">
+<span class="text-on-surface-variant text-label-md">Qty: 1</span>
+<span class="font-bold text-on-surface">£22.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Price Breakdown -->
+<div class="pt-4 space-y-2 border-t border-outline-variant">
+<div class="flex justify-between text-on-surface-variant">
+<span>Subtotal</span>
+<span>£36.50</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Shipping</span>
+<span>£4.99</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Tax (VAT)</span>
+<span>£1.20</span>
+</div>
+</div>
+</section>
+<!-- Trust Badges -->
+<div class="flex justify-center items-center gap-6 py-6 border-t border-outline-variant grayscale opacity-70">
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[24px]">verified_user</span>
+<span class="font-label-md text-[10px]">Secure Pay</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[24px]">local_shipping</span>
+<span class="font-label-md text-[10px]">Tracked</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<span class="material-symbols-outlined text-[24px]">replay</span>
+<span class="font-label-md text-[10px]">Easy Return</span>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-margin-mobile flex flex-col items-center gap-base bg-surface-container-lowest border-t border-outline-variant">
+<div class="font-display-xl text-display-xl text-primary font-bold">BharatMart UK</div>
+<div class="flex flex-wrap justify-center gap-x-6 gap-y-2">
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all" href="#">Terms of Service</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary underline transition-all" href="#">Contact Support</a>
+</div>
+<p class="font-body-md text-on-surface text-center mt-4">© 2024 BharatMart UK. All rights reserved. Secure SSL Encrypted.</p>
+</footer>
+<!-- Sticky Bottom Action Bar -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-outline-variant px-margin-mobile py-4 z-50 shadow-[0_-4px_16px_rgba(0,0,0,0.05)]">
+<div class="max-w-md mx-auto flex items-center justify-between gap-4">
+<div class="flex flex-col">
+<span class="text-on-surface-variant font-label-md">Grand Total</span>
+<span class="text-on-surface font-headline-md text-headline-md">£42.69</span>
+</div>
+<button class="flex-1 bg-primary text-on-primary py-4 px-6 rounded-xl font-headline-md text-body-lg font-bold shadow-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+                Place Order
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Floating WhatsApp Help -->
+<a class="fixed bottom-24 right-6 w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-xl z-50 active:scale-90 transition-transform" href="#">
+<svg fill="currentColor" height="28" viewbox="0 0 24 24" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.246 2.248 3.484 5.232 3.484 8.412-.003 6.557-5.338 11.892-11.893 11.892-1.997-.001-3.951-.5-5.688-1.448l-6.309 1.656zm6.224-3.52c1.516.893 3.078 1.364 4.649 1.365 5.179 0 9.397-4.217 9.399-9.398.001-2.507-.977-4.865-2.753-6.64s-4.132-2.754-6.638-2.754c-5.179 0-9.397 4.218-9.4 9.398-.001 1.677.443 3.31 1.282 4.721l-1.074 3.921 4.025-1.056zm11.603-6.833c-.32-.16-1.891-.932-2.185-1.039-.292-.107-.506-.16-.719.16-.214.32-.826 1.039-1.012 1.253-.186.213-.373.24-.693.08-.32-.16-1.35-.498-2.571-1.588-.949-.847-1.59-1.892-1.776-2.213-.187-.32-.019-.494.14-.654.144-.144.32-.373.48-.56.16-.188.214-.32.32-.533.107-.213.053-.4-.027-.56-.08-.16-.719-1.733-.986-2.373-.259-.627-.524-.541-.719-.551-.186-.01-.4-.011-.613-.011-.213 0-.56.08-.853.4-.293.32-1.119 1.093-1.119 2.666s1.146 3.093 1.306 3.307c.16.213 2.256 3.444 5.465 4.829.763.329 1.36.526 1.824.673.766.243 1.463.209 2.014.127.615-.092 1.891-.773 2.158-1.52.267-.747.267-1.387.187-1.52-.08-.133-.293-.213-.613-.373z"></path>
+</svg>
+</a>
+<script>
+        function selectAddress(element) {
+            // Remove active class and checkmarks from all
+            document.querySelectorAll('.address-card').forEach(card => {
+                card.classList.remove('active', 'border-2', 'border-primary');
+                card.classList.add('border', 'border-outline-variant', 'bg-surface-container-low');
+                const indicator = card.querySelector('.w-6, .material-symbols-outlined');
+                if (indicator.classList.contains('material-symbols-outlined')) {
+                    indicator.outerHTML = '<div class="w-6 h-6 border-2 border-outline-variant rounded-full"></div>';
+                }
+            });
+
+            // Add active class to clicked element
+            element.classList.add('active', 'border-2', 'border-primary');
+            element.classList.remove('border', 'border-outline-variant', 'bg-surface-container-low');
+            
+            // Update the checkmark indicator
+            const indicator = element.querySelector('.w-6');
+            if (indicator) {
+                indicator.outerHTML = '<span class="material-symbols-outlined text-primary" style="font-variation-settings: \'FILL\' 1;">check_circle</span>';
+            }
+        }
+    </script>
+</body></html>

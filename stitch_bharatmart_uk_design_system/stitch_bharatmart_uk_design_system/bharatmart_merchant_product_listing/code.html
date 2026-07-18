@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK - Merchant Products</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "secondary-container": "#ff7670",
+                        "primary": "#7f5700",
+                        "outline-variant": "#d6c4ad",
+                        "on-surface-variant": "#514534",
+                        "tertiary-fixed": "#b1f2b4",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "on-primary-container": "#5b3d00",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1e1b16",
+                        "primary-fixed": "#ffdeae",
+                        "on-secondary-fixed": "#410004",
+                        "surface-container-highest": "#e8e2d9",
+                        "primary-fixed-dim": "#ffba3e",
+                        "surface-bright": "#fff8f0",
+                        "on-primary-fixed": "#281900",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#33302a",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e8e2d9",
+                        "on-tertiary-fixed": "#002108",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#80bf85",
+                        "surface-container": "#f4ede4",
+                        "inverse-primary": "#ffba3e",
+                        "secondary": "#a83635",
+                        "on-primary": "#ffffff",
+                        "background": "#fff8f0",
+                        "tertiary": "#2e6a39",
+                        "on-tertiary-container": "#0e4e21",
+                        "on-secondary-container": "#720b12",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "surface-dim": "#dfd9d0",
+                        "outline": "#837561",
+                        "surface-container-high": "#eee7de",
+                        "secondary-fixed": "#ffdad7",
+                        "primary-container": "#e8a317",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#7f5700",
+                        "on-surface": "#1e1b16",
+                        "surface-container-low": "#f9f3ea",
+                        "error-container": "#ffdad6",
+                        "inverse-on-surface": "#f7f0e7",
+                        "on-primary-fixed-variant": "#604100",
+                        "surface": "#fff8f0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Montserrat"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "display-xl": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .bulk-action-bar {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .bulk-action-bar.active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low dark:bg-surface-container-low flex flex-col h-screen py-gutter px-base w-64 fixed left-0 top-0 overflow-y-auto z-40">
+<div class="mb-8 px-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="A sophisticated merchant logo featuring a golden lotus emblem and a modern 'B' letterform, set against a rich maroon background. The style is premium, reflecting high-quality Indian craftsmanship with a UK high-street polish." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvB_lDPYvaGKPiqFp65-z24ukkxIeV-wRQ8tHfocLUeytX5c2vlmccmzSUqu69b6xl9gEwd6kLGi-g9QgrIzA46jyEayOu9Ua7ZHxdvt5x97q9sWiDlAkmMT5G93h6qqwxJikT16jfPrek_NWvoZ_7i5Jh7PZd5ZEt8d7Db3-Hwl92ANXsDBqnm6HaXMV6Rwt_UzycLDaJXiZmdsTx9VFyrzVgUd7jyf60LqHmhzqODcGr2f-TYfAa"/>
+</div>
+<div>
+<h1 class="text-title-lg font-title-lg text-primary dark:text-primary-fixed-dim">BharatMart UK</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">Merchant Portal</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-primary dark:text-primary-fixed-dim font-bold border-r-4 border-primary bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Products</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-md text-label-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">inventory</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">local_offer</span>
+<span class="font-label-md text-label-md">Coupons</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Store Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-4">
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed py-3 rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+                View Live Store
+            </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface shadow-sm flex justify-between items-center px-margin-desktop py-4 sticky top-0 z-50 w-full transition-all duration-150">
+<div class="flex items-center gap-8">
+<h2 class="font-headline-md text-headline-md text-primary">Products</h2>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-150 font-label-md text-label-md" href="#">Orders</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-150 font-label-md text-label-md" href="#">Inventory</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 w-64 focus:ring-2 focus:ring-primary text-body-md" placeholder="Global search..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    + Add Product
+                </button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-highest rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="Close-up headshot of a professional Indian merchant, smiling warmly, wearing a crisp business casual outfit. The lighting is bright and clear, set against a soft-focus studio background with warm wood tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4WK5qVGI3la2u0Si7a4qmae57nM-EGECFRpaGYj6YCp0EQY1Iy4zkYC14eOYDF7zeFfW1cNngmjf2201Uj_irY9IMHs8km5MPKXlXNz3L_m_V9xGsP4qfpTGiwiYmfy7JUR7bR_hqvGWjkqVTD0aw5S6_Xllr6V-rYSoHxMoxsTGRQYzChH274TJ7aCbcU_NOgH4j0v0T5kW0ScXnnyvQ6f8RLoXYTsc4LzNC_rSL_ogyVOgw3b3y"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Product Management Canvas -->
+<div class="px-margin-desktop py-8">
+<!-- Filters & Search Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-4 shadow-sm mb-6 flex flex-wrap items-center gap-4">
+<div class="flex-1 min-w-[300px] relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg pl-10 pr-4 py-2.5 focus:ring-primary focus:border-primary text-body-md" placeholder="Search product name, SKU, or category..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<select class="bg-surface-container-low border-outline-variant rounded-lg px-4 py-2.5 text-body-md focus:ring-primary min-w-[140px]">
+<option>All Categories</option>
+<option>Groceries</option>
+<option>Sweets</option>
+<option>Fashion</option>
+<option>Handicrafts</option>
+</select>
+<select class="bg-surface-container-low border-outline-variant rounded-lg px-4 py-2.5 text-body-md focus:ring-primary min-w-[140px]">
+<option>All Status</option>
+<option>Active</option>
+<option>Draft</option>
+<option>Out of Stock</option>
+</select>
+<button class="p-2.5 bg-surface-container-low text-on-surface-variant rounded-lg border border-outline-variant hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-surface-container">
+<div class="overflow-x-auto scrollbar-hide">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-surface-container-highest">
+<th class="px-6 py-4 w-12">
+<input class="rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" id="master-checkbox" type="checkbox"/>
+</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Image</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Product Name</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Category</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Price</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Stock</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant">Status</th>
+<th class="px-4 py-4 font-label-md text-label-md text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1: Premium Aged Basmati Rice -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<input class="row-checkbox rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-4">
+<div class="w-12 h-12 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A premium 5kg burlap sack of aged Basmati rice, with visible long, pearly white grains scattered elegantly in the foreground. Professional product photography on a clean white background, high contrast, warm lighting, evocative of luxury gourmet groceries." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MlpN9BWQp8q7yvBVyfRm-7qMnyjklRdTGb6Xz7lc59F59iYzI22dChWVjfI1iHx7nFtvEgECs2mHR8akwBsg8Q5ZQYs3hV3gkK72jHG_rDeF058UXeoRobQy9AANdI9ZsCvgeN0z6L-c0g-ZUWAEC6v0oOK1kuFzAmIcsTyDGGzwIHxJliLuvkFisS0eBlElpL7uGUwqovcmdkTYY2MTAOI7EOsexun_1PCRRGoaowpIBtFRwwWo"/>
+</div>
+</td>
+<td class="px-4 py-4">
+<p class="font-body-md text-on-surface font-semibold">Premium Aged Basmati Rice</p>
+<p class="text-xs text-on-surface-variant">SKU: GRO-BAS-001</p>
+</td>
+<td class="px-4 py-4 text-body-md">Groceries</td>
+<td class="px-4 py-4 text-body-md font-medium">£18.50</td>
+<td class="px-4 py-4 text-body-md">142 Units</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed text-on-tertiary-fixed-variant">Active</span>
+</td>
+<td class="px-4 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Hand-Churned Ghee -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<input class="row-checkbox rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-4">
+<div class="w-12 h-12 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Traditional glass jar of golden, grainy hand-churned Desi Ghee, with a wooden ladle resting beside it. The lighting is soft and golden, accentuating the rich texture of the clarified butter. Set against a minimalist rustic kitchen background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTDakgMGEOICcFEliN67qfhmo83Ov01o_2X8_BOdFVnAboD4jiUAmdLaN6TltVQFamZjcezUPK3eN7Tkztn1T1pSI7yfZ3f1Y0hnhoSJ26MM95PC59DEwJ1PfoPOLEYJPKSl4Xe9vavNkgJ6OPz0blYVYf6qhfeKfZbGE9L7vaR8L9FF75D-zY87MaQptwFhDAKt6vv33xQF2Sd96eBbZVB84kW7bgh8KrPHSX-C8hEOQ1Ht0xPg6p"/>
+</div>
+</td>
+<td class="px-4 py-4">
+<p class="font-body-md text-on-surface font-semibold">Hand-Churned Ghee</p>
+<p class="text-xs text-on-surface-variant">SKU: GRO-GHE-004</p>
+</td>
+<td class="px-4 py-4 text-body-md">Groceries</td>
+<td class="px-4 py-4 text-body-md font-medium">£12.99</td>
+<td class="px-4 py-4 text-body-md">86 Units</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed text-on-tertiary-fixed-variant">Active</span>
+</td>
+<td class="px-4 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Handcrafted Brass Diya -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<input class="row-checkbox rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-4">
+<div class="w-12 h-12 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An ornate, polished brass Peacock Diya lamp, handcrafted with intricate detailing. The metal has a brilliant golden shine, reflecting warm ambient light. Photographed in a premium lifestyle setting with a soft bokeh background of festive decorations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHDMeK3sU0MUoz50APXWFv8PbUR8wZhZJLeWAc2rJwx3gg7Lw4XmA9KBS8FkXyRDJTufa20QK_DIW0IXLOS2FFoHb1g7tPD3TWAHNcw1HBUh7qN2U2ckFsvcyC3UhSBh0KkgxGlm2OyYeuJhZGBkKG1MI7urQJP2hMH79A_3jcBYWsmBByfeumvVpKQQ-sePtq9hBjeioY7bAg6-G6NE3LHiYCWxG1lryncfYZrq653QZ_P6W-cDjg"/>
+</div>
+</td>
+<td class="px-4 py-4">
+<p class="font-body-md text-on-surface font-semibold">Handcrafted Brass Diya</p>
+<p class="text-xs text-on-surface-variant">SKU: ART-BRS-022</p>
+</td>
+<td class="px-4 py-4 text-body-md">Handicrafts</td>
+<td class="px-4 py-4 text-body-md font-medium">£34.00</td>
+<td class="px-4 py-4 text-body-md text-error font-medium">0 Units</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-fixed text-on-secondary-fixed-variant">Out of Stock</span>
+</td>
+<td class="px-4 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Banarasi Silk Saree -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<input class="row-checkbox rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-4">
+<div class="w-12 h-12 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A deep maroon Banarasi Silk Saree with heavy gold zari embroidery. The fabric is draped elegantly, showcasing the intricate floral patterns and the premium sheen of the silk. High-end fashion catalog style photography with soft, professional lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmWCDQJtukIsrCg90UGoqyzHKDETxwOyN1FeTloVtOGBJG2kJ2CoLPlYdG-aKndR7_cFX5AhHxqKHpbhyfQUuNN-hxI6dtHwqasRJj6_ACiSpEiK5qgEb21aScypxckxfVfrucfafqhWuzvoIkYGkQtiE0lyMKKpRDH7Yc9jdHb2GwjwHK53vEA2l2dtsU9n4pphDr205tPfuN-B-ocVimJ-EH4dErIqrx5NONzt_kaZpEDdtvj2xY"/>
+</div>
+</td>
+<td class="px-4 py-4">
+<p class="font-body-md text-on-surface font-semibold">Banarasi Silk Saree</p>
+<p class="text-xs text-on-surface-variant">SKU: FAS-BAN-089</p>
+</td>
+<td class="px-4 py-4 text-body-md">Fashion</td>
+<td class="px-4 py-4 text-body-md font-medium">£120.00</td>
+<td class="px-4 py-4 text-body-md">12 Units</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed text-on-tertiary-fixed-variant">Active</span>
+</td>
+<td class="px-4 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: Mango Pickle -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-6 py-4">
+<input class="row-checkbox rounded border-outline-variant text-primary focus:ring-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-4">
+<div class="w-12 h-12 rounded bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Artisanal glass jar of spicy Indian Mango Pickle (Aam ka Achar). Visible chunks of mango coated in rich red chilli oil and spices like fenugreek and mustard. The jar has a rustic string-tied lid. Bright, appetizing food photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGx0nw2W8dw37_7eSEkM_IwZLixBVP3G0kMk0I_vRoy6iLPtbPFhnxsBfK7WfUVmwVO0iKWOROR0ZbwnpH42lhCFSc1HfDjEzEiZTCJGjlRFVZX02hO6M7vQ6YgaODAlCGLGTyA2v1MwLZWlZmMQxgVzCcCj-Zmtig_EwhJAQj4lXCwVw_yNLMvPHxCakaLSBkVb3KiPP30QabO6fu7OzUrj6DACtFvhnGa5Fxw8f6A4rq8HRlSLDs"/>
+</div>
+</td>
+<td class="px-4 py-4">
+<p class="font-body-md text-on-surface font-semibold">Mango Pickle</p>
+<p class="text-xs text-on-surface-variant">SKU: GRO-PIC-015</p>
+</td>
+<td class="px-4 py-4 text-body-md">Groceries</td>
+<td class="px-4 py-4 text-body-md font-medium">£4.50</td>
+<td class="px-4 py-4 text-body-md">210 Units</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-highest text-on-surface-variant">Draft</span>
+</td>
+<td class="px-4 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-primary-fixed rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-error hover:bg-error-container rounded transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface-container-low flex items-center justify-between border-t border-surface-container">
+<p class="text-body-md text-on-surface-variant">Showing 1 to 5 of 48 products</p>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded hover:bg-surface-container-highest disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-md text-label-md">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-highest font-label-md text-label-md">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-highest font-label-md text-label-md">3</button>
+<button class="p-2 rounded hover:bg-surface-container-highest">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bulk Action Bar -->
+<div class="bulk-action-bar fixed bottom-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-8 py-4 rounded-full shadow-2xl flex items-center gap-8 z-50" id="bulk-bar">
+<div class="flex items-center gap-2 border-r border-outline-variant pr-8">
+<span class="font-bold text-primary-fixed-dim" id="selected-count">2</span>
+<span class="font-label-md text-label-md">Products Selected</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 hover:bg-white/10 rounded-lg transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">update</span>
+                Change Status
+            </button>
+<button class="flex items-center gap-2 px-4 py-2 text-secondary-fixed hover:bg-secondary-container/20 rounded-lg transition-colors font-label-md text-label-md">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+                Delete Selected
+            </button>
+</div>
+<button class="p-1 hover:bg-white/10 rounded-full" id="close-bulk">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Floating WhatsApp Action -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-40">
+<svg class="w-8 h-8 fill-current" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.412 2.503 1.112 3.485l-.729 2.661 2.734-.717c.945.612 2.074.976 3.282.977 3.182 0 5.768-2.586 5.769-5.766.001-3.18-2.585-5.766-5.766-5.766l-.034.04zm4.173 8.313c-.176.491-.872.894-1.216.947-.344.053-.772.071-1.258-.093-.312-.105-1.344-.521-2.485-1.538-1.141-1.017-1.91-2.271-2.13-2.651-.22-.379-.024-.585.166-.775.17-.171.379-.441.569-.662.19-.221.253-.379.379-.631.126-.252.063-.473-.032-.663-.095-.189-.854-2.061-.854-2.061-.176-.425-.353-.367-.514-.375-.15-.008-.323-.009-.496-.009s-.452.063-.687.31c-.234.246-.894.873-.894 2.129 0 1.256.914 2.47 1.04 2.639.126.169 1.8 2.748 4.358 3.852.608.263 1.082.42 1.452.538.61.194 1.165.167 1.603.101.488-.073 1.501-.613 1.713-1.206.212-.593.212-1.101.148-1.206-.064-.105-.233-.169-.496-.301z"></path>
+</svg>
+</button>
+<script>
+        // Bulk Action Logic
+        const masterCheckbox = document.getElementById('master-checkbox');
+        const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+        const bulkBar = document.getElementById('bulk-bar');
+        const selectedCountLabel = document.getElementById('selected-count');
+        const closeBulk = document.getElementById('close-bulk');
+
+        function updateBulkBar() {
+            const checkedCount = Array.from(rowCheckboxes).filter(cb => cb.checked).length;
+            if (checkedCount > 0) {
+                bulkBar.classList.add('active');
+                selectedCountLabel.textContent = checkedCount;
+            } else {
+                bulkBar.classList.remove('active');
+            }
+        }
+
+        masterCheckbox.addEventListener('change', () => {
+            rowCheckboxes.forEach(cb => cb.checked = masterCheckbox.checked);
+            updateBulkBar();
+        });
+
+        rowCheckboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+                const allChecked = Array.from(rowCheckboxes).every(c => c.checked);
+                masterCheckbox.checked = allChecked;
+                updateBulkBar();
+            });
+        });
+
+        closeBulk.addEventListener('click', () => {
+            masterCheckbox.checked = false;
+            rowCheckboxes.forEach(cb => cb.checked = false);
+            updateBulkBar();
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('scale-[1.01]');
+            searchInput.parentElement.classList.add('transition-transform');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('scale-[1.01]');
+        });
+    </script>
+</body></html>

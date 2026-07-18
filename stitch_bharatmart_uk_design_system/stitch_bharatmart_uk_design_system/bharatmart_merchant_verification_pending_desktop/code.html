@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Merchant - Verification Pending</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#281900",
+                    "background": "#fff8f0",
+                    "on-secondary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "on-surface": "#1e1b16",
+                    "on-secondary-fixed": "#410004",
+                    "error": "#ba1a1a",
+                    "primary-container": "#e8a317",
+                    "on-error-container": "#93000a",
+                    "tertiary-container": "#80bf85",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "tertiary-fixed": "#b1f2b4",
+                    "tertiary": "#2e6a39",
+                    "surface-container-highest": "#e8e2d9",
+                    "inverse-primary": "#ffba3e",
+                    "on-tertiary-fixed": "#002108",
+                    "primary-fixed": "#ffdeae",
+                    "primary": "#7f5700",
+                    "on-primary-fixed-variant": "#604100",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "surface": "#fff8f0",
+                    "outline-variant": "#d6c4ad",
+                    "on-background": "#1e1b16",
+                    "surface-dim": "#dfd9d0",
+                    "on-tertiary": "#ffffff",
+                    "surface-tint": "#7f5700",
+                    "surface-container-high": "#eee7de",
+                    "secondary-fixed": "#ffdad7",
+                    "on-tertiary-container": "#0e4e21",
+                    "surface-variant": "#e8e2d9",
+                    "primary-fixed-dim": "#ffba3e",
+                    "on-secondary-container": "#720b12",
+                    "inverse-on-surface": "#f7f0e7",
+                    "surface-bright": "#fff8f0",
+                    "outline": "#837561",
+                    "on-primary-container": "#5b3d00",
+                    "surface-container": "#f4ede4",
+                    "surface-container-low": "#f9f3ea",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "inverse-surface": "#33302a",
+                    "secondary-container": "#ff7670",
+                    "secondary": "#a83635",
+                    "surface-container-lowest": "#ffffff",
+                    "on-surface-variant": "#514534"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px",
+                    "container-max": "1280px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "display-xl": ["Montserrat"],
+                    "title-lg": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .blur-dot {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 100%;
+            filter: blur(80px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface-container-low shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full max-w-container-max mx-auto">
+<div class="font-display-xl text-display-xl font-bold text-primary dark:text-primary-fixed-dim">
+                BharatMart Merchant
+            </div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 active:opacity-80">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="flex-grow flex items-center justify-center relative py-12 px-margin-mobile">
+<!-- Decorative Ambient Elements -->
+<div class="blur-dot bg-primary top-20 -left-20"></div>
+<div class="blur-dot bg-secondary bottom-20 -right-20"></div>
+<section class="max-w-2xl w-full text-center space-y-8 animate-in fade-in duration-700">
+<!-- Central Icon Component -->
+<div class="relative inline-block">
+<div class="w-32 h-32 md:w-48 md:h-48 rounded-full bg-white flex items-center justify-center shadow-lg mx-auto animate-float">
+<span class="material-symbols-outlined text-[64px] md:text-[96px] text-primary" style="font-variation-settings: 'wght' 300;">
+                        hourglass_empty
+                    </span>
+</div>
+<!-- Animated Progress Ring Background -->
+<div class="absolute inset-0 rounded-full border-4 border-primary-container border-t-transparent animate-spin-slow opacity-20 pointer-events-none" style="animation-duration: 8s;"></div>
+</div>
+<!-- Copy -->
+<div class="space-y-4">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">
+                    Your application is under review
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mx-auto">
+                    Namaste! We have received your application. Our team typically reviews documents within 48-72 working hours to ensure our marketplace maintains the highest quality standards.
+                </p>
+</div>
+<!-- Stepper Indicator (Visualizing the 'Wait') -->
+<div class="flex items-center justify-center gap-2 py-4">
+<div class="w-24 h-1 bg-tertiary-container rounded-full"></div>
+<div class="w-24 h-1 bg-primary-container rounded-full animate-pulse"></div>
+<div class="w-24 h-1 bg-surface-container-highest rounded-full"></div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+<!-- Disabled Button -->
+<button class="bg-outline text-surface-container-lowest font-semibold py-4 px-8 rounded-xl opacity-50 cursor-not-allowed flex items-center gap-2 transition-all" disabled="">
+                    Go to Merchant Dashboard
+                    <span class="material-symbols-outlined text-[18px]">lock</span>
+</button>
+<!-- Support Link -->
+<a class="text-secondary font-semibold hover:underline flex items-center gap-2 p-4 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">support_agent</span>
+                    Contact Support
+                </a>
+</div>
+<!-- Dynamic Illustration Card -->
+<div class="mt-16 bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/30 text-left flex flex-col md:flex-row items-center gap-6 max-w-xl mx-auto overflow-hidden">
+<div class="shrink-0 w-24 h-24 rounded-lg overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="A professional Indian merchant smiling in a clean, modern warehouse setting, surrounded by neatly packaged organic goods. The lighting is warm and natural, emphasizing trust and community roots. Soft bokeh background with saffron and charcoal accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwXw5v0GlDcOIC0fq5t7o8ET-wuQoPcxfnTeAHc7CTRl26-3ayYNerfhgEkFZmW5paDEzD_gILU-eKZXNLNW95wJZP8-qTaNE2BHNyGlYUWEFXgEtJa1pqyrJFion87tUCW4xT4Xtp-YD3Y7xNV9IuazCH6lKIZlRxz9MRrzEI2i3YfOXgUmBDgufZd0GfRUAL8nEwHAlp0K_GZyJCLL0IWiYwawvDGPfHu70XP4a2QLC_0YGbrYXA"/>
+</div>
+<div>
+<p class="font-title-lg text-title-lg text-primary">Join our high-street family</p>
+<p class="font-body-md text-body-md text-on-surface-variant">While we review your profile, feel free to explore our Merchant Handbook to prepare your first product listings.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest w-full py-8">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-4 w-full max-w-container-max mx-auto">
+<div class="font-label-md text-label-md text-on-surface-variant">
+                © 2024 BharatMart UK Merchant Portal
+            </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Terms of Service</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Merchant Support</a>
+</div>
+</div>
+</footer>
+<!-- Floating WhatsApp Button -->
+<a aria-label="Chat on WhatsApp" class="fixed bottom-[24px] right-[24px] w-14 h-14 bg-[#2F6B3A] text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all z-50" href="https://wa.me/yournumber">
+<svg class="w-7 h-7 fill-current" viewbox="0 0 24 24">
+<path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.181-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217s.231.001.332.005c.109.004.253-.041.397.303.145.346.491 1.197.534 1.284.044.087.073.188.014.303-.058.116-.087.188-.173.289-.087.101-.184.225-.262.303-.097.097-.197.202-.085.393.112.191.498.821 1.07 1.328.736.654 1.357.857 1.549.953.191.096.303.08.416-.048.113-.128.491-.573.621-.769.13-.197.26-.164.441-.097.181.068 1.144.538 1.341.636.197.098.328.147.375.228.047.081.047.468-.097.873z"></path>
+</svg>
+</a>
+<script>
+        // Simple micro-interaction for the central icon
+        const icon = document.querySelector('.material-symbols-outlined');
+        if (icon) {
+            icon.addEventListener('mouseenter', () => {
+                icon.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                icon.style.transform = 'rotate(180deg)';
+            });
+            icon.addEventListener('mouseleave', () => {
+                icon.style.transform = 'rotate(0deg)';
+            });
+        }
+
+        // Add subtle parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const dots = document.querySelectorAll('.blur-dot');
+            const x = (e.clientX / window.innerWidth) * 20;
+            const y = (e.clientY / window.innerHeight) * 20;
+            dots.forEach(dot => {
+                dot.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        });
+    </script>
+</body></html>

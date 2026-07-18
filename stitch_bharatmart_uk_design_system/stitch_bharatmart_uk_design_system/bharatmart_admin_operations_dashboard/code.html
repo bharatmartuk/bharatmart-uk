@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Admin - Operations Overview</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#ffdad4",
+                    "outline-variant": "#c5c6cf",
+                    "secondary-container": "#fe624e",
+                    "sidebar-navy": "#1a2b4b",
+                    "on-surface": "#191c1e",
+                    "surface-container-low": "#f2f4f6",
+                    "background": "#f7f9fb",
+                    "on-tertiary-fixed": "#291800",
+                    "inverse-primary": "#b6c6ef",
+                    "inverse-on-surface": "#eff1f3",
+                    "status-error": "#ef4444",
+                    "outline": "#75777f",
+                    "on-background": "#191c1e",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#410000",
+                    "on-primary-fixed-variant": "#364768",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#650000",
+                    "tertiary-fixed-dim": "#e8c08a",
+                    "tertiary": "#231400",
+                    "surface-container": "#eceef0",
+                    "surface-tint": "#4e5e81",
+                    "primary-fixed": "#d8e2ff",
+                    "primary": "#031635",
+                    "secondary": "#b22b1d",
+                    "surface": "#f7f9fb",
+                    "surface-container-highest": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "on-secondary-fixed-variant": "#8f0f07",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#d8dadc",
+                    "action-maroon": "#800000",
+                    "primary-container": "#1a2b4b",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#b08d5b",
+                    "surface-bright": "#f7f9fb",
+                    "surface-variant": "#e0e3e5",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#081b3a",
+                    "inverse-surface": "#2d3133",
+                    "status-pending": "#f59e0b",
+                    "on-tertiary-fixed-variant": "#5d4217",
+                    "tertiary-container": "#3e2700",
+                    "secondary-fixed-dim": "#ffb4a8",
+                    "on-primary": "#ffffff",
+                    "on-primary-container": "#8293b8",
+                    "on-surface-variant": "#44474e",
+                    "tertiary-fixed": "#ffddb1",
+                    "surface-container-high": "#e6e8ea",
+                    "status-success": "#10b981"
+            },
+            "fontFamily": {
+                    "display-lg": ["Montserrat"],
+                    "label-caps": ["Inter"],
+                    "headline-sm": ["Montserrat"],
+                    "table-header": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                    "table-header": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .chart-container { height: 300px; width: 100%; position: relative; }
+        .zebra-table tr:nth-child(even) { background-color: #f8fafc; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Fixed SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-sidebar-navy flex flex-col z-50">
+<div class="px-6 py-8">
+<h1 class="font-display-lg text-display-lg text-surface-container-lowest">BharatMart</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container tracking-widest mt-1">OPERATIONS HUB</p>
+</div>
+<nav class="flex-1 overflow-y-auto px-2 space-y-1">
+<!-- Active Navigation -->
+<a class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest border-l-4 border-secondary bg-primary-container transition-transform duration-150 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="font-body-md text-body-md">Merchants</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-body-md text-body-md">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-body-md text-body-md">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">branding_watermark</span>
+<span class="font-body-md text-body-md">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-body-md text-body-md">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-body-md text-body-md">Support Tickets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-primary-container">
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest transition-colors" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-body-md text-body-md">System Status</span>
+</a>
+</div>
+</aside>
+<!-- Main Shell -->
+<div class="ml-[260px] h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-6 sticky top-0 z-40 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Operations Overview</h2>
+<div class="hidden md:flex items-center bg-surface-container px-3 py-1.5 rounded-lg border border-outline-variant/30">
+<span class="material-symbols-outlined text-outline text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface-variant w-64 px-2" placeholder="Global search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-colors relative">
+                    notifications
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full border-2 border-surface-container-lowest"></span>
+</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-colors">help_outline</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden lg:block">
+<p class="text-body-sm font-semibold text-primary leading-none">Admin User</p>
+<p class="text-[10px] text-outline font-label-caps mt-1">SUPER ADMIN</p>
+</div>
+<img class="w-10 h-10 rounded-full border border-outline-variant object-cover" data-alt="A professional headshot of a middle-aged male administrator wearing a crisp white dress shirt against a minimalist blue-gray office background. The lighting is bright and corporate, emphasizing a reliable and efficient demeanor. The overall aesthetic is clean, sharp, and high-fidelity, matching the professional enterprise software environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWiZhz8rvNjM_pCnPwagWf2qxloekV7OvqQOxHrywPBtix7uEMnBTAkBUT1wtvBTy273i-ScFXqGDHCA_YoT447yAGTheTno3rNewabkg3P1S2XihhSjNBEbv8eJf60PLSUPn7mrEVT0FIflShOVVT8PkzNZyjDlLy3IYcWj5AIp7aqRv2Ne67V7wuSfrNV1vInpGBHUBJCey1LESxqvFS4wtgAlK8ouqIG3kqSbaY4oRiJrgCzx0J"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<main class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Stat Cards Row -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Merchants -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-2">
+<p class="text-body-sm font-semibold text-outline tracking-wide uppercase">Total Merchants</p>
+<span class="material-symbols-outlined text-primary-fixed-dim">store</span>
+</div>
+<div class="flex items-baseline gap-2">
+<h3 class="font-display-lg text-display-lg text-primary">1,248</h3>
+<span class="bg-status-pending/10 text-status-pending text-[10px] font-bold px-2 py-0.5 rounded border border-status-pending/20 uppercase tracking-tighter">12 pending verification</span>
+</div>
+</div>
+<!-- Customers -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-body-sm font-semibold text-outline tracking-wide uppercase">Total Customers</p>
+<span class="material-symbols-outlined text-primary-fixed-dim">group</span>
+</div>
+<h3 class="font-display-lg text-display-lg text-primary">45.2k</h3>
+<p class="text-[10px] text-status-success font-semibold flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12% from last month
+                    </p>
+</div>
+<!-- GMV -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-body-sm font-semibold text-outline tracking-wide uppercase">Platform GMV</p>
+<span class="material-symbols-outlined text-primary-fixed-dim">payments</span>
+</div>
+<div class="flex items-baseline gap-1">
+<h3 class="font-display-lg text-display-lg text-primary">£1.2M</h3>
+<span class="text-body-sm text-outline">(this month)</span>
+</div>
+</div>
+<!-- Tickets -->
+<div class="bg-surface-container-lowest p-5 rounded-lg border border-outline-variant shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<p class="text-body-sm font-semibold text-outline tracking-wide uppercase">Support Tickets</p>
+<span class="material-symbols-outlined text-primary-fixed-dim">confirmation_number</span>
+</div>
+<h3 class="font-display-lg text-display-lg text-primary">28</h3>
+<p class="text-[10px] text-status-error font-semibold flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">warning</span> 4 tickets urgent
+                    </p>
+</div>
+</div>
+<!-- Dashboard Body Grid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Merchant Verification Queue (Main Panel) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<h4 class="font-headline-sm text-headline-sm text-primary">Merchant Verification Queue</h4>
+<button class="text-body-sm text-secondary font-semibold hover:underline flex items-center gap-1">
+                            View All <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left zebra-table border-collapse">
+<thead>
+<tr class="bg-surface-container-low/30 border-b border-outline-variant text-outline uppercase tracking-wider font-table-header text-table-header">
+<th class="p-table-cell-padding px-6">Business Name</th>
+<th class="p-table-cell-padding">Submitted Date</th>
+<th class="p-table-cell-padding">Business Type</th>
+<th class="p-table-cell-padding text-right pr-6">Actions</th>
+</tr>
+</thead>
+<tbody class="text-body-md">
+<tr class="border-b border-outline-variant">
+<td class="p-table-cell-padding px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary-container/10 flex items-center justify-center text-primary font-bold text-xs">PS</div>
+<span class="font-semibold text-primary">Patel's Premium Spices</span>
+</div>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 24, 2024</td>
+<td class="p-table-cell-padding">
+<span class="bg-surface-container px-2 py-0.5 rounded text-[11px] font-medium text-on-surface-variant">Grocery</span>
+</td>
+<td class="p-table-cell-padding text-right pr-6 space-x-2">
+<a class="text-body-sm text-primary font-semibold hover:underline mr-2" href="#">View Documents</a>
+<button class="px-3 py-1 bg-status-success text-white rounded text-xs font-semibold hover:opacity-90 transition-opacity">Approve</button>
+<button class="px-3 py-1 border border-outline-variant text-outline rounded text-xs font-semibold hover:bg-surface-container transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant">
+<td class="p-table-cell-padding px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">KS</div>
+<span class="font-semibold text-primary">Kaveri Silks</span>
+</div>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 23, 2024</td>
+<td class="p-table-cell-padding">
+<span class="bg-surface-container px-2 py-0.5 rounded text-[11px] font-medium text-on-surface-variant">Clothing</span>
+</td>
+<td class="p-table-cell-padding text-right pr-6 space-x-2">
+<a class="text-body-sm text-primary font-semibold hover:underline mr-2" href="#">View Documents</a>
+<button class="px-3 py-1 bg-status-success text-white rounded text-xs font-semibold hover:opacity-90 transition-opacity">Approve</button>
+<button class="px-3 py-1 border border-outline-variant text-outline rounded text-xs font-semibold hover:bg-surface-container transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant">
+<td class="p-table-cell-padding px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-status-pending/10 flex items-center justify-center text-status-pending font-bold text-xs">AH</div>
+<span class="font-semibold text-primary">Aman's Home Decor</span>
+</div>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 23, 2024</td>
+<td class="p-table-cell-padding">
+<span class="bg-surface-container px-2 py-0.5 rounded text-[11px] font-medium text-on-surface-variant">Home</span>
+</td>
+<td class="p-table-cell-padding text-right pr-6 space-x-2">
+<a class="text-body-sm text-primary font-semibold hover:underline mr-2" href="#">View Documents</a>
+<button class="px-3 py-1 bg-status-success text-white rounded text-xs font-semibold hover:opacity-90 transition-opacity">Approve</button>
+<button class="px-3 py-1 border border-outline-variant text-outline rounded text-xs font-semibold hover:bg-surface-container transition-colors">Reject</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant">
+<td class="p-table-cell-padding px-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">RT</div>
+<span class="font-semibold text-primary">Royal Tea House</span>
+</div>
+</td>
+<td class="p-table-cell-padding text-outline">Oct 22, 2024</td>
+<td class="p-table-cell-padding">
+<span class="bg-surface-container px-2 py-0.5 rounded text-[11px] font-medium text-on-surface-variant">Grocery</span>
+</td>
+<td class="p-table-cell-padding text-right pr-6 space-x-2">
+<a class="text-body-sm text-primary font-semibold hover:underline mr-2" href="#">View Documents</a>
+<button class="px-3 py-1 bg-status-success text-white rounded text-xs font-semibold hover:opacity-90 transition-opacity">Approve</button>
+<button class="px-3 py-1 border border-outline-variant text-outline rounded text-xs font-semibold hover:bg-surface-container transition-colors">Reject</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Order Volume Chart -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-6 flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">Order Volume</h4>
+<p class="text-body-sm text-outline">Last 30 days daily performance</p>
+</div>
+<span class="material-symbols-outlined text-outline">show_chart</span>
+</div>
+<!-- Simulated Line Chart -->
+<div class="flex-1 flex items-end gap-1.5 h-full min-h-[200px] border-l border-b border-outline-variant/30 pb-1 pl-1">
+<!-- Mock chart bars representing volume trend -->
+<div class="w-full bg-primary-container/20 rounded-t h-[40%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[45%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[38%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[52%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[60%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[75%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[68%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[55%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[42%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[48%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[55%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[62%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[80%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[95%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[88%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[75%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[62%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[58%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[65%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-primary-container/20 rounded-t h-[72%] hover:bg-secondary transition-all"></div>
+<div class="w-full bg-secondary rounded-t h-[100%] transition-all"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-outline font-label-caps">
+<span>30 DAYS AGO</span>
+<span>TODAY</span>
+</div>
+<div class="mt-6 p-4 bg-surface-container-low rounded border border-outline-variant/30">
+<div class="flex items-center justify-between text-body-sm mb-1">
+<span class="text-on-surface-variant">Target Achievement</span>
+<span class="font-bold text-primary">82%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary h-full" style="width: 82%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Data Layer -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Recent Activity -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+<h4 class="font-headline-sm text-headline-sm text-primary mb-4">Critical Audit Trail</h4>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="w-2 h-2 rounded-full bg-status-pending mt-2"></div>
+<div class="flex-1">
+<p class="text-body-md font-semibold text-primary">Price Cap Update: Electronics</p>
+<p class="text-body-sm text-outline">Modified by Admin (ID: 442) • 2 hours ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-2 h-2 rounded-full bg-status-success mt-2"></div>
+<div class="flex-1">
+<p class="text-body-md font-semibold text-primary">Batch Payout Processed</p>
+<p class="text-body-sm text-outline">£42,300 disbursed to 154 merchants • 5 hours ago</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-2 h-2 rounded-full bg-status-error mt-2"></div>
+<div class="flex-1">
+<p class="text-body-md font-semibold text-primary">Fraud Alert: Transaction #9928</p>
+<p class="text-body-sm text-outline">Suspicious activity flagged in Bangalore region • 8 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Logistics Quick View -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-6">
+<h4 class="font-headline-sm text-headline-sm text-primary mb-4">Logistics Health</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+<p class="text-[10px] font-label-caps text-outline uppercase">Active Deliveries</p>
+<p class="text-headline-md font-bold text-primary">2,142</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+<p class="text-[10px] font-label-caps text-outline uppercase">Avg Dispatch Time</p>
+<p class="text-headline-md font-bold text-primary">4.2 Hrs</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+<p class="text-[10px] font-label-caps text-outline uppercase">Returns Rate</p>
+<p class="text-headline-md font-bold text-status-success">1.8%</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded border border-outline-variant/30">
+<p class="text-[10px] font-label-caps text-outline uppercase">SLA Breach</p>
+<p class="text-headline-md font-bold text-status-error">0.4%</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex justify-between items-center py-2 px-6 bg-surface-container-lowest border-t border-outline-variant">
+<span class="text-body-sm text-outline">© 2024 BharatMart Operations. System v4.2.0-stable</span>
+<div class="flex gap-4">
+<a class="text-body-sm text-outline hover:text-primary transition-colors" href="#">System Status</a>
+<a class="text-body-sm text-outline hover:text-primary transition-colors" href="#">API Docs</a>
+<a class="text-body-sm text-outline hover:text-primary transition-colors" href="#">Privacy Policy</a>
+</div>
+</footer>
+</div>
+<!-- Floating Action Button (Suppressed on Dashboard as per rules, but included for system capability if needed elsewhere) -->
+<!-- Removed for Dashboard context -->
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('.zebra-table tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+
+        // Simple mock for "Approve" button interaction
+        document.querySelectorAll('button').forEach(btn => {
+            if(btn.innerText === 'Approve') {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    row.style.opacity = '0.5';
+                    this.innerText = 'Approved';
+                    this.classList.replace('bg-status-success', 'bg-outline');
+                    this.disabled = true;
+                });
+            }
+        });
+    </script>
+</body></html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login - BharatMart UK</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#f9f3ea",
+                    "surface-container": "#f4ede4",
+                    "on-surface-variant": "#514534",
+                    "error": "#ba1a1a",
+                    "primary-fixed-dim": "#ffba3e",
+                    "tertiary-container": "#80bf85",
+                    "inverse-primary": "#ffba3e",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "on-primary-fixed-variant": "#604100",
+                    "on-error-container": "#93000a",
+                    "secondary-container": "#ff7670",
+                    "on-tertiary-fixed": "#002108",
+                    "surface-container-highest": "#e8e2d9",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fff8f0",
+                    "on-surface": "#1e1b16",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#7f5700",
+                    "background": "#fff8f0",
+                    "on-primary-container": "#5b3d00",
+                    "surface-container-high": "#eee7de",
+                    "on-secondary": "#ffffff",
+                    "inverse-on-surface": "#f7f0e7",
+                    "secondary": "#a83635",
+                    "on-tertiary-container": "#0e4e21",
+                    "surface-variant": "#e8e2d9",
+                    "primary": "#7f5700",
+                    "on-background": "#1e1b16",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed": "#ffdeae",
+                    "on-secondary-container": "#720b12",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "secondary-fixed": "#ffdad7",
+                    "inverse-surface": "#33302a",
+                    "tertiary": "#2e6a39",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "outline-variant": "#d6c4ad",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#410004",
+                    "tertiary-fixed": "#b1f2b4",
+                    "surface": "#fff8f0",
+                    "outline": "#837561",
+                    "on-primary-fixed": "#281900",
+                    "surface-dim": "#dfd9d0",
+                    "primary-container": "#e8a317",
+                    "tertiary-fixed-dim": "#96d69a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "container-max": "1280px",
+                    "base": "8px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "64px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Montserrat"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "headline-lg": ["Montserrat"],
+                    "title-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-xl": ["Montserrat"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff8f0; /* Cream background level 0 */
+            -webkit-tap-highlight-color: transparent;
+        }
+        .login-card {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.04);
+        }
+        .input-focus-saffron:focus {
+            border-color: #7f5700;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(127, 87, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center font-body-lg text-on-surface p-margin-mobile">
+<!-- Subtle Background Element -->
+<div class="fixed inset-0 overflow-hidden pointer-events-none opacity-20">
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-fixed rounded-full blur-3xl"></div>
+<div class="absolute bottom-0 right-0 w-64 h-64 bg-secondary-fixed rounded-full blur-3xl"></div>
+</div>
+<!-- Login Container -->
+<main class="w-full max-w-md z-10">
+<div class="bg-surface-container-lowest rounded-xl p-8 login-card border border-surface-container-high transition-all duration-300">
+<!-- Logo Section -->
+<header class="flex flex-col items-center mb-10">
+<div class="w-20 h-20 bg-primary-fixed rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">storefront</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-primary tracking-tight">BharatMart UK</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1 text-center">Your local market, now digital.</p>
+</header>
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant mb-8">
+<button class="flex-1 py-3 font-title-lg text-title-lg text-primary border-b-2 border-primary transition-colors" id="loginTab">Log In</button>
+<button class="flex-1 py-3 font-title-lg text-title-lg text-on-surface-variant hover:text-on-surface transition-colors" id="registerTab">Register</button>
+</div>
+<!-- Form -->
+<form class="space-y-6" id="loginForm">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="email">Email Address</label>
+<input class="w-full h-12 px-4 bg-surface-container rounded-lg border border-outline-variant font-body-lg text-on-surface input-focus-saffron transition-all" id="email" placeholder="name@example.com" required="" type="email"/>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+<a class="font-label-md text-label-md text-secondary hover:underline" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<input class="w-full h-12 px-4 bg-surface-container rounded-lg border border-outline-variant font-body-lg text-on-surface input-focus-saffron transition-all" id="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant" onclick="togglePasswordVisibility()" type="button">
+<span class="material-symbols-outlined text-xl" id="eyeIcon">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" id="remember" type="checkbox"/>
+<label class="font-body-md text-body-md text-on-surface-variant select-none" for="remember">Remember me for 30 days</label>
+</div>
+<button class="w-full h-14 bg-primary-container text-on-primary-container font-headline-md rounded-xl shadow-sm hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2" type="submit">
+                    Log In
+                    <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="relative my-10 flex items-center">
+<div class="flex-grow border-t border-outline-variant"></div>
+<span class="px-4 font-label-md text-label-md text-on-surface-variant bg-surface-container-lowest">OR CONTINUE WITH</span>
+<div class="flex-grow border-t border-outline-variant"></div>
+</div>
+<!-- Social Logins -->
+<div class="grid grid-cols-2 gap-4">
+<button class="flex items-center justify-center h-12 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors">
+<img class="w-5 h-5 mr-3" data-alt="A clean, minimalist high-fidelity icon of the Google 'G' logo rendered with crisp colors and smooth gradients. The icon is centered on a white circular surface with subtle soft shadows to match a premium high-street marketplace UI aesthetic. Lighting is bright and professional, suggesting a modern digital experience." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArty10SncVybTxsmHJ_eoKVXDONTD5scFuDDBcMmzKh2iRbnidSbTXeCVqmqOujjTP3RZiGVOakEh-iTUgyxcYwlrMNTgQP6QBPDZi7Sm8asdhsQxzJ6Ofws2IXSJZnyklQrcIrUvr80TM8wgwD1Wiov9zHJdoWbA_6oQY4_TyNDQnMgRW0gVy2s8_Hppz3sVbe9PTK6oTk7d6FTEigTM_fSm3uiS3GNn4uLc0Apm_kthrYxnX6VvT"/>
+<span class="font-label-md text-label-md text-on-surface">Google</span>
+</button>
+<button class="flex items-center justify-center h-12 border border-outline-variant rounded-lg hover:bg-surface-container transition-colors">
+<img class="w-5 h-5 mr-3" data-alt="A sophisticated digital representation of the Apple logo in a sleek charcoal grey color, set against a pristine white background with subtle depth. The visual style is premium and tactile, echoing a high-end UK retail environment. The lighting is soft and ambient, creating a sense of luxury and trust in a digital payment or login context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlA2bSxJZuX3p1EqFSdJooeaMTsYvbPFyI8LAljwFAylzTqfbE4gGEdW-tY258YMXWSx5O_PUzzCO9Ip40HdqsTlXwoaG35QErY7jUsonhHV3BXPBGzp7GskgHTjGpFi7KPMq6EImpoleURhNvRmbX_XKlvkKhhJaiOql98E4p4SGL45Ym1W8rH0F8pQ0sPO1TpcHmkfEEJY7KErS-y2doFJYTzqmDos5S2ACWBpLoGaqCFaFuSjun"/>
+<span class="font-label-md text-label-md text-on-surface">Apple</span>
+</button>
+</div>
+<!-- Support Footer -->
+<footer class="mt-10 pt-6 border-t border-surface-container-high text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Need help? <a class="text-secondary font-semibold hover:underline" href="#">Contact Support</a>
+</p>
+<p class="font-label-md text-label-md text-outline mt-2">© 2024 BharatMart UK Ltd.</p>
+</footer>
+</div>
+</main>
+<!-- Floating WhatsApp Help -->
+<a aria-label="WhatsApp Support" class="fixed bottom-6 right-6 w-14 h-14 bg-tertiary text-on-tertiary rounded-full flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all z-50 group" href="https://wa.me/yournumber">
+<span class="material-symbols-outlined text-2xl" data-weight="fill">chat</span>
+<div class="absolute right-16 bg-surface-container-lowest px-3 py-2 rounded-lg text-on-surface font-label-md text-label-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-surface-container-high">
+            Need help signing in?
+        </div>
+</a>
+<script>
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.textContent = 'visibility_off';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.textContent = 'visibility';
+            }
+        }
+
+        // Tab Switching Logic
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('text-primary', 'border-b-2', 'border-primary');
+            registerTab.classList.remove('text-on-surface-variant');
+            loginTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+            loginTab.classList.add('text-on-surface-variant');
+        });
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('text-primary', 'border-b-2', 'border-primary');
+            loginTab.classList.remove('text-on-surface-variant');
+            registerTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+            registerTab.classList.add('text-on-surface-variant');
+        });
+
+        // Form Submit Interaction
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span>';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                alert('Namaste! This is a demo. Login functionality is coming soon.');
+            }, 1500);
+        });
+    </script>
+</body></html>

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Admin | Support Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "sidebar-navy": "#1a2b4b",
+                "on-primary": "#ffffff",
+                "status-pending": "#f59e0b",
+                "surface-container-low": "#f2f4f6",
+                "surface-container-lowest": "#ffffff",
+                "status-error": "#ef4444",
+                "secondary-container": "#fe624e",
+                "secondary": "#b22b1d",
+                "surface-container-high": "#e6e8ea",
+                "secondary-fixed": "#ffdad4",
+                "on-tertiary": "#ffffff",
+                "surface-tint": "#4e5e81",
+                "outline": "#75777f",
+                "surface-bright": "#f7f9fb",
+                "on-secondary-container": "#650000",
+                "inverse-on-surface": "#eff1f3",
+                "surface-variant": "#e0e3e5",
+                "primary-fixed": "#d8e2ff",
+                "on-primary-fixed-variant": "#364768",
+                "tertiary-fixed-dim": "#e8c08a",
+                "tertiary-fixed": "#ffddb1",
+                "tertiary": "#231400",
+                "surface-container-highest": "#e0e3e5",
+                "on-tertiary-fixed": "#291800",
+                "status-success": "#10b981",
+                "outline-variant": "#c5c6cf",
+                "primary-container": "#1a2b4b",
+                "tertiary-container": "#3e2700",
+                "on-tertiary-fixed-variant": "#5d4217",
+                "on-secondary": "#ffffff",
+                "on-surface": "#191c1e",
+                "surface-container": "#eceef0",
+                "on-primary-container": "#8293b8",
+                "action-maroon": "#800000",
+                "on-surface-variant": "#44474e",
+                "secondary-fixed-dim": "#ffb4a8",
+                "inverse-surface": "#2d3133",
+                "on-tertiary-container": "#b08d5b",
+                "primary-fixed-dim": "#b6c6ef",
+                "on-secondary-fixed-variant": "#8f0f07",
+                "primary": "#031635",
+                "on-error": "#ffffff",
+                "inverse-primary": "#b6c6ef",
+                "on-background": "#191c1e",
+                "surface-dim": "#d8dadc",
+                "surface": "#f7f9fb",
+                "on-primary-fixed": "#081b3a",
+                "background": "#f7f9fb",
+                "error-container": "#ffdad6",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "on-secondary-fixed": "#410000"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "table-cell-padding": "8px 12px",
+                "container-padding": "24px",
+                "unit": "4px",
+                "sidebar-width": "260px",
+                "gutter": "16px"
+              },
+              "fontFamily": {
+                "table-header": ["Inter"],
+                "display-lg": ["Montserrat"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Montserrat"],
+                "label-caps": ["Inter"],
+                "body-sm": ["Inter"],
+                "headline-sm": ["Montserrat"]
+              },
+              "fontSize": {
+                "table-header": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                "label-caps": ["11px", {"lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-surface overflow-hidden h-screen flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-[260px] bg-sidebar-navy flex flex-col z-50">
+<div class="px-6 py-8">
+<h1 class="font-display-lg text-display-lg text-surface-container-lowest">BharatMart</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container mt-1">Operations Hub</p>
+</div>
+<nav class="flex-1 overflow-y-auto px-2 space-y-1 custom-scrollbar">
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">store</span>
+<span class="font-label-caps text-label-caps">Merchants</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps">Users</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="font-label-caps text-label-caps">Categories</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">branding_watermark</span>
+<span class="font-label-caps text-label-caps">Banners</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-caps text-label-caps">Orders</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-4 py-3 text-surface-container-lowest border-l-4 border-secondary bg-primary-container" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="font-label-caps text-label-caps">Support Tickets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest hover:bg-primary-container/50 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10">
+<a class="flex items-center gap-3 px-4 py-3 text-outline-variant hover:text-surface-container-lowest transition-colors" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">System Status</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col ml-[260px] h-screen">
+<!-- TopAppBar -->
+<header class="h-16 flex justify-between items-center px-6 bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-40">
+<div class="flex items-center gap-6">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Support Management</h2>
+<div class="relative flex items-center bg-surface-container-low rounded-lg px-3 py-1.5 w-80">
+<span class="material-symbols-outlined text-outline text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full ml-2" placeholder="Search tickets, IDs, or customers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-outline hover:bg-surface-container-low rounded-full relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<button class="p-2 text-outline hover:bg-surface-container-low rounded-full">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<div class="text-right">
+<p class="font-body-sm font-bold text-on-surface">John Doe</p>
+<p class="text-[10px] uppercase font-bold text-outline">Lead Administrator</p>
+</div>
+<img class="w-10 h-10 rounded-full bg-surface-container border border-outline-variant object-cover" data-alt="A professional corporate headshot of a middle-aged male administrator with short dark hair, wearing a navy blue blazer over a white crisp shirt, set against a blurred modern office background with neutral gray tones and soft overhead lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiDd6tQE1nkpyasKDfvnLU9tNBRKF9u8Xzayl3Z7rmEu_o0dyODaZLVkPAITaHD5cnwu5dGqBcexDhik7gsZdh41tPsfP-BMNM62pDCf3L5_0UVsNtSWZTsoM7weFEQ8FbPlI0XRIbgeqe2jK3a596kJm8DAtCIthshy_y8ronoie4LOE-Qs2u55OSWi8766BH2Tm53evdE9PJ8nfYhWMZrDrZpEcD7ra3I5-JWj4IdS1oPBPAxMyS"/>
+</div>
+</div>
+</header>
+<!-- Main Body: Split View -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Panel: Ticket List (40%) -->
+<section class="w-[40%] border-r border-outline-variant flex flex-col bg-surface-container-lowest">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-bright">
+<div class="flex gap-2">
+<button class="px-3 py-1 rounded-full bg-primary text-on-primary text-[11px] font-bold">ALL (42)</button>
+<button class="px-3 py-1 rounded-full text-outline hover:bg-surface-container-high text-[11px] font-bold">OPEN (18)</button>
+<button class="px-3 py-1 rounded-full text-outline hover:bg-surface-container-high text-[11px] font-bold">PENDING (5)</button>
+</div>
+<button class="p-1 hover:bg-surface-container-high rounded text-outline">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Ticket Item Active -->
+<div class="p-4 border-b border-outline-variant bg-surface-container-low border-l-4 border-secondary cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-secondary font-label-caps text-label-caps">#ST-1024</span>
+<span class="text-[10px] text-outline font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 2h ago
+                            </span>
+</div>
+<h4 class="font-bold text-on-surface mb-1 truncate">Missing item in order #ORD-9921</h4>
+<p class="text-body-sm text-on-surface-variant truncate mb-3">Customer: Rajesh Kumar</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-status-error/10 text-status-error text-[10px] font-bold uppercase tracking-wider">High</span>
+<span class="px-2 py-0.5 rounded bg-status-pending/10 text-status-pending text-[10px] font-bold uppercase tracking-wider">In Progress</span>
+<div class="flex items-center gap-1 ml-auto">
+<span class="text-[10px] text-outline font-bold">Admin: JD</span>
+<div class="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-[8px] text-white">JD</div>
+</div>
+</div>
+</div>
+<!-- Ticket Item -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary font-label-caps text-label-caps">#ST-1025</span>
+<span class="text-[10px] text-outline font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 4h ago
+                            </span>
+</div>
+<h4 class="font-bold text-on-surface mb-1 truncate">Refund request for defective laptop</h4>
+<p class="text-body-sm text-on-surface-variant truncate mb-3">Merchant: Electronics Plaza</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-status-pending/10 text-status-pending text-[10px] font-bold uppercase tracking-wider">Medium</span>
+<span class="px-2 py-0.5 rounded bg-status-error/10 text-status-error text-[10px] font-bold uppercase tracking-wider">Open</span>
+<div class="flex items-center gap-1 ml-auto">
+<span class="text-[10px] text-outline font-bold">Unassigned</span>
+<div class="w-5 h-5 rounded-full bg-outline-variant flex items-center justify-center text-[10px] text-white">
+<span class="material-symbols-outlined text-[12px]">person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Ticket Item -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary font-label-caps text-label-caps">#ST-1026</span>
+<span class="text-[10px] text-outline font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 1d ago
+                            </span>
+</div>
+<h4 class="font-bold text-on-surface mb-1 truncate">Login issues on merchant portal</h4>
+<p class="text-body-sm text-on-surface-variant truncate mb-3">Merchant: Daily Fresh Grocery</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-outline-variant text-outline text-[10px] font-bold uppercase tracking-wider">Low</span>
+<span class="px-2 py-0.5 rounded bg-status-success/10 text-status-success text-[10px] font-bold uppercase tracking-wider">Resolved</span>
+<div class="flex items-center gap-1 ml-auto">
+<span class="text-[10px] text-outline font-bold">Admin: AM</span>
+<div class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-[8px] text-white">AM</div>
+</div>
+</div>
+</div>
+<!-- More placeholder items to demonstrate scroll -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-bright cursor-pointer transition-colors">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary font-label-caps text-label-caps">#ST-1027</span>
+<span class="text-[10px] text-outline font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span> 2d ago
+                            </span>
+</div>
+<h4 class="font-bold text-on-surface mb-1 truncate">Wrong delivery address update</h4>
+<p class="text-body-sm text-on-surface-variant truncate mb-3">Customer: Anita Sharma</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-status-pending/10 text-status-pending text-[10px] font-bold uppercase tracking-wider">Medium</span>
+<span class="px-2 py-0.5 rounded bg-status-success/10 text-status-success text-[10px] font-bold uppercase tracking-wider">Resolved</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Ticket Detail (60%) -->
+<section class="w-[60%] flex flex-col bg-surface">
+<!-- Detail Header -->
+<div class="p-6 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-3 mb-1">
+<span class="text-secondary font-bold font-label-caps text-label-caps">SUPPORT TICKET #ST-1024</span>
+<span class="px-2 py-0.5 rounded bg-status-pending/10 text-status-pending text-[10px] font-bold uppercase tracking-wider">In Progress</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-primary">Missing item in order #ORD-9921</h3>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-low hover:bg-surface-container-high text-on-surface font-bold text-[12px] rounded border border-outline-variant transition-colors">Assign Me</button>
+<button class="p-2 text-outline hover:bg-surface-container-low rounded border border-outline-variant">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<div class="flex gap-6 text-[12px] text-on-surface-variant">
+<p><span class="font-bold text-outline">Customer:</span> Rajesh Kumar (UID: 88271)</p>
+<p><span class="font-bold text-outline">Created:</span> Oct 24, 2024, 10:15 AM</p>
+<p><span class="font-bold text-outline">Category:</span> Logistics / Missing Items</p>
+</div>
+</div>
+<!-- Chat Thread -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-slate-50">
+<!-- Customer Message -->
+<div class="flex items-start gap-4 mr-12">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 border border-secondary-container">
+<span class="material-symbols-outlined text-secondary">person</span>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-lowest p-4 rounded-xl rounded-tl-none border border-outline-variant shadow-sm">
+<p class="text-body-md text-on-surface">Hello support team, I received my order #ORD-9921 today but the premium wireless headphones are missing from the package. The box seemed untampered with. Can you please check?</p>
+</div>
+<p class="text-[10px] text-outline font-bold pl-1 uppercase">Rajesh Kumar • 10:15 AM</p>
+</div>
+</div>
+<!-- Admin Reply -->
+<div class="flex items-start gap-4 ml-12 flex-row-reverse">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0 border border-primary-container shadow-md">
+<span class="text-on-primary font-bold text-xs">JD</span>
+</div>
+<div class="space-y-1 text-right">
+<div class="bg-primary-container p-4 rounded-xl rounded-tr-none shadow-sm">
+<p class="text-body-md text-surface-container-lowest">Hi Rajesh, I'm sorry to hear that. I am looking into your order right now. I've contacted the fulfillment center to verify the weight of the package at dispatch. Please allow me 15-20 minutes to get back to you.</p>
+</div>
+<p class="text-[10px] text-outline font-bold pr-1 uppercase">John Doe (Admin) • 10:45 AM</p>
+</div>
+</div>
+<!-- Customer Follow-up -->
+<div class="flex items-start gap-4 mr-12">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 border border-secondary-container">
+<span class="material-symbols-outlined text-secondary">person</span>
+</div>
+<div class="space-y-1">
+<div class="bg-surface-container-lowest p-4 rounded-xl rounded-tl-none border border-outline-variant shadow-sm">
+<p class="text-body-md text-on-surface">Sure, standing by. I have also attached a photo of the invoice I found inside the box.</p>
+<div class="mt-3 p-2 bg-surface-container border border-outline-variant rounded-lg flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-outline">image</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<p class="text-[11px] font-bold text-on-surface truncate">invoice_ORD9921.jpg</p>
+<p class="text-[10px] text-outline uppercase font-bold">1.2 MB • Image</p>
+</div>
+<button class="text-primary hover:text-secondary p-1">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<p class="text-[10px] text-outline font-bold pl-1 uppercase">Rajesh Kumar • 11:02 AM</p>
+</div>
+</div>
+</div>
+<!-- Reply Area -->
+<div class="p-6 bg-surface-container-lowest border-t border-outline-variant">
+<!-- Text Formatting Toolbar -->
+<div class="flex items-center gap-2 mb-2 border-b border-surface-container pb-2">
+<button class="p-1 hover:bg-surface-container-low rounded text-outline"><span class="material-symbols-outlined text-[20px]">format_bold</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded text-outline"><span class="material-symbols-outlined text-[20px]">format_italic</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded text-outline"><span class="material-symbols-outlined text-[20px]">link</span></button>
+<button class="p-1 hover:bg-surface-container-low rounded text-outline ml-2"><span class="material-symbols-outlined text-[20px]">attach_file</span></button>
+</div>
+<textarea class="w-full h-32 p-0 border-none focus:ring-0 text-body-md resize-none bg-transparent placeholder-outline-variant" placeholder="Type your reply here..."></textarea>
+<div class="flex items-center justify-between mt-4">
+<div class="flex gap-4">
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold uppercase text-outline">Status</label>
+<select class="text-body-sm font-bold border border-outline-variant rounded px-3 py-1.5 bg-surface-container-low focus:border-primary focus:ring-0 cursor-pointer">
+<option>Open</option>
+<option selected="">In Progress</option>
+<option>Resolved</option>
+<option>Closed</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-[10px] font-bold uppercase text-outline">Priority</label>
+<select class="text-body-sm font-bold border border-outline-variant rounded px-3 py-1.5 bg-surface-container-low focus:border-primary focus:ring-0 cursor-pointer">
+<option selected="">High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+</div>
+</div>
+<button class="bg-secondary hover:bg-action-maroon text-on-primary font-bold px-8 py-3 rounded flex items-center gap-2 transition-transform active:scale-[0.98]">
+<span>Send Reply</span>
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="h-10 bg-surface-container-lowest border-t border-outline-variant flex justify-between items-center px-6 shrink-0">
+<div class="flex items-center gap-4">
+<span class="font-body-sm text-body-sm text-outline">© 2024 BharatMart Operations. System v4.2.0-stable</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-status-success rounded-full"></span>
+<span class="font-body-sm text-body-sm text-status-success font-semibold">API Docs</span>
+</div>
+<a class="font-body-sm text-body-sm text-outline hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-status-success rounded-full animate-pulse"></span>
+<span class="font-body-sm text-body-sm text-primary font-semibold">System Online</span>
+</div>
+</div>
+</footer>
+</div>
+<!-- Interaction Script -->
+<script>
+        // Simple micro-interaction for list item selection
+        document.querySelectorAll('section[class*="w-[40%]"] > div:last-child > div').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('section[class*="w-[40%]"] > div:last-child > div').forEach(i => {
+                    i.classList.remove('bg-surface-container-low', 'border-l-4', 'border-secondary');
+                    i.classList.add('hover:bg-surface-bright');
+                });
+                this.classList.add('bg-surface-container-low', 'border-l-4', 'border-secondary');
+                this.classList.remove('hover:bg-surface-bright');
+            });
+        });
+
+        // Search bar focus effect
+        const searchInput = document.querySelector('header input');
+        const searchContainer = searchInput.parentElement;
+        searchInput.addEventListener('focus', () => {
+            searchContainer.classList.add('ring-2', 'ring-primary/20', 'bg-white');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchContainer.classList.remove('ring-2', 'ring-primary/20', 'bg-white');
+        });
+    </script>
+</body></html>

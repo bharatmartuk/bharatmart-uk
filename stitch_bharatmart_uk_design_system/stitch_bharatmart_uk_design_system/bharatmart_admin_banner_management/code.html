@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Banner Management | BharatMart Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "status-success": "#10b981",
+                    "surface-bright": "#f7f9fb",
+                    "inverse-primary": "#b6c6ef",
+                    "on-surface": "#191c1e",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f7f9fb",
+                    "inverse-on-surface": "#eff1f3",
+                    "surface-container-lowest": "#ffffff",
+                    "sidebar-navy": "#1a2b4b",
+                    "tertiary": "#231400",
+                    "on-primary-fixed": "#081b3a",
+                    "on-background": "#191c1e",
+                    "secondary": "#b22b1d",
+                    "primary-container": "#1a2b4b",
+                    "on-secondary-fixed-variant": "#8f0f07",
+                    "primary-fixed-dim": "#b6c6ef",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary-fixed": "#ffdad4",
+                    "status-pending": "#f59e0b",
+                    "background": "#f7f9fb",
+                    "surface-tint": "#4e5e81",
+                    "surface-variant": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffddb1",
+                    "on-tertiary-container": "#b08d5b",
+                    "status-error": "#ef4444",
+                    "on-primary-container": "#8293b8",
+                    "outline-variant": "#c5c6cf",
+                    "inverse-surface": "#2d3133",
+                    "primary": "#031635",
+                    "on-primary": "#ffffff",
+                    "surface-container": "#eceef0",
+                    "secondary-fixed-dim": "#ffb4a8",
+                    "on-tertiary-fixed": "#291800",
+                    "primary-fixed": "#d8e2ff",
+                    "on-secondary-container": "#650000",
+                    "secondary-container": "#fe624e",
+                    "on-surface-variant": "#44474e",
+                    "on-tertiary-fixed-variant": "#5d4217",
+                    "outline": "#75777f",
+                    "surface-container-high": "#e6e8ea",
+                    "tertiary-container": "#3e2700",
+                    "on-secondary-fixed": "#410000",
+                    "surface-container-highest": "#e0e3e5",
+                    "action-maroon": "#800000",
+                    "surface-dim": "#d8dadc",
+                    "on-primary-fixed-variant": "#364768",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-low": "#f2f4f6",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#e8c08a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "sidebar-width": "260px",
+                    "table-cell-padding": "8px 12px",
+                    "gutter": "16px",
+                    "container-padding": "24px"
+            },
+            "fontFamily": {
+                    "table-header": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "display-lg": ["Montserrat"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Montserrat"]
+            },
+            "fontSize": {
+                    "table-header": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["11px", {"lineHeight": "12px", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .active-pill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #b22b1d;
+        }
+        .drag-handle:hover {
+            cursor: grab;
+        }
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+        /* Zebra-ish subtle shift for cards */
+        .banner-card:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label .toggle-dot {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-sidebar-navy text-on-primary z-50 flex flex-col py-container-padding">
+<div class="px-6 mb-10 flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary rounded flex items-center justify-center font-headline-md font-bold text-on-primary">B</div>
+<div>
+<h1 class="font-headline-sm text-headline-sm font-bold leading-tight">BharatMart</h1>
+<p class="text-[10px] uppercase tracking-widest opacity-60">Admin Hub</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">storefront</span>
+<span class="font-body-md">Merchants</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+<span class="font-body-md">Users</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">category</span>
+<span class="font-body-md">Categories</span>
+</a>
+<a class="relative group flex items-center px-6 py-3 border-l-4 border-secondary bg-primary-container text-on-primary font-bold transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">branding_watermark</span>
+<span class="font-body-md">Banners</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">shopping_cart</span>
+<span class="font-body-md">Orders</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">confirmation_number</span>
+<span class="font-body-md">Support Tickets</span>
+</a>
+<a class="group flex items-center px-6 py-3 text-on-primary-container opacity-80 hover:opacity-100 hover:bg-primary-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined mr-3">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+</nav>
+<div class="px-6 pt-6 border-t border-white/10 mt-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-[10px]">AD</div>
+<div>
+<p class="text-xs font-bold">Admin User</p>
+<p class="text-[10px] opacity-60 italic">System Manager</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-sidebar-width min-h-screen relative pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-260px)] h-16 bg-surface z-40 border-b border-outline-variant flex justify-between items-center px-container-padding">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-sm text-headline-sm font-semibold text-primary">Homepage Banner Management</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-secondary rounded-full"></span>
+</div>
+<button class="bg-secondary text-on-secondary px-4 py-2 rounded font-body-md font-semibold flex items-center gap-2 hover:bg-action-maroon active:opacity-90 transition-all shadow-sm" onclick="document.getElementById('add-banner-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-sm">add</span>
+                    Add Banner
+                </button>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="pt-24 px-container-padding">
+<!-- Statistics Row (Simplified KPI Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-8">
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-body-sm mb-1 uppercase tracking-wider">Active Banners</p>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">04 <span class="text-status-success text-sm font-normal">/ 08</span></h3>
+</div>
+<span class="material-symbols-outlined text-primary/20 text-4xl">view_carousel</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-body-sm mb-1 uppercase tracking-wider">Total Impressions</p>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">124.5k</h3>
+</div>
+<span class="material-symbols-outlined text-primary/20 text-4xl">visibility</span>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg flex items-center justify-between">
+<div>
+<p class="text-on-surface-variant font-body-sm mb-1 uppercase tracking-wider">Avg. CTR</p>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">3.2%</h3>
+</div>
+<span class="material-symbols-outlined text-primary/20 text-4xl">ads_click</span>
+</div>
+</div>
+<!-- Banner List Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<div class="p-4 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<span class="font-table-header text-table-header text-on-surface-variant uppercase tracking-widest">Active Carousel Rotation</span>
+<span class="text-body-sm text-on-surface-variant italic">Drag handles to reorder</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Banner Card Item 1 -->
+<div class="flex items-center p-4 hover:bg-surface-container transition-colors duration-150">
+<div class="drag-handle px-2 text-on-surface-variant/40 hover:text-on-surface-variant mr-4">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-64 aspect-[16/9] rounded border border-outline-variant overflow-hidden flex-shrink-0 bg-surface-variant relative group">
+<img class="w-full h-full object-cover" data-alt="A professional marketing banner for a Diwali sale on an e-commerce site. The banner features intricate gold patterns, vibrant rangoli designs, and traditional oil lamps. The color palette is dominated by BharatMart's deep maroon and warm gold accents. The lighting is soft and cinematic, creating an inviting festive mood for UK shoppers." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3QzaSiZqMS7sBj_Z1SIn7yHAibxrS8SHn913gjRIJMFmQ5j_DmJWD1uT4gb2fXH37hTWBEhW9r-IIPBJoia4lz1ILzABDlpAD6dRnQWzi70pCzdQQmnbZFXcuawXsNQIbYBTIZ8KVzXWbVX3QuDV0DlBw_Mtcc4YAs08VGHSi7Ndcd3G16Otj2DRApn6mtRI4APijdRdu9IZRgIQ9gSnMuKwqnisX3Qcfrm14GZjfdxEkv18O4pVZ"/>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<button class="bg-surface/90 text-primary p-2 rounded-full shadow-lg">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+</div>
+</div>
+<div class="ml-6 flex-grow grid grid-cols-3 gap-4">
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Headline</p>
+<p class="font-body-md font-semibold text-primary">Diwali Grand Sale 2024</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Destination</p>
+<p class="font-body-md text-on-surface-variant italic">/festive-collection</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Date Range</p>
+<p class="font-body-md text-on-surface-variant">Oct 20 - Nov 05, 2024</p>
+</div>
+</div>
+<div class="flex items-center gap-6 ml-6">
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Active</span>
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label relative w-10 h-5 bg-outline-variant rounded-full transition-colors duration-200">
+<div class="toggle-dot absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error-container rounded">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Banner Card Item 2 -->
+<div class="flex items-center p-4 hover:bg-surface-container transition-colors duration-150">
+<div class="drag-handle px-2 text-on-surface-variant/40 hover:text-on-surface-variant mr-4">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-64 aspect-[16/9] rounded border border-outline-variant overflow-hidden flex-shrink-0 bg-surface-variant relative group">
+<img class="w-full h-full object-cover" data-alt="An elegant e-commerce banner showcasing premium spices and grocery essentials from India. The design is clean and professional, using high-resolution photography of cinnamon sticks, turmeric powder, and fresh cardamom. The visual style is minimalist and modern, set against a light marble background with BharatMart branding elements in the corner." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAeTGOMYTuG9RsU5vzyKUXK5bYqmaGLIRbphDt9OpHHTlgYKJzS6eDTlgDdENF6f5HNBuhB3afksMxL4l0Ozk99eKl26MQQ6ZwinSe8N7583WdwWTtOsVlGEUT3DTVVSY11YkYtUt6BpIEveet6J8Hx4CCPsWirrK0ICZ9GDsOVpJhtSVBscaUiTB3bqqkARNGUSFtsPDcZ75_u2iN0_3unYezkXVV9r0wPcKWKaeWAUfmUzg4y_-u"/>
+</div>
+<div class="ml-6 flex-grow grid grid-cols-3 gap-4">
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Headline</p>
+<p class="font-body-md font-semibold text-primary">Authentic Indian Spices</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Destination</p>
+<p class="font-body-md text-on-surface-variant italic">/pantry/spices</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Date Range</p>
+<p class="font-body-md text-on-surface-variant">Permanent</p>
+</div>
+</div>
+<div class="flex items-center gap-6 ml-6">
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Active</span>
+<label class="inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label relative w-10 h-5 bg-outline-variant rounded-full transition-colors duration-200">
+<div class="toggle-dot absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error-container rounded">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Banner Card Item 3 -->
+<div class="flex items-center p-4 hover:bg-surface-container transition-colors duration-150">
+<div class="drag-handle px-2 text-on-surface-variant/40 hover:text-on-surface-variant mr-4">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="w-64 aspect-[16/9] rounded border border-outline-variant overflow-hidden flex-shrink-0 bg-surface-variant opacity-60">
+<img class="w-full h-full object-cover grayscale" data-alt="A winter seasonal banner for BharatMart UK, featuring warm knitwear, tea collections, and traditional heaters. The imagery uses cool blue tones contrasted with cozy warm lighting. The aesthetic is snug and comforting, designed for a London winter theme. BharatMart Maroon is used for the call-to-action button element." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo00Db1bra4vb5f5ILAB4x5LA-ORUq8dBDyRkDK4QKhSLwcpLlsK90baKOxfpMZlEuWL-YauK8ktlML0CEYizVDWWczDsqi2gqkQd9Zhr-AWOJ1lHbNFQP_AlN6a_2117ectqA1P1ueCVa0igCXqEvdK-3c_klPAMoK9F2QqMDfEphQTNuxeLj5YtuQBfvBtAliS3qGYfWqs1jR8_uhB8B4nLK14K1ezcZkXnd4fgj7Dk1hyhwzHST"/>
+</div>
+<div class="ml-6 flex-grow grid grid-cols-3 gap-4 opacity-60">
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Headline</p>
+<p class="font-body-md font-semibold text-primary">Winter Essentials</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Destination</p>
+<p class="font-body-md text-on-surface-variant italic">/winter-wear</p>
+</div>
+<div>
+<p class="text-body-sm font-bold text-on-surface-variant uppercase text-[10px] tracking-tighter">Date Range</p>
+<p class="font-body-md text-on-surface-variant">Nov 15 - Jan 30</p>
+</div>
+</div>
+<div class="flex items-center gap-6 ml-6">
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold text-on-surface-variant uppercase">Active</span>
+<label class="inline-flex items-center cursor-pointer">
+<input class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-label relative w-10 h-5 bg-outline-variant rounded-full transition-colors duration-200">
+<div class="toggle-dot absolute left-0.5 top-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-high rounded">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error transition-colors hover:bg-error-container rounded">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="absolute bottom-0 right-0 w-full bg-surface-container-low border-t border-outline-variant flex justify-between items-center p-4">
+<span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 BharatMart Operations Hub v2.4.0</span>
+<div class="flex gap-4">
+<a class="text-on-surface-variant hover:text-secondary underline transition-all font-body-sm" href="#">System Status</a>
+<a class="text-on-surface-variant hover:text-secondary underline transition-all font-body-sm" href="#">API Docs</a>
+<a class="text-on-surface-variant hover:text-secondary underline transition-all font-body-sm" href="#">Release Notes</a>
+</div>
+</footer>
+</div>
+</main>
+<!-- Add Banner Modal -->
+<div class="hidden fixed inset-0 z-[60] bg-primary/40 backdrop-blur-sm flex items-center justify-center p-6" id="add-banner-modal">
+<div class="bg-surface w-full max-w-4xl rounded-lg shadow-2xl overflow-hidden border border-outline-variant animate-in fade-in zoom-in duration-200">
+<div class="bg-sidebar-navy text-on-primary px-container-padding py-4 flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm font-bold">New Homepage Banner</h3>
+<button class="hover:bg-white/10 p-1 rounded transition-colors" onclick="document.getElementById('add-banner-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form class="p-container-padding grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Left: Upload Area -->
+<div class="space-y-4">
+<label class="block">
+<span class="text-body-sm font-bold text-on-surface uppercase mb-2 block">Banner Asset</span>
+<div class="border-2 border-dashed border-outline rounded-lg aspect-[1440/480] bg-surface-container flex flex-col items-center justify-center text-center p-6 hover:bg-surface-container-high transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:scale-110 transition-transform mb-2">cloud_upload</span>
+<p class="text-body-md font-semibold text-primary">Click to upload or drag &amp; drop</p>
+<p class="text-body-sm text-on-surface-variant mt-1">Required ratio: 1440 x 480 px</p>
+<p class="text-[10px] text-on-surface-variant uppercase mt-2 opacity-60">JPG, PNG or WEBP (Max 2MB)</p>
+</div>
+</label>
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded text-body-sm text-on-surface-variant italic">
+<p><strong>Note:</strong> High-resolution banners improve conversion by up to 14%. Avoid placing critical text near the edges of the 1440px width.</p>
+</div>
+</div>
+<!-- Right: Fields -->
+<div class="space-y-4">
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">Headline
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" placeholder="e.g. Diwali Grand Sale" type="text"/>
+</label></div>
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">Subtext
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" placeholder="e.g. Up to 50% off on festive favorites" type="text"/>
+</label></div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">CTA Button Text
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" placeholder="Shop Now" type="text"/>
+</label></div>
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">Target Link
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" placeholder="/collection/festive" type="text"/>
+</label></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">Start Date
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" type="date"/>
+</label></div>
+<div>
+<label class="text-body-sm font-bold text-on-surface block mb-1">End Date
+<input class="w-full bg-surface border border-outline-variant rounded p-2 focus:border-sidebar-navy focus:ring-1 focus:ring-sidebar-navy transition-all" type="date"/>
+</label></div>
+</div>
+<div class="flex items-center gap-2 pt-2">
+<input class="rounded text-sidebar-navy focus:ring-sidebar-navy" id="active-new" type="checkbox"/>
+<label class="text-body-sm font-semibold" for="active-new">Publish immediately upon saving</label>
+</div>
+</div>
+<div class="col-span-1 md:col-span-2 border-t border-outline-variant pt-6 flex justify-end gap-3">
+<button class="px-6 py-2 rounded font-body-md font-semibold text-on-surface-variant hover:bg-surface-container transition-colors" onclick="document.getElementById('add-banner-modal').classList.add('hidden')" type="button">Cancel</button>
+<button class="px-8 py-2 rounded font-body-md font-semibold bg-sidebar-navy text-on-primary hover:bg-primary active:scale-95 transition-all shadow-md" type="submit">Save Banner Asset</button>
+</div>
+</form>
+</div>
+</div>
+<script>
+        // Simple drag & drop visual feedback simulation
+        const draggables = document.querySelectorAll('.drag-handle');
+        draggables.forEach(handle => {
+            handle.addEventListener('mousedown', () => {
+                handle.parentElement.classList.add('opacity-40', 'border-2', 'border-dashed', 'border-secondary');
+            });
+            window.addEventListener('mouseup', () => {
+                handle.parentElement.classList.remove('opacity-40', 'border-2', 'border-dashed', 'border-secondary');
+            });
+        });
+
+        // Toggle handling
+        const toggles = document.querySelectorAll('.toggle-checkbox');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                const card = e.target.closest('.flex.items-center.p-4');
+                const img = card.querySelector('img');
+                const content = card.querySelector('.grid');
+                
+                if(!e.target.checked) {
+                    img.parentElement.classList.add('grayscale', 'opacity-60');
+                    content.classList.add('opacity-60');
+                } else {
+                    img.parentElement.classList.remove('grayscale', 'opacity-60');
+                    content.classList.remove('opacity-60');
+                }
+            });
+        });
+    </script>
+</body></html>

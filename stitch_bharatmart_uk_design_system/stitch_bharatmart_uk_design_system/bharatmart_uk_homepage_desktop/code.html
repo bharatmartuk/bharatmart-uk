@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart UK | Premium Indian Marketplace</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "surface-container": "#f4ede4",
+                    "on-tertiary-fixed": "#002108",
+                    "primary-fixed-dim": "#ffba3e",
+                    "surface-container-low": "#f9f3ea",
+                    "tertiary-container": "#80bf85",
+                    "on-surface-variant": "#514534",
+                    "primary-container": "#e8a317",
+                    "on-primary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#881e20",
+                    "on-background": "#1e1b16",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#ffdad7",
+                    "on-tertiary-container": "#0e4e21",
+                    "surface-dim": "#dfd9d0",
+                    "inverse-surface": "#33302a",
+                    "surface-container-highest": "#e8e2d9",
+                    "surface-tint": "#7f5700",
+                    "on-primary-container": "#5b3d00",
+                    "on-primary-fixed": "#281900",
+                    "tertiary-fixed-dim": "#96d69a",
+                    "primary": "#7f5700",
+                    "inverse-on-surface": "#f7f0e7",
+                    "on-tertiary": "#ffffff",
+                    "secondary-container": "#ff7670",
+                    "secondary": "#a83635",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#b1f2b4",
+                    "outline": "#837561",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed-variant": "#604100",
+                    "surface-bright": "#fff8f0",
+                    "surface-variant": "#e8e2d9",
+                    "on-secondary-container": "#720b12",
+                    "surface-container-high": "#eee7de",
+                    "primary-fixed": "#ffdeae",
+                    "secondary-fixed-dim": "#ffb3ae",
+                    "inverse-primary": "#ffba3e",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fff8f0",
+                    "background": "#fff8f0",
+                    "on-secondary-fixed": "#410004",
+                    "tertiary": "#2e6a39",
+                    "on-surface": "#1e1b16",
+                    "on-tertiary-fixed-variant": "#135224",
+                    "outline-variant": "#d6c4ad"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "base": "8px",
+                    "margin-desktop": "64px",
+                    "gutter": "16px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Montserrat"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Montserrat"],
+                    "title-lg": ["Inter"],
+                    "headline-md": ["Montserrat"],
+                    "display-xl": ["Montserrat"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff8f0; /* Cream background level 0 */
+            scroll-behavior: smooth;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .product-card:hover {
+            box-shadow: 0px 8px 24px rgba(46, 21, 21, 0.08);
+            transform: translateY(-4px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f4ede4;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e8a317;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface-variant shadow-[0px_4px_12px_rgba(0,0,0,0.04)] h-20">
+<div class="flex items-center justify-between px-margin-desktop h-full max-w-container-max mx-auto gap-gutter">
+<!-- Brand Logo -->
+<div class="flex-shrink-0">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim" href="#">BharatMart UK</a>
+</div>
+<!-- Search Bar -->
+<div class="flex-grow max-w-2xl px-8">
+<div class="relative group">
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-primary-container focus:border-primary outline-none transition-all font-body-md" placeholder="Search for pooja items, groceries, sweets, sarees..." type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+</div>
+</div>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Become a Seller</a>
+<div class="flex items-center gap-6">
+<button class="relative hover:bg-surface-container-high p-2 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined text-primary" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-0 right-0 bg-secondary text-on-secondary text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-surface">3</span>
+</button>
+<button class="hover:bg-surface-container-high p-2 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-20">
+<!-- Hero Carousel Section -->
+<section class="relative w-full h-[520px] overflow-hidden">
+<div class="flex h-full transition-transform duration-700 ease-out" id="hero-slider">
+<!-- Slide 1 -->
+<div class="min-w-full h-full relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A festive and elegant wide-angle shot of a traditional Indian Diwali setup. Warm oil lamps (diyas) glow softly on a patterned floor with vibrant rangoli art. Intricate silk sarees in deep maroons and saffron golds are draped beautifully in the background. The lighting is golden, warm, and inviting, reflecting a premium boutique marketplace aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAYoYGDaObQeSKjObekoys8NBfpMV1i0bU-bkuaapgZPqg3s0GEdrwsVxhsdYn4AhHZVUQyOcGW6jcn3BZuVgd3h5GRDVQoTV1xWrrLNjjhUl2hIaxMbowd0Y8RL6Fn-lZ-N-Litn57lbrgCKmMnlf2GRhEvY2tSMu5Mri9Jpnr13cBdm2i0irY5xYbB_Q7mO9XnExmZwtEX7vXE5WOLr5cxBDWw1lJwtTtsZi7fuTf07NMVH2jlJui')">
+</div>
+<div class="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent flex items-center px-margin-desktop">
+<div class="max-w-xl text-white">
+<h1 class="font-display-xl text-display-xl mb-4">Diwali &amp; Navratri Collection</h1>
+<p class="font-body-lg text-body-lg mb-8 text-surface-container-low">Celebrate the festival of lights with curated traditional wear, authentic pooja essentials, and artisanal sweets.</p>
+<button class="bg-primary-container text-on-primary-container font-bold px-10 py-4 rounded-xl hover:scale-105 active:scale-95 transition-all shadow-lg">Shop Now</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Slider Controls -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
+<button class="w-3 h-3 rounded-full bg-primary-container"></button>
+<button class="w-3 h-3 rounded-full bg-white/50"></button>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="py-12 max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-4 md:grid-cols-8 gap-gutter">
+<!-- Category Item 1 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">shopping_basket</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Groceries</span>
+</a>
+<!-- Category Item 2 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">bakery_dining</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Sweets &amp; Snacks</span>
+</a>
+<!-- Category Item 3 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">festival</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Pooja &amp; Festival</span>
+</a>
+<!-- Category Item 4 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">apparel</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Clothing &amp; Sarees</span>
+</a>
+<!-- Category Item 5 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">diamond</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Jewellery</span>
+</a>
+<!-- Category Item 6 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">spa</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Ayurvedic</span>
+</a>
+<!-- Category Item 7 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">restaurant</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Restaurants</span>
+</a>
+<!-- Category Item 8 -->
+<a class="group flex flex-col items-center gap-3" href="#">
+<div class="w-20 h-20 rounded-full bg-surface-container-high flex items-center justify-center transition-all group-hover:bg-primary-container group-hover:scale-110">
+<span class="material-symbols-outlined text-primary group-hover:text-on-primary-container" style="font-size: 32px;">home</span>
+</div>
+<span class="font-label-md text-label-md text-center group-hover:text-primary transition-colors">Home &amp; Décor</span>
+</a>
+</div>
+</section>
+<!-- Shop By Festival Section -->
+<section class="py-12 bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<h2 class="font-headline-lg text-headline-lg mb-8 text-on-surface">Shop by Festival</h2>
+<div class="flex overflow-x-auto gap-6 pb-6 custom-scrollbar scroll-smooth">
+<!-- Festival Card 1 -->
+<div class="min-w-[280px] bg-surface rounded-2xl p-6 shadow-sm border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="w-full h-40 rounded-xl mb-4 bg-cover bg-center" data-alt="A close-up of vibrant festive decorations for Diwali, featuring intricate brass lamps and marigold flowers. The lighting is warm and cinematic, emphasizing a premium lifestyle aesthetic with a focus on tradition and quality." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA6NmyZW6GQ1xeL1EmpL0e1_vS0H3qEBJJT5Uo9SIuMuIGXN8s3GaXZX3GFH14Ar_y3LF4lsmycWcVSiUq7t-1GlcvdPcH1IwWWhSMhuoqPbGtytEi01noEMhLYME1e8ruLF-NbrKc_9h467BQa5WmDKNC15P08YqxVdGGaHNEgLmUkIlJSlB16zgRfT8WvaLPUR2vaXDQ09lJiumCsj97k7JW6sU10SUtaG4tZT893eutOi0h-_qvx')"></div>
+<h3 class="font-title-lg text-title-lg mb-1">Diwali</h3>
+<p class="font-body-md text-on-surface-variant mb-4">Pooja kits, lamps &amp; sweets</p>
+<span class="text-primary font-semibold flex items-center gap-2">Explore <span class="material-symbols-outlined">arrow_forward</span></span>
+</div>
+<!-- Festival Card 2 -->
+<div class="min-w-[280px] bg-surface rounded-2xl p-6 shadow-sm border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="w-full h-40 rounded-xl mb-4 bg-cover bg-center" data-alt="A colorful, festive scene representing Navratri with traditional Garba sticks (dandiya) crossed over a vibrant, embroidered fabric. The atmosphere is energetic and celebratory with bright, high-key lighting consistent with a modern e-commerce brand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBX7ru_YTGqqxOdiwD7d3nJnNphOUHcBR4pnsaMY8JRhHN1uwd82dZP8Kglmtg0l4o2oKweHozmecX3C-zPjE0C_zrSlzPOZVanYpVqVhiZdXwLJ7SRu_mwJ3Il4bzmis2JVzrr3-BXGg2B5qqymiyPPBujaVGm4ZlXXhsN2ep7ciJVuMC5fwbGK_0LbPvYzEZj_zY8nOEf4jDZcdUG4Uy6pIkvtPB85oGQS6L4kO6ghjwhMU_yGMlH')"></div>
+<h3 class="font-title-lg text-title-lg mb-1">Navratri</h3>
+<p class="font-body-md text-on-surface-variant mb-4">Clothing, jewelry &amp; snacks</p>
+<span class="text-primary font-semibold flex items-center gap-2">Explore <span class="material-symbols-outlined">arrow_forward</span></span>
+</div>
+<!-- Festival Card 3 -->
+<div class="min-w-[280px] bg-surface rounded-2xl p-6 shadow-sm border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="w-full h-40 rounded-xl mb-4 bg-cover bg-center" data-alt="A serene and beautiful display for Raksha Bandhan, showing a variety of colorful handmade Rakhis placed on a silver platter alongside traditional Indian sweets. The scene is elegant and emotionally resonant, shot with a shallow depth of field." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAvX-QYhE-SKVazihAroCTu3M0x0e_kA_KioaOt5vAk7eXPOFuz-xwRl5YkI68WMHwWRqu8mSL7KP5_KXm2nLaF_dif-mS2WhmDlbHzotRzhcR8AxsZAwGFr1uIkbgsSGC4dawGZdxeZSHRinaZ_objdLVVQYSZgdq9GiM33QVqL_tObQ6bmiWZLsT_n9-9HorcDZfSpN_2iq1WNwTOoHTEhPHuWk9__eA1mTr9uohZUAel8gdIvU2y')"></div>
+<h3 class="font-title-lg text-title-lg mb-1">Raksha Bandhan</h3>
+<p class="font-body-md text-on-surface-variant mb-4">Gifts &amp; designer Rakhis</p>
+<span class="text-primary font-semibold flex items-center gap-2">Explore <span class="material-symbols-outlined">arrow_forward</span></span>
+</div>
+<!-- Festival Card 4 -->
+<div class="min-w-[280px] bg-surface rounded-2xl p-6 shadow-sm border border-outline-variant hover:border-primary transition-colors cursor-pointer">
+<div class="w-full h-40 rounded-xl mb-4 bg-cover bg-center" data-alt="A festive arrangement for Ganesh Chaturthi, showcasing a small artistic clay idol of Ganesha surrounded by fresh red hibiscus flowers and traditional modak sweets. The lighting is soft and respectful, highlighting textures and colors." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCd-7x7TlkRa_6XO5UsYWpGKz0ied2DvTj2eDE5F51VOANfUse4OLJEmx-0fS5rXCvkC25vNZal9cB1McpacE_a0TBYQN-heGBqJrr3Pm3J8Vl1LEPwR17vdb3u5C9YpHafwKauRLa-RdlPkzfVSdobNrgiU_E_N82kg34tNd7D-Daqlk_VUfDhIZ4nS72zGOJaQXm-NuGipDAwlGGa1Z2DhWcBBqijkMmDukL9Aja7AHt5JZARUfA_')"></div>
+<h3 class="font-title-lg text-title-lg mb-1">Ganesh Chaturthi</h3>
+<p class="font-body-md text-on-surface-variant mb-4">Idols &amp; festive essentials</p>
+<span class="text-primary font-semibold flex items-center gap-2">Explore <span class="material-symbols-outlined">arrow_forward</span></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending Products Section -->
+<section class="py-16 max-w-container-max mx-auto px-margin-desktop">
+<div class="flex justify-between items-end mb-10">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Trending Products</h2>
+<p class="font-body-lg text-on-surface-variant">Handpicked favorites from across India</p>
+</div>
+<a class="text-secondary font-semibold hover:underline flex items-center gap-1" href="#">View All <span class="material-symbols-outlined">chevron_right</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Product Card Template -->
+<script>
+                    const products = [
+                        { name: "Alphonso Mangoes (1 Dozen)", seller: "Ratnagiri Farms", price: "£24.99", img_alt: "A premium display of golden, ripe Alphonso mangoes nestled in a wooden crate with fresh green leaves. The lighting is bright and natural, suggesting freshness and top-tier quality for a luxury grocery segment." },
+                        { name: "Kanjeevaram Silk Saree", seller: "Royal Weaves", price: "£185.00", img_alt: "A stunning close-up of a deep maroon Kanjeevaram silk saree with intricate gold zari borders. The fabric is draped elegantly to show its luxurious texture and shine, lit with professional studio lighting on a neutral cream background." },
+                        { name: "Handmade Brass Diya Set", seller: "Vedic Crafts", price: "£15.50", img_alt: "A pair of ornate, hand-carved brass oil lamps (diyas) placed on a polished marble surface. The metal glows with a warm, polished finish, reflecting soft ambient light in a premium home decor setting." },
+                        { name: "Premium Kaju Katli (500g)", seller: "Haldiram's UK", price: "£12.99", img_alt: "Perfectly sliced diamond-shaped Kaju Katli sweets arranged in a modern geometric pattern on a ceramic platter. The silver vark garnish catches the light, presented as a high-end gourmet food product." },
+                        { name: "Organic Turmeric Powder", seller: "Ayurveda Roots", price: "£4.50", img_alt: "Vibrant, deep orange-yellow turmeric powder in a rustic clay bowl, surrounded by whole turmeric roots. The shot is organic and tactile, emphasizing purity and health-conscious packaging." },
+                        { name: "Handcrafted Jhumkas", seller: "Jaipur Jewels", price: "£42.00", img_alt: "Exquisite gold-plated Jhumka earrings with pearl drops and intricate filigree work. The jewelry is displayed on a velvet stand, lit to highlight the fine craftsmanship and sparkle." },
+                        { name: "Premium Basmati Rice", seller: "Bharat Grocers", price: "£18.00", img_alt: "A burlap sack of long-grain extra-long basmati rice with some grains spilled artistically onto a wooden surface. The image conveys high quality and staple food luxury." },
+                        { name: "Incense Stick Gift Box", seller: "Aura Fragrances", price: "£9.99", img_alt: "A beautifully designed, premium gift box of assorted incense sticks featuring floral motifs. The box is partially open to show the elegant packaging inside, set in a calm, Zen-like atmosphere." }
+                    ];
+
+                    document.write(products.map(p => `
+                        <div class="product-card bg-surface rounded-xl overflow-hidden border border-outline-variant transition-all duration-300">
+                            <div class="aspect-square bg-surface-container-low relative overflow-hidden group">
+                                <div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110" 
+                                     style="background-image: url('placeholder')" 
+                                     data-alt="${p.img_alt}"></div>
+                                <button class="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur-sm rounded-full text-secondary hover:bg-white transition-all">
+                                    <span class="material-symbols-outlined">favorite</span>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <span class="font-label-md text-on-surface-variant mb-1 block">Sold by ${p.seller}</span>
+                                <h4 class="font-body-lg font-bold mb-2 text-on-surface line-clamp-1">${p.name}</h4>
+                                <div class="flex items-center justify-between mt-4">
+                                    <span class="text-secondary font-bold text-lg">${p.price}</span>
+                                    <button class="bg-tertiary text-white px-4 py-2 rounded-lg font-label-md hover:bg-on-tertiary-fixed-variant transition-colors active:scale-95">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join(''));
+                </script>
+</div>
+</section>
+<!-- Featured Merchants Section -->
+<section class="py-16 bg-surface-container">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<h2 class="font-headline-lg text-headline-lg mb-10 text-center">Featured Indian Merchants</h2>
+<div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+<!-- Merchant Card Template -->
+<script>
+                        const merchants = [
+                            { name: "Vedic Roots", rating: "4.8", products: "120+", bio: "Purest Ayurvedic supplies from Kerala." },
+                            { name: "Silk Route", rating: "4.9", products: "350+", bio: "Handloomed sarees and heritage textiles." },
+                            { name: "Bikanervala", rating: "4.7", products: "80+", bio: "Legendary sweets and savories." },
+                            { name: "Jaipur Art", rating: "4.6", products: "210+", bio: "Traditional home décor and silver." },
+                            { name: "Spice Bazaar", rating: "4.8", products: "150+", bio: "Directly sourced organic spices." }
+                        ];
+                        document.write(merchants.map(m => `
+                            <div class="bg-surface p-6 rounded-2xl text-center shadow-sm hover:shadow-md transition-shadow">
+                                <div class="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-surface-container-high overflow-hidden bg-white">
+                                    <div class="w-full h-full bg-cover bg-center" style="background-image: url('placeholder')" data-alt="A minimalist logo for an Indian merchant featuring elegant typography and a small traditional motif like a lotus or diya. Professional and modern."></div>
+                                </div>
+                                <h4 class="font-title-lg mb-1">${m.name}</h4>
+                                <div class="flex items-center justify-center gap-1 text-primary-container mb-2">
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                                    <span class="text-on-surface font-bold text-sm">${m.rating}</span>
+                                    <span class="text-on-surface-variant text-xs ml-1">(${m.products} items)</span>
+                                </div>
+                                <p class="text-on-surface-variant font-body-md text-sm mb-4 line-clamp-2">${m.bio}</p>
+                                <button class="w-full border border-secondary text-secondary py-2 rounded-xl font-label-md hover:bg-secondary hover:text-white transition-all">Follow Store</button>
+                            </div>
+                        `).join(''));
+                    </script>
+</div>
+</div>
+</section>
+<!-- Trust Section -->
+<section class="py-12 bg-surface max-w-container-max mx-auto px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-y border-outline-variant py-10">
+<div class="flex items-center gap-6">
+<div class="p-4 bg-surface-container rounded-2xl">
+<span class="material-symbols-outlined text-primary text-4xl">verified_user</span>
+</div>
+<div>
+<h4 class="font-title-lg">Verified Merchants</h4>
+<p class="font-body-md text-on-surface-variant">Direct from trusted Indian brands.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="p-4 bg-surface-container rounded-2xl">
+<span class="material-symbols-outlined text-primary text-4xl">local_shipping</span>
+</div>
+<div>
+<h4 class="font-title-lg">UK-Wide Delivery</h4>
+<p class="font-body-md text-on-surface-variant">Express delivery to your doorstep.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="p-4 bg-surface-container rounded-2xl">
+<span class="material-symbols-outlined text-primary text-4xl">security</span>
+</div>
+<div>
+<h4 class="font-title-lg">Secure Checkout</h4>
+<p class="font-body-md text-on-surface-variant">PCI-compliant 256-bit encryption.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- SideNavBar (Contextual WhatsApp/Support) -->
+<div class="fixed bottom-6 right-6 z-50 flex items-center justify-center">
+<a class="bg-tertiary text-white shadow-lg rounded-full p-4 flex items-center gap-3 scale-110 active:scale-95 transition-transform duration-300" href="https://wa.me/yournumber" target="_blank">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="font-label-md hidden md:block">Chat on WhatsApp</span>
+</a>
+</div>
+<!-- Footer -->
+<footer class="w-full pt-16 pb-8 bg-surface-container dark:bg-surface-container-lowest border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter mb-12">
+<!-- Brand Info -->
+<div>
+<a class="font-headline-md text-headline-md font-bold text-primary mb-6 block" href="#">BharatMart UK</a>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Bringing the heart of Indian markets to the UK. Quality, authenticity, and community at every step.</p>
+<div class="flex gap-4 mt-6">
+<a class="p-2 bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">face_nod</span></a>
+<a class="p-2 bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">share</span></a>
+<a class="p-2 bg-white rounded-full text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined">public</span></a>
+</div>
+</div>
+<!-- Shop -->
+<div>
+<h4 class="font-title-lg text-title-lg text-primary mb-6">Shop Categories</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Groceries</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Sweets &amp; Snacks</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Pooja &amp; Festival</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Clothing &amp; Sarees</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Jewellery</a></li>
+</ul>
+</div>
+<!-- Merchant -->
+<div>
+<h4 class="font-title-lg text-title-lg text-primary mb-6">For Merchants</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Become a Seller</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Merchant Login</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Merchant Support</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Seller FAQ</a></li>
+</ul>
+</div>
+<!-- Company -->
+<div>
+<h4 class="font-title-lg text-title-lg text-primary mb-6">About Us</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Our Story</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Contact Us</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="font-body-md text-on-surface-variant hover:underline transition-colors" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-desktop pt-8 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-label-md text-label-md text-on-surface-variant">© 2024 BharatMart UK. All rights reserved.</p>
+<div class="flex gap-6">
+<div class="h-6 w-10 bg-white rounded-sm"></div> <!-- Payment Icons Placeholder -->
+<div class="h-6 w-10 bg-white rounded-sm"></div>
+<div class="h-6 w-10 bg-white rounded-sm"></div>
+</div>
+</div>
+</footer>
+<script>
+        // Simple Micro-interactions
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('mouseenter', () => {
+                btn.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        const searchWrapper = searchInput.parentElement;
+        searchInput.addEventListener('focus', () => {
+            searchWrapper.classList.add('scale-[1.01]');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchWrapper.classList.remove('scale-[1.01]');
+        });
+    </script>
+</body></html>

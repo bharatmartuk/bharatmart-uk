@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BharatMart Merchant - Store Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed": "#281900",
+                        "background": "#fff8f0",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#135224",
+                        "on-surface": "#1e1b16",
+                        "on-secondary-fixed": "#410004",
+                        "error": "#ba1a1a",
+                        "primary-container": "#e8a317",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#80bf85",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed-dim": "#96d69a",
+                        "tertiary-fixed": "#b1f2b4",
+                        "tertiary": "#2e6a39",
+                        "surface-container-highest": "#e8e2d9",
+                        "inverse-primary": "#ffba3e",
+                        "on-tertiary-fixed": "#002108",
+                        "primary-fixed": "#ffdeae",
+                        "primary": "#7f5700",
+                        "on-primary-fixed-variant": "#604100",
+                        "on-secondary-fixed-variant": "#881e20",
+                        "surface": "#fff8f0",
+                        "outline-variant": "#d6c4ad",
+                        "on-background": "#1e1b16",
+                        "surface-dim": "#dfd9d0",
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#7f5700",
+                        "surface-container-high": "#eee7de",
+                        "secondary-fixed": "#ffdad7",
+                        "on-tertiary-container": "#0e4e21",
+                        "surface-variant": "#e8e2d9",
+                        "primary-fixed-dim": "#ffba3e",
+                        "on-secondary-container": "#720b12",
+                        "inverse-on-surface": "#f7f0e7",
+                        "surface-bright": "#fff8f0",
+                        "outline": "#837561",
+                        "on-primary-container": "#5b3d00",
+                        "surface-container": "#f4ede4",
+                        "surface-container-low": "#f9f3ea",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#ffb3ae",
+                        "inverse-surface": "#33302a",
+                        "secondary-container": "#ff7670",
+                        "secondary": "#a83635",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#514534"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "gutter": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Montserrat"],
+                        "title-lg": ["Inter"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "label-md": ["Inter"],
+                        "headline-md": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .form-focus-ring:focus {
+            border-color: #e8a317;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(232, 163, 23, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface-container-low shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 w-full max-w-container-max mx-auto">
+<div class="font-display-xl text-display-xl font-bold text-primary dark:text-primary-fixed-dim">
+                BharatMart Merchant
+            </div>
+<nav class="hidden md:flex items-center gap-8 font-title-lg text-title-lg">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Orders</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Inventory</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 active:opacity-80 transition-all" href="#">Onboarding</a>
+</nav>
+<div class="flex items-center gap-4 text-primary dark:text-primary-fixed-dim">
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 w-full max-w-container-max mx-auto overflow-hidden">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 hidden lg:flex flex-col bg-surface-container-low dark:bg-surface-container-lowest flex flex-col gap-base p-6">
+<div class="mb-8">
+<h2 class="font-headline-md text-headline-md text-primary">Onboarding</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Step 3 of 4</p>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="text-on-surface-variant p-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg transition-all cursor-not-allowed opacity-60">
+<span class="material-symbols-outlined">business</span>
+<span class="font-body-md text-body-md">Business Details</span>
+</div>
+<div class="text-on-surface-variant p-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg transition-all cursor-not-allowed opacity-60">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md">Documents</span>
+</div>
+<div class="text-secondary font-bold bg-secondary-container rounded-lg p-3 flex items-center gap-3 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-body-md text-body-md">Store Setup</span>
+</div>
+<div class="text-on-surface-variant p-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg transition-all opacity-40">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="font-body-md text-body-md">Review</span>
+</div>
+</nav>
+<div class="mt-auto">
+<button class="w-full text-secondary border border-secondary font-bold py-3 rounded-lg hover:bg-secondary hover:text-white transition-all active:scale-95">
+                    Save Draft
+                </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-margin-mobile md:px-margin-desktop py-12 overflow-y-auto">
+<div class="max-w-2xl">
+<header class="mb-10">
+<h1 class="font-headline-lg text-headline-lg mb-2">Configure Your Storefront</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Set the identity and delivery reach for your digital marketplace. This information will be visible to your customers.</p>
+</header>
+<form class="space-y-10">
+<!-- Store Name -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider" for="store_name">Store Name</label>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-4 font-body-lg text-body-lg form-focus-ring" id="store_name" placeholder="e.g. Royal Spices &amp; Co." type="text"/>
+</div>
+<!-- Store Logo -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider">Store Logo</label>
+<div class="flex items-center gap-8">
+<div class="w-32 h-32 rounded-full bg-surface-container flex items-center justify-center border-2 border-dashed border-outline overflow-hidden group hover:border-primary transition-colors cursor-pointer relative" id="logo-preview-container">
+<div class="text-center" id="logo-placeholder">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-4xl">add_photo_alternate</span>
+</div>
+<img class="hidden object-cover w-full h-full" data-alt="A clean, minimalist merchant store logo with an abstract Indian mandala motif in saffron and maroon, presented on a pure white background with professional product-style lighting for a premium e-commerce portal." id="logo-preview" src=""/>
+</div>
+<div class="flex-1">
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Upload a square image (min 500x500px). Supports JPG, PNG or WebP.</p>
+<button class="text-secondary font-bold py-2 px-4 border border-secondary rounded-lg hover:bg-secondary-container transition-all" onclick="document.getElementById('logo-upload').click()" type="button">
+                                    Choose File
+                                </button>
+<input accept="image/*" class="hidden" id="logo-upload" onchange="previewLogo(this)" type="file"/>
+</div>
+</div>
+</div>
+<!-- Store Description -->
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider" for="store_desc">Short Store Description</label>
+<span class="font-label-md text-label-md text-on-surface-variant" id="char-count">0/250</span>
+</div>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-4 font-body-lg text-body-lg form-focus-ring resize-none" id="store_desc" maxlength="250" oninput="updateCharCount(this)" placeholder="Tell customers about your products and heritage..." rows="4"></textarea>
+</div>
+<!-- Delivery Areas -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface uppercase tracking-wider" for="postcodes">Delivery Areas / Postcodes</label>
+<div class="relative">
+<span class="absolute left-4 top-4 text-on-surface-variant">
+<span class="material-symbols-outlined">location_on</span>
+</span>
+<input class="w-full bg-white border border-outline-variant rounded-lg p-4 pl-12 font-body-lg text-body-lg form-focus-ring" id="postcodes" placeholder="NW1, E1, SE10, HA9..." type="text"/>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant italic">Enter comma-separated UK postcodes where you provide home delivery.</p>
+</div>
+<!-- Navigation Controls -->
+<div class="flex items-center justify-between pt-8 border-t border-outline-variant">
+<button class="flex items-center gap-2 text-secondary font-bold hover:underline transition-all" type="button">
+<span class="material-symbols-outlined">arrow_back</span>
+                            Back
+                        </button>
+<div class="flex gap-4">
+<button class="bg-secondary text-white px-8 py-3 rounded-lg font-bold shadow-md hover:opacity-90 active:scale-95 transition-all" type="button">
+                                Save &amp; Continue
+                            </button>
+</div>
+</div>
+</form>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-surface-container-low w-full py-8">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop gap-4 w-full max-w-container-max mx-auto">
+<div class="font-label-md text-label-md text-on-surface-variant">
+                © 2024 BharatMart UK Merchant Portal
+            </div>
+<div class="flex gap-base">
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Privacy Policy</a>
+<span class="text-outline">|</span>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Terms of Service</a>
+<span class="text-outline">|</span>
+<a class="text-on-surface-variant font-label-md text-label-md hover:text-secondary transition-colors duration-200" href="#">Merchant Support</a>
+</div>
+</div>
+</footer>
+<!-- WhatsApp Floating Action Button (FAB) - Suppressed on Details as per mandate, but logic included for demonstration -->
+<!-- Not rendered here due to "Contextual FAB Suppression" rule for Task-Focused screens -->
+<script>
+        function updateCharCount(textarea) {
+            const count = textarea.value.length;
+            document.getElementById('char-count').innerText = `${count}/250`;
+        }
+
+        function previewLogo(input) {
+            const preview = document.getElementById('logo-preview');
+            const placeholder = document.getElementById('logo-placeholder');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Simple animation effect for interactions
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

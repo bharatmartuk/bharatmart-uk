@@ -1,0 +1,32 @@
+{
+  "name": "@bharatmart/services",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@bharatmart/database": "workspace:*",
+    "@bharatmart/types": "workspace:*",
+    "@bharatmart/validation": "workspace:*",
+    "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.10.0",
+    "resend": "^6.17.2",
+    "server-only": "^0.0.1",
+    "stripe": "^22.3.2"
+  },
+  "devDependencies": {
+    "@bharatmart/config": "workspace:*",
+    "@types/bcryptjs": "^3.0.0",
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3"
+  }
+}
