@@ -13,7 +13,10 @@ export const merchantRepository = {
 
   findFeatured(limit: number) {
     return prisma.merchant.findMany({
-      where: { verificationStatus: 'APPROVED' },
+      where: {
+        verificationStatus: 'APPROVED',
+        products: { some: {} },
+      },
       include: { _count: { select: { products: true } } },
       orderBy: [{ avgRating: 'desc' }, { createdAt: 'asc' }],
       take: limit,

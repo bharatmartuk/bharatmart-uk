@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star } from 'lucide-react'
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
+import { Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import type { FeaturedMerchant } from '@bharatmart/services'
 
 export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[] }) {
@@ -39,14 +39,13 @@ export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[]
                 <p className="mt-3 line-clamp-2 min-h-10 text-sm text-[#514534]">
                   {merchant.storeDescription || 'Authentic Indian products from a trusted UK seller.'}
                 </p>
-                <Button
-                  asChild
-                  className="mt-4 w-full border-[#a83635] text-[#a83635] hover:bg-[#a83635] hover:text-white"
-                  size="sm"
-                  variant="outline"
+                <Link
+                  aria-label={`Browse products from ${merchant.storeName}`}
+                  className="mt-4 inline-flex h-8 w-full items-center justify-center rounded-md border border-[#a83635] bg-white px-3 text-xs font-medium text-[#a83635] transition-colors hover:bg-[#f9f3ea] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a83635]/40"
+                  href={`/products?merchantId=${merchant.id}`}
                 >
-                  <Link href={`/products?merchantId=${merchant.id}`}>Visit Store</Link>
-                </Button>
+                  Visit Store
+                </Link>
               </CardContent>
             </Card>
           ))}
