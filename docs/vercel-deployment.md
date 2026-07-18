@@ -12,17 +12,17 @@ This monorepo has **three separate Next.js apps**. Prefer one Vercel project per
 
 [https://bharatmart-uk.vercel.app](https://bharatmart-uk.vercel.app) must serve the **ecommerce storefront**.
 
-### Preferred setup
+### Preferred setup (do this when you can)
 
-1. Vercel → **bharatmart-uk** → Settings → General → **Root Directory** = `apps/web`
-2. Build uses [`apps/web/vercel.json`](../apps/web/vercel.json) (`--filter=@bharatmart/web`)
+1. Vercel → **bharatmart-uk** → Settings → General → **Root Directory** = `apps/web` (not `apps/admin`)
+2. Switch [`apps/admin/vercel.json`](../apps/admin/vercel.json) build back to `--filter=@bharatmart/admin` (or use a separate admin project)
 3. Redeploy
 
-### Temporary bridge (if Root Directory is still `apps/admin`)
+### Temporary bridge (Root Directory still `apps/admin`)
 
-[`apps/admin/vercel.json`](../apps/admin/vercel.json) runs [`scripts/vercel-build-marketplace.sh`](../scripts/vercel-build-marketplace.sh), which builds `@bharatmart/web` and stages its `.next` for this project so `/` is the marketplace even when Root Directory has not been moved yet.
+[`apps/admin/vercel.json`](../apps/admin/vercel.json) runs [`scripts/vercel-build-marketplace.sh`](../scripts/vercel-build-marketplace.sh): it mirrors `apps/web` source into `apps/admin`, then builds `@bharatmart/admin` so tracing paths match the Root Directory. Do **not** copy only `.next` from web — that causes runtime 500s.
 
-For a real admin deployment, create a **separate** project with Root Directory `apps/admin` and build `--filter=@bharatmart/admin` (do not use the marketplace bridge script there).
+For a real admin deployment, create a **separate** project with Root Directory `apps/admin` and build `--filter=@bharatmart/admin` (do not use the marketplace bridge there).
 
 ## Web project env
 
