@@ -110,7 +110,7 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
   return {
     adapter: createAdapter(),
     session: { strategy: 'jwt' },
-    secret: process.env.AUTH_SECRET,
+    ...(process.env.AUTH_SECRET ? { secret: process.env.AUTH_SECRET } : {}),
     trustHost: true,
     pages: {
       signIn: '/login',
