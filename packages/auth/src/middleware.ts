@@ -9,6 +9,23 @@ function isUserRole(value: unknown): value is UserRoleType {
 }
 
 /**
+ * Auth.js sets `__Secure-authjs.session-token` on HTTPS. getToken() picks the
+ * cookie name from AUTH_URL by default — a wrong/localhost AUTH_URL on Vercel
+ * makes middleware miss the session and bounce users back to /login.
+ */
+async function readSessionToken(req: NextRequest, secret: string) {
+  const preferSecure =
+    req.nextUrl.protocol === 'https:' ||
+    process.env.VERCEL === '1' ||
+    process.env.AUTH_URL?.startsWith('https://') === true
+
+  const primary = await getToken({ req, secret, secureCookie: preferSecure })
+  if (primary) return primary
+
+  return getToken({ req, secret, secureCookie: !preferSecure })
+}
+
+/**
  * Edge-safe middleware factory for merchant/admin apps.
  * Uses JWT cookies only (no Prisma) so it can run on the Edge runtime.
  */
@@ -29,10 +46,7 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
       return NextResponse.redirect(new URL('/login', req.url))
     }
 
-    const token = await getToken({
-      req,
-      secret,
-    })
+    const token = await readSessionToken(req, secret)
 
     if (!token) {
       // Let API routes return JSON 401 instead of an HTML login redirect.
@@ -80,7 +94,7 @@ export function createMerchantPortalMiddleware() {
       return NextResponse.redirect(new URL('/login', req.url))
     }
 
-    const token = await getToken({ req, secret })
+    const token = await readSessionToken(req, secret)
 
     if (!token) {
       if (pathname.startsWith('/api/')) {

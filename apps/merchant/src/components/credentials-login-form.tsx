@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { safeInternalPath } from '@bharatmart/utils'
 import { Button, Input, Label } from '@bharatmart/ui'
 
@@ -18,7 +18,6 @@ export function CredentialsLoginForm({
   subtitle,
   defaultRedirect = '/',
 }: CredentialsLoginFormProps) {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? defaultRedirect
   const [email, setEmail] = useState('')
@@ -45,8 +44,8 @@ export function CredentialsLoginForm({
       return
     }
 
-    router.push(safeInternalPath(callbackUrl, '/', result?.url))
-    router.refresh()
+    // Hard navigation so middleware sees the new session cookie immediately.
+    window.location.assign(safeInternalPath(callbackUrl, '/', result?.url))
   }
 
   async function onGoogleSignIn() {
