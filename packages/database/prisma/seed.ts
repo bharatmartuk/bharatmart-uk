@@ -3,6 +3,8 @@ import {
   BusinessType,
   MerchantOrderStatus,
   MerchantVerificationStatus,
+  PaymentMethod,
+  PaymentStatus,
   PrismaClient,
   ProductStatus,
   UserRole,
@@ -760,6 +762,8 @@ async function seedOrders(
         totalInPence,
         deliveryFeeInPence: orderSeed.deliveryFeeInPence,
         discountInPence: orderSeed.discountInPence,
+        paymentStatus: PaymentStatus.CAPTURED,
+        paymentMethod: PaymentMethod.CARD,
         placedAt: orderSeed.placedAt,
       },
       create: {
@@ -769,6 +773,8 @@ async function seedOrders(
         totalInPence,
         deliveryFeeInPence: orderSeed.deliveryFeeInPence,
         discountInPence: orderSeed.discountInPence,
+        paymentStatus: PaymentStatus.CAPTURED,
+        paymentMethod: PaymentMethod.CARD,
         placedAt: orderSeed.placedAt,
       },
     })
@@ -994,6 +1000,10 @@ async function printSummary() {
   console.log('BharatMart seed complete:')
   console.log({ users, merchants, categories, products: productsCount, images, orders, reviews, banners })
   console.log(`Demo password for seeded users: ${DEMO_PASSWORD}`)
+  console.log('Key logins:')
+  console.log('- Admin:    admin@bharatmart.uk')
+  console.log('- Customer: ananya.patel@bharatmart.uk (orders + demo cart on web)')
+  console.log('- Merchant: ganesh.grocers@bharatmart.uk (and other *@bharatmart.uk merchants)')
 }
 
 async function main() {
