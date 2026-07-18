@@ -16,6 +16,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
+    "db:wipe-marketplace": "tsx prisma/wipe-marketplace.ts",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",
     "build": "prisma generate"
