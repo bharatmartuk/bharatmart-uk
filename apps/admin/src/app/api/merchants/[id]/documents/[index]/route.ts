@@ -6,10 +6,11 @@ export const runtime = 'nodejs'
 
 function parseDataUrl(dataUrl: string) {
   const match = /^data:([^;,]+)?(?:;charset=[^;,]+)?;base64,(.+)$/i.exec(dataUrl)
-  if (!match) return null
+  const base64 = match?.[2]
+  if (!base64) return null
   return {
     contentType: match[1] || 'application/octet-stream',
-    buffer: Buffer.from(match[2], 'base64'),
+    buffer: Buffer.from(base64, 'base64'),
   }
 }
 
