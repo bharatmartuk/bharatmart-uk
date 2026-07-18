@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: [
@@ -9,6 +11,12 @@ const nextConfig = {
     '@bharatmart/validation',
     '@bharatmart/auth',
   ],
+  // Monorepo: include Prisma engines in the serverless bundle.
+  outputFileTracingRoot: path.join(__dirname, '../..'),
+  outputFileTracingIncludes: {
+    '/**': ['./../../packages/database/generated/client/**/*'],
+  },
+  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
   images: {
     remotePatterns: [
       {

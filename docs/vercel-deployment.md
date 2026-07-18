@@ -31,6 +31,15 @@ Set these on all three projects:
 - `RESEND_API_KEY`
 - `RESEND_FROM_EMAIL`
 
+## Required for Auth.js (fixes `/api/auth/session` 500)
+
+Without these, production shows `MissingSecret` / “problem with the server configuration”:
+
+- `AUTH_SECRET` — generate with `openssl rand -base64 32`
+- `AUTH_URL` — the exact public URL of that app (e.g. `https://bharatmart-uk.vercel.app`)
+- `AUTH_TRUST_HOST=true`
+
+Also ensure `DATABASE_URL` points at your Neon pooler URL so login/session DB lookups work.
 ## Auth secret decision
 
 Use **one shared `AUTH_SECRET`** across web/merchant/admin only if you intentionally want a shared Auth.js cookie/session namespace. Prefer **distinct `AUTH_SECRET` values per app** for fully separate sessions (recommended for this marketplace, because roles and dashboards are isolated).
