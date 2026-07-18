@@ -50,7 +50,7 @@ export function MerchantShell({
         </div>
       </header>
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 md:grid-cols-[220px_minmax(0,1fr)] md:px-8">
-        <aside className="flex flex-col gap-1">
+        <aside>
           <nav aria-label="Merchant" className="space-y-1">
             {nav.map(([label, href, Icon]) => {
               const active = isActivePath(pathname, href)
@@ -72,14 +72,6 @@ export function MerchantShell({
               )
             })}
           </nav>
-          <button
-            className="mt-4 flex items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-medium text-[#514534] transition hover:bg-[#f4ede4] hover:text-[#7f5700] md:mt-auto"
-            onClick={() => void signOut({ callbackUrl: '/login' })}
-            type="button"
-          >
-            <LogOut className="h-4 w-4" />
-            Log out
-          </button>
         </aside>
         <div>{children}</div>
       </div>
