@@ -30,7 +30,7 @@ For a real admin deployment, create a **separate** project with Root Directory `
 - `AUTH_SECRET` (unique for web)
 - `AUTH_URL` = `https://bharatmart-uk.vercel.app`
 - `AUTH_TRUST_HOST` = `true`
-- `NEXT_PUBLIC_MERCHANT_APP_URL` = merchant project URL (after you create it)
+- `NEXT_PUBLIC_MERCHANT_APP_URL` = full merchant origin, e.g. `https://bharatmart-uk-merchant-theta.vercel.app` (include `https://`, no trailing slash)
 
 After deploy, `/` is the storefront and `/login` is **customer** login.
 
