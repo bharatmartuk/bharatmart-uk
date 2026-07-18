@@ -84,7 +84,6 @@ export function VerificationDocuments({
                   title={label}
                 />
               ) : (
-                // eslint-disable-next-line @next/next/no-img-element -- preview via authenticated API
                 <img
                   alt={label}
                   className="max-h-72 w-full rounded-lg bg-white object-contain"
