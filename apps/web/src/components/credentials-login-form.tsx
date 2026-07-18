@@ -21,7 +21,6 @@ export function CredentialsLoginForm({
   subtitle,
   defaultRedirect = '/',
 }: CredentialsLoginFormProps) {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? defaultRedirect
   const [error, setError] = useState<string | null>(null)
