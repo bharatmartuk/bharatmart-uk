@@ -61,6 +61,33 @@ Then set `NEXT_PUBLIC_MERCHANT_APP_URL` on the **web** project and redeploy.
 - Cloudinary / Stripe / Resend as needed
 - `AUTH_SECRET`, `AUTH_URL`, `AUTH_TRUST_HOST=true` per app
 - Web only: `NEXT_PUBLIC_MERCHANT_APP_URL`
+- Google login (web + merchant): `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+
+## Google sign-in (web + merchant)
+
+Google only appears when both env vars are set on that Vercel project. Production currently exposes **credentials only** until you add them.
+
+1. **Vercel → each project** (`bharatmart-uk` and `bharatmart-uk-merchant`) → Settings → Environment Variables → add (Production + Preview):
+
+| Name | Value |
+| --- | --- |
+| `GOOGLE_CLIENT_ID` | from Google Cloud Console (same as local `.env.local`) |
+| `GOOGLE_CLIENT_SECRET` | from Google Cloud Console |
+
+2. **Google Cloud Console** → APIs & Services → Credentials → your OAuth 2.0 Client → **Authorized redirect URIs** must include:
+
+- `https://bharatmart-uk.vercel.app/api/auth/callback/google`
+- `https://bharatmart-uk-merchant-theta.vercel.app/api/auth/callback/google`  
+  (use your real merchant host)
+
+Also keep local URIs if you develop locally:
+
+- `http://localhost:3000/api/auth/callback/google`
+- `http://localhost:3001/api/auth/callback/google`
+
+3. Redeploy **both** projects after saving env vars.
+
+4. Confirm: open `/api/auth/providers` — the JSON should include a `"google"` entry.
 
 ## Seed production
 

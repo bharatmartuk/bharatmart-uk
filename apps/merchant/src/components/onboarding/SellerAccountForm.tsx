@@ -8,8 +8,10 @@ import { signIn } from 'next-auth/react'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
 import { Button, Input, Label } from '@bharatmart/ui'
 import { registerSellerAccountAction } from '@/app/(onboarding)/register-actions'
+import { useGoogleAuthAvailable } from '@/hooks/use-google-auth-available'
 
 export function SellerAccountForm() {
+  const googleAvailable = useGoogleAuthAvailable()
   const [error, setError] = useState<string | null>(null)
   const {
     register,
@@ -91,22 +93,26 @@ export function SellerAccountForm() {
         </Button>
       </form>
 
-      <div className="flex items-center gap-3" aria-hidden="true">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          or
-        </span>
-        <div className="h-px flex-1 bg-border" />
-      </div>
+      {googleAvailable ? (
+        <>
+          <div className="flex items-center gap-3" aria-hidden="true">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              or
+            </span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
 
-      <Button
-        className="w-full"
-        onClick={() => void onGoogleSignUp()}
-        type="button"
-        variant="outline"
-      >
-        Continue with Google
-      </Button>
+          <Button
+            className="w-full"
+            onClick={() => void onGoogleSignUp()}
+            type="button"
+            variant="outline"
+          >
+            Continue with Google
+          </Button>
+        </>
+      ) : null}
 
       <p className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}
