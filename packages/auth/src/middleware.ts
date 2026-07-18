@@ -77,15 +77,12 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
  */
 export function createMerchantPortalMiddleware() {
   const onboardingPaths = ['/register-business', '/verification-pending']
+  const publicPaths = ['/login', '/forbidden', '/api/auth', '/register-business']
 
   return async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl
 
-    if (
-      pathname.startsWith('/login') ||
-      pathname.startsWith('/forbidden') ||
-      pathname.startsWith('/api/auth')
-    ) {
+    if (publicPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
       return NextResponse.next()
     }
 
