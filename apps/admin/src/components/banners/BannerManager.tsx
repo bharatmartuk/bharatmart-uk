@@ -71,6 +71,15 @@ function toForm(banner: BannerRow): BannerFormInput {
   }
 }
 
+/** Relative paths live on the storefront (`/carousel/...`), not the admin app. */
+function resolveBannerImageUrl(url: string) {
+  if (!url.startsWith('/')) return url
+  const base = (
+    process.env.NEXT_PUBLIC_WEB_APP_URL?.trim() || 'https://bharatmart-uk.vercel.app'
+  ).replace(/\/$/, '')
+  return `${base}${url}`
+}
+
 function SortableBannerCard({
   banner,
   editing,
@@ -116,7 +125,14 @@ function SortableBannerCard({
         </button>
 
         <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded-md bg-[#f4ede4]">
-          <Image alt="" className="object-cover" fill sizes="128px" src={banner.imageUrl} unoptimized />
+          <Image
+            alt=""
+            className="object-cover"
+            fill
+            sizes="128px"
+            src={resolveBannerImageUrl(banner.imageUrl)}
+            unoptimized
+          />
         </div>
 
         <div className="min-w-0 flex-1 space-y-1">
@@ -284,7 +300,7 @@ function BannerFields({
         <Label>Image URL</Label>
         <Input
           onChange={(event) => onChange((current) => ({ ...current, imageUrl: event.target.value }))}
-          placeholder="https://…"
+          placeholder="https://… or /carousel/my-slide.png"
           value={form.imageUrl}
         />
       </div>
@@ -307,7 +323,14 @@ function BannerFields({
         />
         {form.imageUrl ? (
           <div className="relative mt-2 h-32 w-full max-w-md overflow-hidden rounded-md bg-[#f4ede4]">
-            <Image alt="" className="object-cover" fill sizes="400px" src={form.imageUrl} unoptimized />
+            <Image
+              alt=""
+              className="object-cover"
+              fill
+              sizes="400px"
+              src={resolveBannerImageUrl(form.imageUrl)}
+              unoptimized
+            />
           </div>
         ) : null}
         {uploadError ? <p className="text-xs text-[#a83635]">{uploadError}</p> : null}

@@ -47,6 +47,7 @@ After deploy, `/` is the storefront and `/login` is **customer** login.
 2. **Root Directory:** `apps/admin`
 3. Build: `cd ../.. && pnpm turbo run build --filter=@bharatmart/admin`
 4. Env: own `AUTH_SECRET` / `AUTH_URL` / `AUTH_TRUST_HOST=true`
+   - `NEXT_PUBLIC_WEB_APP_URL` = storefront origin, e.g. `https://bharatmart-uk.vercel.app` (so carousel thumbnails that use `/carousel/...` paths load from the marketplace)
 5. Deploy.
 
 Then set `NEXT_PUBLIC_MERCHANT_APP_URL` on the **web** project and redeploy.
