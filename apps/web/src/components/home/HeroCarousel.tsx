@@ -6,6 +6,23 @@ import { useEffect, useState } from 'react'
 import { Button } from '@bharatmart/ui'
 import type { BannerSummary } from '@bharatmart/services'
 
+function carouselImageSrc(url: string) {
+  // Prefer same-origin relative paths so next/image does not need remote config.
+  try {
+    if (url.startsWith('/')) return url
+    const parsed = new URL(url)
+    if (
+      parsed.hostname === 'bharatmart-uk.vercel.app' ||
+      parsed.hostname.endsWith('.vercel.app')
+    ) {
+      return `${parsed.pathname}${parsed.search}`
+    }
+  } catch {
+    // keep original
+  }
+  return url
+}
+
 export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -46,7 +63,7 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
               fill
               priority={index === 0}
               sizes="100vw"
-              src={banner.imageUrl}
+              src={carouselImageSrc(banner.imageUrl)}
               unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent">
