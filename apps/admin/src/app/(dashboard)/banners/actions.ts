@@ -2,13 +2,9 @@
 
 import { revalidatePath } from 'next/cache'
 import { BannerAdminService } from '@bharatmart/services'
+import { getCurrentUser } from '@/auth'
 
-export async function reorderBannersAction(orderedIds: string[]) {
-  await BannerAdminService.reorder(orderedIds)
-  revalidatePath('/banners')
-}
-
-export async function createBannerAction(input: {
+export type BannerFormInput = {
   headline: string
   subtext: string
   ctaText: string
@@ -16,16 +12,63 @@ export async function createBannerAction(input: {
   startDate: string
   endDate: string
   imageUrl: string
-}) {
+  isActive: boolean
+}
+
+async function requireAdminUser() {
+  const admin = await getCurrentUser()
+  if (!admin) throw new Error('Unauthorized')
+  return admin
+}
+
+export async function reorderBannersAction(orderedIds: string[]) {
+  await requireAdminUser()
+  await BannerAdminService.reorder(orderedIds)
+  revalidatePath('/banners')
+}
+
+export async function createBannerAction(input: BannerFormInput) {
+  await requireAdminUser()
+  const existing = await BannerAdminService.list()
+  const nextOrder = existing.reduce((max, banner) => Math.max(max, banner.sortOrder), 0) + 1
+
   await BannerAdminService.create({
     imageUrl: input.imageUrl,
-    headline: input.headline,
-    subtext: input.subtext,
-    ctaText: input.ctaText,
-    ctaLink: input.ctaLink,
+    headline: input.headline.trim(),
     startDate: new Date(input.startDate),
-    endDate: new Date(input.endDate),
-    isActive: true,
+    endDate: new Date(`${input.endDate}T23:59:59.000Z`),
+    isActive: input.isActive,
+    sortOrder: nextOrder,
+    ...(input.subtext.trim() ? { subtext: input.subtext.trim() } : {}),
+    ...(input.ctaText.trim() ? { ctaText: input.ctaText.trim() } : {}),
+    ...(input.ctaLink.trim() ? { ctaLink: input.ctaLink.trim() } : {}),
   })
+  revalidatePath('/banners')
+}
+
+export async function updateBannerAction(id: string, input: BannerFormInput) {
+  await requireAdminUser()
+  await BannerAdminService.update(id, {
+    imageUrl: input.imageUrl,
+    headline: input.headline.trim(),
+    subtext: input.subtext.trim() || null,
+    ctaText: input.ctaText.trim() || null,
+    ctaLink: input.ctaLink.trim() || null,
+    startDate: new Date(input.startDate),
+    endDate: new Date(`${input.endDate}T23:59:59.000Z`),
+    isActive: input.isActive,
+  })
+  revalidatePath('/banners')
+}
+
+export async function toggleBannerActiveAction(id: string, isActive: boolean) {
+  await requireAdminUser()
+  await BannerAdminService.update(id, { isActive })
+  revalidatePath('/banners')
+}
+
+export async function deleteBannerAction(id: string) {
+  await requireAdminUser()
+  await BannerAdminService.delete(id)
   revalidatePath('/banners')
 }

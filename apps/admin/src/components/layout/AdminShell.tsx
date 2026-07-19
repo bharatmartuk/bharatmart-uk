@@ -10,7 +10,7 @@ const nav = [
   ['Overview', '/', LayoutDashboard],
   ['Merchants', '/merchants', Store],
   ['Categories', '/categories', FolderTree],
-  ['Banners', '/banners', Flag],
+  ['Carousel', '/banners', Flag],
   ['Orders', '/orders', ShoppingBag],
   ['Support', '/support-tickets', LifeBuoy],
 ] as const

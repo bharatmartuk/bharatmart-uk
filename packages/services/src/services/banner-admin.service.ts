@@ -65,4 +65,8 @@ export const BannerAdminService = {
       ),
     )
   },
+
+  delete(id: string) {
+    return prisma.banner.delete({ where: { id } })
+  },
 }
