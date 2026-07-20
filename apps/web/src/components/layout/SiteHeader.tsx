@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Menu, Search } from 'lucide-react'
 import { Button, Input } from '@bharatmart/ui'
@@ -23,10 +24,17 @@ export async function SiteHeader() {
           <Menu className="h-5 w-5" />
         </Button>
         <Link
-          className="shrink-0 font-heading text-lg font-bold text-[#7f5700] md:text-2xl"
+          className="shrink-0"
           href="/"
         >
-          BharatMart UK
+          <Image
+            alt="BharatMart"
+            src="/bharatmart-logo.png"
+            width={160}
+            height={40}
+            priority
+            className="h-8 w-auto md:h-10"
+          />
         </Link>
 
         <form action="/products" className="mx-auto hidden w-full max-w-2xl md:block">
