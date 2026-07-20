@@ -1,0 +1,5 @@
+export const WHATSAPP_NUMBER = '+44 7901 241275'
+export const WHATSAPP_URL = 'https://wa.me/447901241275'
+export const INSTAGRAM_URL = 'https://www.instagram.com/bharatmart_uk'
+export const CONTACT_EMAIL = 'info@bharatmart.uk'
+export const CONTACT_EMAIL_HREF = 'mailto:info@bharatmart.uk'

@@ -8,6 +8,7 @@ import {
 } from '@bharatmart/services'
 import { ProductCard } from '@/components/product/ProductCard'
 import { ProductFilters } from '@/components/product/ProductFilters'
+import { MobileFiltersSheet } from '@/components/product/MobileFiltersSheet'
 import { ProductPagination } from '@/components/product/ProductPagination'
 import { ProductSortSelect } from '@/components/product/ProductSortSelect'
 
@@ -105,6 +106,12 @@ export default async function ProductsPage({
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="hidden lg:block lg:col-start-1 lg:row-start-1">
+          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
+            <ProductFilters categories={categories} merchants={merchants} />
+          </Suspense>
+        </aside>
+
         <section className="lg:col-start-2 lg:row-start-1">
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -142,13 +149,11 @@ export default async function ProductsPage({
             totalPages={result.totalPages}
           />
         </section>
-
-        <aside className="lg:col-start-1 lg:row-start-1">
-          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
-            <ProductFilters categories={categories} merchants={merchants} />
-          </Suspense>
-        </aside>
       </div>
+
+      <Suspense fallback={null}>
+        <MobileFiltersSheet categories={categories} merchants={merchants} />
+      </Suspense>
     </main>
   )
 }

@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { Facebook, Instagram, MessageCircle, Share2 } from 'lucide-react'
+import { Instagram, MessageCircle } from 'lucide-react'
 import { Button, Separator } from '@bharatmart/ui'
 import { merchantAppPath } from '@/lib/app-urls'
+import { INSTAGRAM_URL, WHATSAPP_URL } from '@/lib/contact'
 
 const footerGroups = [
   {
@@ -38,7 +39,7 @@ export function SiteFooter() {
           asChild
           className="h-12 rounded-full bg-[#2e6a39] px-4 text-white shadow-lg hover:bg-[#135224]"
         >
-          <a href="https://wa.me/" rel="noreferrer" target="_blank">
+          <a href={WHATSAPP_URL} rel="noreferrer" target="_blank">
             <MessageCircle className="mr-2 h-5 w-5" />
             <span className="hidden sm:inline">Chat on WhatsApp</span>
           </a>
@@ -48,19 +49,30 @@ export function SiteFooter() {
       <footer className="border-t border-[#d6c4ad] bg-[#f4ede4]">
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-4 md:px-8 lg:px-16">
           <div>
-            <Link className="font-heading text-2xl font-bold text-[#7f5700]" href="/">
-              BharatMart UK
+            <Link className="inline-block" href="/">
+              <img
+                alt="BharatMart"
+                className="h-12 w-auto object-contain"
+                height={98}
+                src="/bharatmart-logo.png"
+                width={217}
+              />
             </Link>
             <p className="mt-4 max-w-xs text-sm leading-6 text-[#514534]">
               Bringing the heart of Indian markets to the UK. Quality, authenticity, and community
               at every step.
             </p>
             <div className="mt-5 flex gap-2">
-              {[Facebook, Instagram, Share2].map((Icon, index) => (
-                <Button aria-label="Social media" key={index} size="icon" variant="ghost">
-                  <Icon className="h-4 w-4 text-[#7f5700]" />
-                </Button>
-              ))}
+              <Button asChild aria-label="Instagram" size="icon" variant="ghost">
+                <a href={INSTAGRAM_URL} rel="noreferrer" target="_blank">
+                  <Instagram className="h-4 w-4 text-[#7f5700]" />
+                </a>
+              </Button>
+              <Button asChild aria-label="WhatsApp" size="icon" variant="ghost">
+                <a href={WHATSAPP_URL} rel="noreferrer" target="_blank">
+                  <MessageCircle className="h-4 w-4 text-[#7f5700]" />
+                </a>
+              </Button>
             </div>
           </div>
 

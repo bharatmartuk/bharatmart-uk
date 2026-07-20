@@ -31,15 +31,15 @@ export function MerchantShell({
     <div className="min-h-screen bg-[#fff8f0] text-[#1e1b16]">
       <header className="border-b border-[#d6c4ad] bg-[#fff8f0]">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
-          <Link className="flex h-full items-center gap-3 font-semibold text-[#7f5700]" href="/">
+          <Link className="flex h-full items-center gap-2 font-semibold text-[#7f5700]" href="/">
             <img
               alt="BharatMart"
               src="/bharatmart-logo.png"
-              className="h-full w-[80px] object-contain object-center"
-              width={273}
-              height={139}
+              className="h-10 w-auto object-contain object-center"
+              width={217}
+              height={98}
             />
-            <span className="whitespace-nowrap">BharatMart Merchant</span>
+            <span className="whitespace-nowrap">Merchant</span>
           </Link>
           <div className="flex items-center gap-3">
             <p className="hidden text-sm text-[#514534] sm:block">

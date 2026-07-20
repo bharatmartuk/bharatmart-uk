@@ -7,8 +7,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Checkbox,
   Input,
   Label,
@@ -30,6 +28,8 @@ type CategoryOption = {
 interface ProductFiltersProps {
   merchants: MerchantOption[]
   categories: CategoryOption[]
+  /** When used inside the mobile sheet, drop the outer card chrome. */
+  variant?: 'card' | 'sheet'
 }
 
 const MAX_PRICE_POUNDS = 200
@@ -40,11 +40,12 @@ function parseNumber(value: string | null) {
   return Number.isFinite(parsed) ? parsed : undefined
 }
 
-export function ProductFilters({ merchants, categories }: ProductFiltersProps) {
+export function ProductFilters({ merchants, categories, variant = 'card' }: ProductFiltersProps) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [isPending, startTransition] = useTransition()
+  const isSheet = variant === 'sheet'
 
   const minPricePence = parseNumber(searchParams.get('minPrice')) ?? 0
   const maxPricePence = parseNumber(searchParams.get('maxPrice')) ?? MAX_PRICE_POUNDS * 100
@@ -99,13 +100,15 @@ export function ProductFilters({ merchants, categories }: ProductFiltersProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [priceRange])
 
-  return (
-    <Card className="border-[#d6c4ad] bg-white shadow-sm">
-      <CardHeader>
-        <CardTitle className="font-heading text-2xl text-[#1e1b16]">Filters</CardTitle>
-        <p className="text-sm text-[#837561]">Refine your search</p>
-      </CardHeader>
-      <CardContent className="space-y-7">
+  const body = (
+      <>
+        {!isSheet ? (
+          <div className="mb-6">
+            <h2 className="font-heading text-2xl text-[#1e1b16]">Filters</h2>
+            <p className="text-sm text-[#837561]">Refine your search</p>
+          </div>
+        ) : null}
+        <div className="space-y-7">
         <div className="space-y-2">
           <Label htmlFor="postcode">Delivery</Label>
           <div className="relative">
@@ -237,7 +240,17 @@ export function ProductFilters({ merchants, categories }: ProductFiltersProps) {
         >
           Apply Filters
         </Button>
-      </CardContent>
+        </div>
+      </>
+  )
+
+  if (isSheet) {
+    return <div className="rounded-xl bg-white p-4 shadow-sm">{body}</div>
+  }
+
+  return (
+    <Card className="border-[#d6c4ad] bg-white shadow-sm">
+      <CardContent className="space-y-0 p-6">{body}</CardContent>
     </Card>
   )
 }

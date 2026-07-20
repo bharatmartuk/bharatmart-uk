@@ -21,9 +21,9 @@ export async function SiteHeader() {
           <img
             alt="BharatMart"
             src="/bharatmart-logo.png"
-            className="block h-11 w-auto max-w-[132px] object-contain md:h-14 md:max-w-[156px]"
-            width={273}
-            height={139}
+            className="block h-11 w-auto max-w-[140px] object-contain md:h-14 md:max-w-[170px]"
+            width={217}
+            height={98}
           />
         </Link>
 
