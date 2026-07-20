@@ -8,9 +8,9 @@ const footerGroups = [
     title: 'Shop',
     links: [
       ['All products', '/products'],
-      ['Groceries', '/products?category=groceries'],
-      ['Pooja & Festival', '/products?category=pooja-festival'],
-      ['Clothing & Sarees', '/products?category=clothing-sarees'],
+      ['Homemade Pickles', '/products?category=homemade-pickles'],
+      ['Homemade Snacks', '/products?category=homemade-snacks'],
+      ['Homemade Foods', '/products?category=homemade-foods'],
     ],
   },
   {

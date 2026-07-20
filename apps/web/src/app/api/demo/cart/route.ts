@@ -3,9 +3,9 @@ import { prisma } from '@bharatmart/database'
 
 /** Stable demo cart lines for the seeded customer (browser cart is client-only). */
 const DEMO_CART_SLUGS = [
-  { slug: 'mumbai-chaat-masala-100g', quantity: 2 },
-  { slug: 'clay-diya-set-12', quantity: 1 },
-  { slug: 'embroidered-potli-bag', quantity: 1 },
+  { slug: 'ammas-homemade-andhra-avakaya', quantity: 1 },
+  { slug: 'ammas-homemade-murukulu', quantity: 2 },
+  { slug: 'handmade-sakinalu', quantity: 1 },
 ] as const
 
 export async function GET() {
