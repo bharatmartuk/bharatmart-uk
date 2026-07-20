@@ -23,6 +23,8 @@ export const AdminOrderService = {
             OR: [
               { order: { orderNumber: { contains: filters.q, mode: 'insensitive' as const } } },
               { merchant: { storeName: { contains: filters.q, mode: 'insensitive' as const } } },
+              { order: { customer: { name: { contains: filters.q, mode: 'insensitive' as const } } } },
+              { order: { customer: { email: { contains: filters.q, mode: 'insensitive' as const } } } },
             ],
           }
         : {}),
@@ -35,12 +37,33 @@ export const AdminOrderService = {
           merchant: { select: { id: true, storeName: true, storeSlug: true } },
           order: {
             select: {
+              id: true,
               orderNumber: true,
               placedAt: true,
-              customer: { select: { name: true, email: true } },
+              totalInPence: true,
+              paymentStatus: true,
+              paymentMethod: true,
+              customer: { select: { id: true, name: true, email: true, phone: true } },
+              address: {
+                select: {
+                  label: true,
+                  line1: true,
+                  line2: true,
+                  city: true,
+                  postcode: true,
+                  country: true,
+                },
+              },
             },
           },
-          orderItems: true,
+          orderItems: {
+            select: {
+              id: true,
+              productNameSnapshot: true,
+              priceInPenceSnapshot: true,
+              quantity: true,
+            },
+          },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * pageSize,
@@ -54,6 +77,70 @@ export const AdminOrderService = {
       pageSize,
       totalPages: Math.max(Math.ceil(total / pageSize), 1),
     }))
+  },
+
+  getById(merchantOrderId: string) {
+    return prisma.merchantOrder.findUnique({
+      where: { id: merchantOrderId },
+      include: {
+        merchant: {
+          select: {
+            id: true,
+            storeName: true,
+            storeSlug: true,
+            businessName: true,
+          },
+        },
+        order: {
+          select: {
+            id: true,
+            orderNumber: true,
+            placedAt: true,
+            totalInPence: true,
+            deliveryFeeInPence: true,
+            discountInPence: true,
+            paymentStatus: true,
+            paymentMethod: true,
+            stripePaymentIntentId: true,
+            customer: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                phone: true,
+                createdAt: true,
+              },
+            },
+            address: {
+              select: {
+                id: true,
+                label: true,
+                line1: true,
+                line2: true,
+                city: true,
+                postcode: true,
+                country: true,
+              },
+            },
+          },
+        },
+        orderItems: {
+          select: {
+            id: true,
+            productId: true,
+            productNameSnapshot: true,
+            priceInPenceSnapshot: true,
+            quantity: true,
+            product: {
+              select: {
+                slug: true,
+                sku: true,
+              },
+            },
+          },
+        },
+      },
+    })
   },
 }
 

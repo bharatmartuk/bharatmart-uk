@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Badge, Card, CardContent } from '@bharatmart/ui'
 import { AdminOrderService } from '@bharatmart/services'
 
@@ -8,6 +9,16 @@ type SearchParams = Record<string, string | string[] | undefined>
 function first(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value
 }
+
+const priceFormatter = new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP',
+})
+
+const dateFormatter = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+})
 
 export default async function AdminOrdersPage({
   searchParams,
@@ -30,7 +41,7 @@ export default async function AdminOrdersPage({
       <div>
         <h1 className="text-3xl font-semibold">Order monitoring</h1>
         <p className="text-sm text-[#514534]">
-          Cross-merchant read-only view via AdminOrderService.searchAllOrders().
+          Platform-wide orders with customer, delivery, and merchant details.
         </p>
       </div>
 
@@ -39,7 +50,7 @@ export default async function AdminOrdersPage({
           className="rounded-md border border-[#d6c4ad] bg-white px-3 py-2 text-sm"
           defaultValue={first(params.q)}
           name="q"
-          placeholder="Search order or merchant"
+          placeholder="Search order, customer, or merchant"
         />
         <select
           className="rounded-md border border-[#d6c4ad] bg-white px-3 py-2 text-sm"
@@ -57,21 +68,56 @@ export default async function AdminOrdersPage({
         </button>
       </form>
 
-      <div className="space-y-3">
-        {result.items.map((order) => (
-          <Card className="border-[#d6c4ad]" key={order.id}>
-            <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4 text-sm">
-              <div>
-                <p className="font-semibold">{order.order.orderNumber}</p>
-                <p className="text-[#514534]">
-                  {order.merchant.storeName} · {order.order.customer.name ?? order.order.customer.email}
-                </p>
-              </div>
-              <Badge>{order.status}</Badge>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {result.items.length === 0 ? (
+        <Card className="border-[#d6c4ad]">
+          <CardContent className="p-6 text-sm text-[#514534]">No orders found.</CardContent>
+        </Card>
+      ) : (
+        <div className="space-y-3">
+          {result.items.map((order) => {
+            const customerName = order.order.customer.name?.trim() || 'Customer'
+            const customerEmail = order.order.customer.email ?? '—'
+            return (
+              <Card className="border-[#d6c4ad]" key={order.id}>
+                <CardContent className="flex flex-wrap items-start justify-between gap-4 p-4 text-sm">
+                  <div className="min-w-0 space-y-1">
+                    <Link
+                      className="font-semibold text-[#1e1b16] hover:text-[#7f5700]"
+                      href={`/orders/${order.id}`}
+                    >
+                      {order.order.orderNumber}
+                    </Link>
+                    <p className="text-[#514534]">
+                      <span className="font-medium text-[#1e1b16]">{customerName}</span>
+                      {' · '}
+                      {customerEmail}
+                      {order.order.customer.phone ? ` · ${order.order.customer.phone}` : ''}
+                    </p>
+                    <p className="text-[#837561]">
+                      Merchant: {order.merchant.storeName} · {order.orderItems.length} item
+                      {order.orderItems.length === 1 ? '' : 's'} ·{' '}
+                      {priceFormatter.format(order.subtotalInPence / 100)}
+                    </p>
+                    <p className="text-[#837561]">
+                      Placed {dateFormatter.format(order.order.placedAt)} · Payment{' '}
+                      {order.order.paymentStatus}
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-end gap-2">
+                    <Badge>{order.status}</Badge>
+                    <Link
+                      className="text-xs font-semibold text-[#7f5700] hover:underline"
+                      href={`/orders/${order.id}`}
+                    >
+                      View details
+                    </Link>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      )}
     </main>
   )
 }
