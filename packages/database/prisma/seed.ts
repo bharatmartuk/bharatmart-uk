@@ -27,7 +27,6 @@ type SeedProduct = {
   priceInPence: number
   stockQuantity: number
   sku: string
-  imageCount?: number
 }
 
 const categories = [
@@ -600,23 +599,29 @@ async function seedProducts(
       merchantId,
     })
 
-    const imageCount = product.imageCount ?? 2
-    for (let index = 1; index <= imageCount; index += 1) {
-      await prisma.productImage.upsert({
-        where: { id: `seed_image_${product.slug}_${index}` },
-        update: {
-          productId: record.id,
-          url: `https://picsum.photos/seed/${product.slug}-${index}/600/600`,
-          sortOrder: index,
-        },
-        create: {
-          id: `seed_image_${product.slug}_${index}`,
-          productId: record.id,
-          url: `https://picsum.photos/seed/${product.slug}-${index}/600/600`,
-          sortOrder: index,
-        },
-      })
-    }
+    // Primary product photo from apps/web/public/products/{slug}.png
+    await prisma.productImage.upsert({
+      where: { id: `seed_image_${product.slug}_1` },
+      update: {
+        productId: record.id,
+        url: `/products/${product.slug}.png`,
+        sortOrder: 1,
+      },
+      create: {
+        id: `seed_image_${product.slug}_1`,
+        productId: record.id,
+        url: `/products/${product.slug}.png`,
+        sortOrder: 1,
+      },
+    })
+
+    // Drop any leftover placeholder images from older seeds.
+    await prisma.productImage.deleteMany({
+      where: {
+        productId: record.id,
+        id: { not: `seed_image_${product.slug}_1` },
+      },
+    })
   }
 
   return productRecords
