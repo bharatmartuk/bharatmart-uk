@@ -1,8 +1,11 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import { CategoryService, ProductService } from '@bharatmart/services'
 import { requireMerchant } from '@/lib/merchant-context'
 import { ProductRowActions } from '@/components/products/ProductRowActions'
+import { StockAdjuster } from '@/components/products/StockAdjuster'
+import { resolveMarketplaceAssetUrl } from '@/lib/resolve-asset-url'
 
 export const dynamic = 'force-dynamic'
 
@@ -91,8 +94,8 @@ export default async function MerchantProductsPage({
         </CardContent>
       </Card>
 
-      <div className="overflow-hidden rounded-xl border border-[#d6c4ad] bg-white">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto rounded-xl border border-[#d6c4ad] bg-white">
+        <table className="w-full min-w-[860px] text-left text-sm">
           <thead className="bg-[#f9f3ea] text-[#514534]">
             <tr>
               <th className="px-4 py-3">Product</th>
@@ -106,16 +109,38 @@ export default async function MerchantProductsPage({
             {products.map((product) => (
               <tr className="border-t border-[#eee7de]" key={product.id}>
                 <td className="px-4 py-3">
-                  <p className="font-medium">{product.name}</p>
-                  <p className="text-xs text-[#837561]">{product.category.name}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[#f9f3ea]">
+                      {product.images[0]?.url ? (
+                        <Image
+                          alt=""
+                          className="object-cover"
+                          fill
+                          sizes="48px"
+                          src={resolveMarketplaceAssetUrl(product.images[0].url) ?? product.images[0].url}
+                          unoptimized
+                        />
+                      ) : null}
+                    </div>
+                    <div>
+                      <p className="font-medium">{product.name}</p>
+                      <p className="text-xs text-[#837561]">{product.category.name}</p>
+                    </div>
+                  </div>
                 </td>
                 <td className="px-4 py-3">
                   <Badge variant="secondary">{product.status}</Badge>
                 </td>
-                <td className="px-4 py-3">{product.stockQuantity}</td>
+                <td className="px-4 py-3">
+                  <StockAdjuster productId={product.id} stockQuantity={product.stockQuantity} />
+                </td>
                 <td className="px-4 py-3">£{(product.priceInPence / 100).toFixed(2)}</td>
                 <td className="px-4 py-3">
-                  <ProductRowActions productId={product.id} />
+                  <ProductRowActions
+                    productId={product.id}
+                    slug={product.slug}
+                    status={product.status}
+                  />
                 </td>
               </tr>
             ))}

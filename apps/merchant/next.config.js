@@ -40,6 +40,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.picsum.photos',
       },
+      {
+        protocol: 'https',
+        hostname: 'bharatmart-uk.vercel.app',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.vercel.app',
+      },
     ],
   },
 }

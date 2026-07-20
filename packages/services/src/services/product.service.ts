@@ -179,6 +179,43 @@ export const ProductService = {
     })
   },
 
+  async setStatus(
+    merchantId: string,
+    productId: string,
+    status: 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK' | 'ARCHIVED',
+  ) {
+    const existing = await prisma.product.findFirst({
+      where: { id: productId, merchantId },
+    })
+    if (!existing) throw new NotFoundError('Product not found.')
+
+    return prisma.product.update({
+      where: { id: productId },
+      data: { status },
+    })
+  },
+
+  async adjustStock(merchantId: string, productId: string, stockQuantity: number) {
+    const existing = await prisma.product.findFirst({
+      where: { id: productId, merchantId },
+    })
+    if (!existing) throw new NotFoundError('Product not found.')
+
+    const nextStock = Math.max(0, Math.floor(stockQuantity))
+    return prisma.product.update({
+      where: { id: productId },
+      data: {
+        stockQuantity: nextStock,
+        status:
+          nextStock === 0 && existing.status === 'ACTIVE'
+            ? 'OUT_OF_STOCK'
+            : nextStock > 0 && existing.status === 'OUT_OF_STOCK'
+              ? 'ACTIVE'
+              : existing.status,
+      },
+    })
+  },
+
   async remove(merchantId: string, productId: string) {
     const existing = await prisma.product.findFirst({
       where: { id: productId, merchantId },

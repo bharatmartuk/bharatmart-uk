@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { MessageCircle } from 'lucide-react'
 import { Button } from '@bharatmart/ui'
 import { WHATSAPP_URL } from '@/lib/contact'

@@ -43,6 +43,25 @@ export async function duplicateProductAction(productId: string) {
   revalidatePath('/products')
 }
 
+export async function setProductStatusAction(
+  productId: string,
+  status: 'DRAFT' | 'ACTIVE' | 'OUT_OF_STOCK' | 'ARCHIVED',
+) {
+  const { merchant } = await requireMerchant()
+  await ProductService.setStatus(merchant.id, productId, status)
+  revalidatePath('/products')
+  revalidatePath(`/products/${productId}/edit`)
+  revalidatePath(`/products/${productId}/preview`)
+}
+
+export async function adjustStockAction(productId: string, stockQuantity: number) {
+  const { merchant } = await requireMerchant()
+  await ProductService.adjustStock(merchant.id, productId, stockQuantity)
+  revalidatePath('/products')
+  revalidatePath(`/products/${productId}/edit`)
+  revalidatePath(`/products/${productId}/preview`)
+}
+
 export async function deleteProductAction(productId: string) {
   const { merchant } = await requireMerchant()
   await ProductService.remove(merchant.id, productId)

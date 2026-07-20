@@ -38,7 +38,7 @@ export function ProductsToolbar({
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="sticky top-16 z-30 -mx-4 mb-5 border-b border-[#e8d9c8] bg-[#fff8f0] px-4 py-3 md:top-20 md:-mx-0 md:border-0 md:bg-transparent md:px-0 md:py-0">
+    <div className="sticky top-16 z-30 -mx-4 mb-5 border-b border-[#e8d9c8] bg-[#fff8f0] px-4 py-3 md:top-20 md:border-b md:bg-[#fff8f0] md:px-0 md:py-3">
       <div className="flex items-center gap-2 md:justify-end">
         <div className="min-w-0 flex-1 md:flex-none">
           <ProductSortSelect className="w-full md:w-auto" />

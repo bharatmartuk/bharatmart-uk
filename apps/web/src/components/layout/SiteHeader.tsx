@@ -14,7 +14,7 @@ export async function SiteHeader() {
   const profile = user ? await AuthService.getProfile(user.id) : null
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-[#fff8f0] shadow-[0_4px_12px_rgba(0,0,0,0.04)]">
+    <header className="sticky top-0 z-50 isolate border-b border-black/5 bg-[#fff8f0] shadow-[0_4px_12px_rgba(0,0,0,0.04)] [background-color:#fff8f0]">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-20 md:px-8 lg:px-16">
         <MobileNav isSignedIn={Boolean(user)} />
         <Link className="flex shrink-0 items-center justify-center bg-transparent" href="/">

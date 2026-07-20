@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useRef, useState, useTransition } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Search, X } from 'lucide-react'
 import { Input } from '@bharatmart/ui'
