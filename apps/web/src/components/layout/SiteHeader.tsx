@@ -22,16 +22,13 @@ export async function SiteHeader() {
         >
           <Menu className="h-5 w-5" />
         </Button>
-        <Link
-          className="shrink-0"
-          href="/"
-        >
+        <Link className="flex h-8 w-[108px] shrink-0 items-center md:h-10 md:w-[135px]" href="/">
           <img
             alt="BharatMart"
             src="/bharatmart-logo.png"
-            className="h-8 w-auto md:h-10"
-            width={160}
-            height={40}
+            className="h-full w-full object-contain"
+            width={273}
+            height={139}
           />
         </Link>
 
