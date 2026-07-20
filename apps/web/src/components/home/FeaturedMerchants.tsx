@@ -21,7 +21,7 @@ export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[]
                   {merchant.storeLogoUrl ? (
                     <Image
                       alt={`${merchant.storeName} logo`}
-                      className="object-cover"
+                      className="object-contain p-1"
                       fill
                       sizes="80px"
                       src={merchant.storeLogoUrl}

@@ -3,13 +3,16 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { cn } from '@bharatmart/utils'
+import { FavoriteButton } from '@/components/product/FavoriteButton'
+import type { WishlistItem } from '@/lib/store/wishlist-store'
 
 interface ProductImageGalleryProps {
   images: Array<{ id: string; url: string }>
   productName: string
+  favorite?: WishlistItem
 }
 
-export function ProductImageGallery({ images, productName }: ProductImageGalleryProps) {
+export function ProductImageGallery({ images, productName, favorite }: ProductImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const active = images[activeIndex] ?? images[0]
 
@@ -33,6 +36,9 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
           src={active.url}
           unoptimized
         />
+        {favorite ? (
+          <FavoriteButton className="absolute right-4 top-4 z-10" item={favorite} size="lg" />
+        ) : null}
       </div>
       {images.length > 1 ? (
         <div className="grid grid-cols-4 gap-2 sm:grid-cols-5">

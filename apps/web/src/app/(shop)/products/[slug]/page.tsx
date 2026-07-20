@@ -51,7 +51,19 @@ export default async function ProductDetailPage({
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <ProductImageGallery images={product.images} productName={product.name} />
+        <ProductImageGallery
+          favorite={{
+            productId: product.id,
+            slug: product.slug,
+            name: product.name,
+            imageUrl: product.images[0]?.url ?? null,
+            priceInPence: product.priceInPence,
+            merchantId: product.merchantId,
+            merchantName: product.merchant.storeName,
+          }}
+          images={product.images}
+          productName={product.name}
+        />
 
         <section className="space-y-5">
           <div>
@@ -117,7 +129,7 @@ export default async function ProductDetailPage({
                 {product.merchant.storeLogoUrl ? (
                   <Image
                     alt={product.merchant.storeName}
-                    className="object-cover"
+                    className="object-contain p-1"
                     fill
                     sizes="56px"
                     src={product.merchant.storeLogoUrl}

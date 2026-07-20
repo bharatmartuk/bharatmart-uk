@@ -1,9 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Heart, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { Badge, Card, CardContent } from '@bharatmart/ui'
 import type { ProductSummary } from '@bharatmart/services'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { FavoriteButton } from '@/components/product/FavoriteButton'
 
 const priceFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -33,13 +34,18 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             </div>
           )}
         </Link>
-        <button
-          aria-label={`Save ${product.name} to wishlist`}
-          className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-[#a83635] shadow-sm transition hover:bg-white"
-          type="button"
-        >
-          <Heart className="h-4 w-4" />
-        </button>
+        <FavoriteButton
+          className="absolute right-3 top-3 z-10"
+          item={{
+            productId: product.id,
+            slug: product.slug,
+            name: product.name,
+            imageUrl: product.imageUrl,
+            priceInPence: product.priceInPence,
+            merchantId: product.merchantId,
+            merchantName: product.merchantName,
+          }}
+        />
         {product.reviewCount > 0 ? (
           <Badge className="absolute bottom-3 left-3 border-0 bg-white/90 text-[#514534]">
             <Star className="mr-1 h-3 w-3 fill-[#e8a317] text-[#e8a317]" />
