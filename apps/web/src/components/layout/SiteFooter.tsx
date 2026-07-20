@@ -11,6 +11,7 @@ const footerGroups = [
       ['Homemade Pickles', '/products?category=homemade-pickles'],
       ['Homemade Snacks', '/products?category=homemade-snacks'],
       ['Homemade Foods', '/products?category=homemade-foods'],
+      ['Favourites', '/wishlist'],
     ],
   },
   {

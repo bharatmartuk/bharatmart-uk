@@ -42,6 +42,7 @@ export function ProductCard({ product }: { product: ProductSummary }) {
             name: product.name,
             imageUrl: product.imageUrl,
             priceInPence: product.priceInPence,
+            stockQuantity: product.stockQuantity,
             merchantId: product.merchantId,
             merchantName: product.merchantName,
           }}

@@ -9,12 +9,14 @@ export interface WishlistItem {
   name: string
   imageUrl: string | null
   priceInPence: number
+  stockQuantity: number
   merchantId: string
   merchantName: string
 }
 
 interface WishlistState {
   items: WishlistItem[]
+  addItem: (item: WishlistItem) => void
   toggleItem: (item: WishlistItem) => void
   removeItem: (productId: string) => void
 }
@@ -23,6 +25,13 @@ export const useWishlistStore = create<WishlistState>()(
   persist(
     (set) => ({
       items: [],
+      addItem: (item) =>
+        set((state) => {
+          if (state.items.some((entry) => entry.productId === item.productId)) {
+            return state
+          }
+          return { items: [...state.items, item] }
+        }),
       toggleItem: (item) =>
         set((state) => {
           const exists = state.items.some((entry) => entry.productId === item.productId)

@@ -7,7 +7,7 @@ export function TrendingProducts({ products }: { products: ProductSummary[] }) {
   if (products.length === 0) return null
 
   return (
-    <section aria-labelledby="trending-heading" className="mx-auto max-w-7xl px-4 py-14 md:px-8 md:py-16 lg:px-16">
+    <section aria-labelledby="trending-heading" className="mx-auto max-w-7xl px-4 pb-12 pt-2 md:px-8 md:pb-14 md:pt-3 lg:px-16">
       <div className="mb-8 flex items-end justify-between">
         <div>
           <h2 className="font-heading text-2xl font-semibold md:text-3xl" id="trending-heading">

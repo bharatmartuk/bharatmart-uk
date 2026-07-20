@@ -1,9 +1,11 @@
 import Link from 'next/link'
-import { Menu, Search } from 'lucide-react'
+import { Search } from 'lucide-react'
 import { Button, Input } from '@bharatmart/ui'
 import { AuthService } from '@bharatmart/services'
 import { CartLink } from '@/components/cart/CartLink'
 import { HeaderAuthNav } from '@/components/layout/HeaderAuthNav'
+import { MobileNav } from '@/components/layout/MobileNav'
+import { WishlistLink } from '@/components/wishlist/WishlistLink'
 import { getCurrentUser } from '@/auth'
 import { merchantAppPath } from '@/lib/app-urls'
 
@@ -14,19 +16,12 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-black/5 bg-[#fff8f0]/95 shadow-[0_4px_12px_rgba(0,0,0,0.04)] backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-4 md:h-20 md:px-8 lg:px-16">
-        <Button
-          aria-label="Open navigation"
-          className="md:hidden"
-          size="icon"
-          variant="ghost"
-        >
-          <Menu className="h-5 w-5" />
-        </Button>
-        <Link className="flex h-full w-[135px] shrink-0 items-center" href="/">
+        <MobileNav isSignedIn={Boolean(user)} />
+        <Link className="flex shrink-0 items-center justify-center" href="/">
           <img
             alt="BharatMart"
             src="/bharatmart-logo.png"
-            className="h-full w-full object-contain"
+            className="block h-11 w-auto max-w-[132px] object-contain md:h-14 md:max-w-[156px]"
             width={273}
             height={139}
           />
@@ -55,6 +50,7 @@ export async function SiteHeader() {
           <Button aria-label="Search" className="md:hidden" size="icon" variant="ghost">
             <Search className="h-5 w-5 text-[#7f5700]" />
           </Button>
+          <WishlistLink />
           <CartLink />
           <HeaderAuthNav displayName={profile?.name ?? null} isSignedIn={Boolean(user)} />
         </nav>

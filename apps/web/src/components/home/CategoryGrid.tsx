@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Gem, Home, Package, ShoppingBasket, Sparkles } from 'lucide-react'
 import { Card } from '@bharatmart/ui'
 import type { CategorySummary } from '@bharatmart/services'
+import { categoryIconSrc } from '@/lib/category-icon'
 
 const iconMap = [ShoppingBasket, Sparkles, Package, Gem, Home]
 
@@ -10,7 +11,7 @@ export function CategoryGrid({ categories }: { categories: CategorySummary[] }) 
   if (categories.length === 0) return null
 
   return (
-    <section aria-labelledby="category-heading" className="mx-auto max-w-7xl px-4 py-10 md:px-8 lg:px-16">
+    <section aria-labelledby="category-heading" className="mx-auto max-w-7xl px-4 pb-2 pt-6 md:px-8 md:pb-3 md:pt-8 lg:px-16">
       <div className="mb-5 flex items-center justify-between md:hidden">
         <h2 className="font-heading text-xl font-semibold" id="category-heading">
           Shop by Category
@@ -29,12 +30,13 @@ export function CategoryGrid({ categories }: { categories: CategorySummary[] }) 
               key={category.id}
             >
               <Card className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-0 bg-[#eee7de] shadow-none transition group-hover:scale-105 group-hover:bg-[#e8a317] md:h-20 md:w-20">
-                {category.iconUrl ? (
+                {categoryIconSrc(category) ? (
                   <Image
                     alt=""
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain object-center p-1"
                     height={80}
-                    src={category.iconUrl}
+                    src={categoryIconSrc(category)!}
+                    unoptimized
                     width={80}
                   />
                 ) : (

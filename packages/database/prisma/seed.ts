@@ -33,7 +33,7 @@ const categories = [
   {
     name: 'Homemade Foods',
     slug: 'homemade-foods',
-    iconUrl: 'https://picsum.photos/seed/homemade-foods/160/160',
+    iconUrl: '/categories/homemade-foods.png',
     sortOrder: 1,
     children: [
       { name: 'Homemade Pickles', slug: 'homemade-pickles', sortOrder: 1 },

@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react'
 import { cn } from '@bharatmart/utils'
+import { useRequireAuth } from '@/hooks/use-require-auth'
 import { useWishlistStore, type WishlistItem } from '@/lib/store/wishlist-store'
 
 export function FavoriteButton({
@@ -13,10 +14,21 @@ export function FavoriteButton({
   className?: string
   size?: 'md' | 'lg'
 }) {
+  const { requireAuth } = useRequireAuth()
   const toggleItem = useWishlistStore((state) => state.toggleItem)
+  const removeItem = useWishlistStore((state) => state.removeItem)
   const saved = useWishlistStore((state) =>
     state.items.some((entry) => entry.productId === item.productId),
   )
+
+  function handleClick() {
+    if (saved) {
+      removeItem(item.productId)
+      return
+    }
+
+    requireAuth({ type: 'wishlist', item }, () => toggleItem(item))
+  }
 
   return (
     <button
@@ -28,7 +40,7 @@ export function FavoriteButton({
         saved && 'bg-white',
         className,
       )}
-      onClick={() => toggleItem(item)}
+      onClick={handleClick}
       type="button"
     >
       <Heart className={cn(size === 'lg' ? 'h-5 w-5' : 'h-4 w-4', saved && 'fill-current')} />

@@ -105,13 +105,7 @@ export default async function ProductsPage({
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-        <aside>
-          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
-            <ProductFilters categories={categories} merchants={merchants} />
-          </Suspense>
-        </aside>
-
-        <section>
+        <section className="lg:col-start-2 lg:row-start-1">
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
@@ -148,6 +142,12 @@ export default async function ProductsPage({
             totalPages={result.totalPages}
           />
         </section>
+
+        <aside className="lg:col-start-1 lg:row-start-1">
+          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
+            <ProductFilters categories={categories} merchants={merchants} />
+          </Suspense>
+        </aside>
       </div>
     </main>
   )

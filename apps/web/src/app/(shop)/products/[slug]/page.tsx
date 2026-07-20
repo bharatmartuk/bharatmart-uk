@@ -58,6 +58,7 @@ export default async function ProductDetailPage({
             name: product.name,
             imageUrl: product.images[0]?.url ?? null,
             priceInPence: product.priceInPence,
+            stockQuantity: product.stockQuantity,
             merchantId: product.merchantId,
             merchantName: product.merchant.storeName,
           }}

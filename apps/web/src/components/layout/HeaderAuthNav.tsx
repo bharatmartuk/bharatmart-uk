@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { LogOut, Package, UserCircle } from 'lucide-react'
+import { Heart, LogOut, Package, UserCircle } from 'lucide-react'
 import { signOut } from 'next-auth/react'
 import {
   Button,
@@ -71,6 +71,12 @@ export function HeaderAuthNav({ isSignedIn, displayName }: HeaderAuthNavProps) {
           <Link href="/account">
             <UserCircle className="mr-2 h-4 w-4" />
             Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#efe2cf]">
+          <Link href="/wishlist">
+            <Heart className="mr-2 h-4 w-4" />
+            Favourites
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer focus:bg-[#efe2cf]">
