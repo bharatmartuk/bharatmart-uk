@@ -29,11 +29,11 @@ export function CategoryGrid({ categories }: { categories: CategorySummary[] }) 
               href={`/products?category=${category.slug}`}
               key={category.id}
             >
-              <Card className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border-0 bg-[#eee7de] shadow-none transition group-hover:scale-105 group-hover:bg-[#e8a317] md:h-20 md:w-20">
+              <Card className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#e8d9c8] bg-transparent shadow-none transition group-hover:scale-105 group-hover:border-[#e8a317] md:h-20 md:w-20">
                 {categoryIconSrc(category) ? (
                   <Image
                     alt=""
-                    className="h-full w-full object-contain object-center p-1"
+                    className="h-full w-full object-contain object-center"
                     height={80}
                     src={categoryIconSrc(category)!}
                     unoptimized

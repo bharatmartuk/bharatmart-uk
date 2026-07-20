@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@bharatmart/ui'
+import { cn } from '@bharatmart/utils'
 
 const sortOptions = [
   { value: 'relevance', label: 'Relevance' },
@@ -17,14 +18,14 @@ const sortOptions = [
   { value: 'newest', label: 'Newest' },
 ] as const
 
-export function ProductSortSelect() {
+export function ProductSortSelect({ className }: { className?: string }) {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const value = searchParams.get('sort') ?? 'relevance'
 
   return (
-    <div className="flex items-center gap-2">
+    <div className={cn('flex w-full flex-col gap-1 sm:w-auto sm:flex-row sm:items-center sm:gap-2', className)}>
       <span className="text-xs font-semibold uppercase tracking-wide text-[#837561]">Sort by</span>
       <Select
         onValueChange={(next) => {
@@ -37,7 +38,7 @@ export function ProductSortSelect() {
         }}
         value={value}
       >
-        <SelectTrigger className="w-[190px] border-[#d6c4ad] bg-white">
+        <SelectTrigger className="w-full border-[#d6c4ad] bg-white sm:w-[190px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

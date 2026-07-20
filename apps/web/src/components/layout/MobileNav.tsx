@@ -15,18 +15,19 @@ import {
 import { cn } from '@bharatmart/utils'
 import { merchantAppPath } from '@/lib/app-urls'
 
-const links = [
+const allLinks = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/products', label: 'All products', icon: Package },
   { href: '/products?category=homemade-pickles', label: 'Homemade Pickles', icon: Package },
   { href: '/products?category=homemade-snacks', label: 'Homemade Snacks', icon: Package },
-  { href: '/wishlist', label: 'Favourites', icon: Heart },
-  { href: '/cart', label: 'Cart', icon: ShoppingCart },
+  { href: '/wishlist', label: 'Favourites', icon: Heart, requiresAuth: true },
+  { href: '/cart', label: 'Cart', icon: ShoppingCart, requiresAuth: true },
 ] as const
 
 export function MobileNav({ isSignedIn }: { isSignedIn: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const links = allLinks.filter((link) => !('requiresAuth' in link && link.requiresAuth) || isSignedIn)
 
   return (
     <Sheet onOpenChange={setOpen} open={open}>

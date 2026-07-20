@@ -33,82 +33,68 @@ export function SiteFooter() {
   ] as const
 
   return (
-    <>
-      <aside className="fixed bottom-5 right-5 z-40">
-        <Button
-          asChild
-          className="h-12 rounded-full bg-[#2e6a39] px-4 text-white shadow-lg hover:bg-[#135224]"
-        >
-          <a href={WHATSAPP_URL} rel="noreferrer" target="_blank">
-            <MessageCircle className="mr-2 h-5 w-5" />
-            <span className="hidden sm:inline">Chat on WhatsApp</span>
-          </a>
-        </Button>
-      </aside>
-
-      <footer className="border-t border-[#d6c4ad] bg-[#f4ede4]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-4 md:px-8 lg:px-16">
-          <div>
-            <Link className="inline-block" href="/">
-              <img
-                alt="BharatMart"
-                className="h-12 w-auto object-contain"
-                height={98}
-                src="/bharatmart-logo.png"
-                width={217}
-              />
-            </Link>
-            <p className="mt-4 max-w-xs text-sm leading-6 text-[#514534]">
-              Bringing the heart of Indian markets to the UK. Quality, authenticity, and community
-              at every step.
-            </p>
-            <div className="mt-5 flex gap-2">
-              <Button asChild aria-label="Instagram" size="icon" variant="ghost">
-                <a href={INSTAGRAM_URL} rel="noreferrer" target="_blank">
-                  <Instagram className="h-4 w-4 text-[#7f5700]" />
-                </a>
-              </Button>
-              <Button asChild aria-label="WhatsApp" size="icon" variant="ghost">
-                <a href={WHATSAPP_URL} rel="noreferrer" target="_blank">
-                  <MessageCircle className="h-4 w-4 text-[#7f5700]" />
-                </a>
-              </Button>
-            </div>
+    <footer className="border-t border-[#d6c4ad] bg-[#f4ede4]">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 md:grid-cols-4 md:px-8 lg:px-16">
+        <div>
+          <Link className="inline-block rounded-md bg-[#f4ede4]" href="/">
+            <img
+              alt="BharatMart"
+              className="h-12 w-auto bg-[#f4ede4] object-contain"
+              height={98}
+              src="/bharatmart-logo.png"
+              width={217}
+            />
+          </Link>
+          <p className="mt-4 max-w-xs text-sm leading-6 text-[#514534]">
+            Bringing the heart of Indian markets to the UK. Quality, authenticity, and community
+            at every step.
+          </p>
+          <div className="mt-5 flex gap-2">
+            <Button asChild aria-label="Instagram" size="icon" variant="ghost">
+              <a href={INSTAGRAM_URL} rel="noreferrer" target="_blank">
+                <Instagram className="h-4 w-4 text-[#7f5700]" />
+              </a>
+            </Button>
+            <Button asChild aria-label="WhatsApp" size="icon" variant="ghost">
+              <a href={WHATSAPP_URL} rel="noreferrer" target="_blank">
+                <MessageCircle className="h-4 w-4 text-[#7f5700]" />
+              </a>
+            </Button>
           </div>
+        </div>
 
-          {footerGroups.map((group) => (
-            <div key={group.title}>
-              <h2 className="font-semibold text-[#7f5700]">{group.title}</h2>
-              <ul className="mt-4 space-y-3">
-                {group.links.map(([label, href]) => (
-                  <li key={label}>
-                    <Link className="text-sm text-[#514534] hover:underline" href={href}>
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-
-          <div>
-            <h2 className="font-semibold text-[#7f5700]">Sell on BharatMart</h2>
+        {footerGroups.map((group) => (
+          <div key={group.title}>
+            <h2 className="font-semibold text-[#7f5700]">{group.title}</h2>
             <ul className="mt-4 space-y-3">
-              {sellLinks.map(([label, href]) => (
+              {group.links.map(([label, href]) => (
                 <li key={label}>
-                  <a className="text-sm text-[#514534] hover:underline" href={href}>
+                  <Link className="text-sm text-[#514534] hover:underline" href={href}>
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
+        ))}
+
+        <div>
+          <h2 className="font-semibold text-[#7f5700]">Sell on BharatMart</h2>
+          <ul className="mt-4 space-y-3">
+            {sellLinks.map(([label, href]) => (
+              <li key={label}>
+                <a className="text-sm text-[#514534] hover:underline" href={href}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
-        <Separator className="bg-[#d6c4ad]" />
-        <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-[#837561] md:px-8 lg:px-16">
-          © {new Date().getFullYear()} BharatMart UK. All rights reserved.
-        </div>
-      </footer>
-    </>
+      </div>
+      <Separator className="bg-[#d6c4ad]" />
+      <div className="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-[#837561] md:px-8 lg:px-16">
+        © {new Date().getFullYear()} BharatMart UK. All rights reserved.
+      </div>
+    </footer>
   )
 }

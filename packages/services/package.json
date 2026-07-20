@@ -16,6 +16,7 @@
   "dependencies": {
     "@bharatmart/database": "workspace:*",
     "@bharatmart/types": "workspace:*",
+    "@bharatmart/utils": "workspace:*",
     "@bharatmart/validation": "workspace:*",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",

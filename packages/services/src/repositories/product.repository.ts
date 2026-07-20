@@ -26,10 +26,19 @@ function buildWhere(filters: ProductSearchFilters): Prisma.ProductWhereInput {
   const and: Prisma.ProductWhereInput[] = [{ status: 'ACTIVE' }]
 
   if (filters.q?.trim()) {
+    const q = filters.q.trim()
+    const tokens = q.split(/\s+/).filter((token) => token.length > 1)
     and.push({
       OR: [
-        { name: { contains: filters.q.trim(), mode: 'insensitive' } },
-        { description: { contains: filters.q.trim(), mode: 'insensitive' } },
+        { name: { contains: q, mode: 'insensitive' } },
+        { description: { contains: q, mode: 'insensitive' } },
+        { slug: { contains: q, mode: 'insensitive' } },
+        { merchant: { storeName: { contains: q, mode: 'insensitive' } } },
+        { category: { name: { contains: q, mode: 'insensitive' } } },
+        ...tokens.flatMap((token) => [
+          { name: { contains: token, mode: 'insensitive' as const } },
+          { description: { contains: token, mode: 'insensitive' as const } },
+        ]),
       ],
     })
   }

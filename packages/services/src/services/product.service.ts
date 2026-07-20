@@ -2,6 +2,7 @@ import 'server-only'
 
 import { productSchema, type ProductInput } from '@bharatmart/validation'
 import { prisma } from '@bharatmart/database'
+import { fuzzyScore } from '@bharatmart/utils'
 import {
   productRepository,
   type ProductSearchFilters,
@@ -64,10 +65,22 @@ export const ProductService = {
 
   async searchProducts(filters: ProductSearchFilters = {}) {
     const result = await productRepository.search(filters)
-    return {
-      ...result,
-      items: result.items.map(toSummary),
+    const items = result.items.map(toSummary)
+
+    const shouldRankByFuzzy =
+      Boolean(filters.q?.trim()) && (filters.sort == null || filters.sort === 'relevance')
+
+    if (!shouldRankByFuzzy) {
+      return { ...result, items }
     }
+
+    const ranked = [...items].sort((a, b) => {
+      const scoreB = fuzzyScore(filters.q!, b.name, b.merchantName, b.categoryName, b.slug)
+      const scoreA = fuzzyScore(filters.q!, a.name, a.merchantName, a.categoryName, a.slug)
+      return scoreB - scoreA
+    })
+
+    return { ...result, items: ranked }
   },
 
   getBySlug(slug: string) {

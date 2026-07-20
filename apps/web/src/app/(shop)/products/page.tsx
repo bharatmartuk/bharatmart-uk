@@ -8,9 +8,8 @@ import {
 } from '@bharatmart/services'
 import { ProductCard } from '@/components/product/ProductCard'
 import { ProductFilters } from '@/components/product/ProductFilters'
-import { MobileFiltersSheet } from '@/components/product/MobileFiltersSheet'
+import { ProductsToolbar } from '@/components/product/ProductsToolbar'
 import { ProductPagination } from '@/components/product/ProductPagination'
-import { ProductSortSelect } from '@/components/product/ProductSortSelect'
 
 export const dynamic = 'force-dynamic'
 
@@ -78,7 +77,7 @@ export default async function ProductsPage({
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 md:px-8 lg:px-16">
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-[#837561]">
+      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-[#837561] md:mb-6">
         <ol className="flex flex-wrap items-center gap-2">
           <li>
             <Link className="hover:text-[#7f5700]" href="/">
@@ -105,25 +104,26 @@ export default async function ProductsPage({
         </ol>
       </nav>
 
-      <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <div className="mb-4 md:mb-6">
+        <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
+        <p className="mt-1 text-sm text-[#514534]">
+          Authentic Indian products from verified UK merchants.
+        </p>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
         <aside className="hidden lg:block lg:col-start-1 lg:row-start-1">
-          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
-            <ProductFilters categories={categories} merchants={merchants} />
-          </Suspense>
+          <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pb-4">
+            <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
+              <ProductFilters categories={categories} merchants={merchants} />
+            </Suspense>
+          </div>
         </aside>
 
         <section className="lg:col-start-2 lg:row-start-1">
-          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
-              <p className="mt-1 text-sm text-[#514534]">
-                Authentic Indian products from verified UK merchants.
-              </p>
-            </div>
-            <Suspense fallback={null}>
-              <ProductSortSelect />
-            </Suspense>
-          </div>
+          <Suspense fallback={null}>
+            <ProductsToolbar categories={categories} merchants={merchants} />
+          </Suspense>
 
           {result.items.length === 0 ? (
             <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-10 text-center">
@@ -150,10 +150,6 @@ export default async function ProductsPage({
           />
         </section>
       </div>
-
-      <Suspense fallback={null}>
-        <MobileFiltersSheet categories={categories} merchants={merchants} />
-      </Suspense>
     </main>
   )
 }

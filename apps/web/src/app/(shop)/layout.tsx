@@ -1,6 +1,7 @@
-import { SiteFooter } from '@/components/layout/SiteFooter'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { PageLoader } from '@/components/layout/PageLoader'
+import { ConditionalSiteFooter } from '@/components/layout/ConditionalSiteFooter'
+import { ConditionalWhatsAppFloat } from '@/components/layout/ConditionalWhatsAppFloat'
 import { DemoCartHydrator } from '@/components/cart/DemoCartHydrator'
 import { PendingActionHydrator } from '@/components/cart/PendingActionHydrator'
 
@@ -12,7 +13,8 @@ export default function ShopLayout({ children }: { children: React.ReactNode }) 
       <PendingActionHydrator />
       <SiteHeader />
       {children}
-      <SiteFooter />
+      <ConditionalSiteFooter />
+      <ConditionalWhatsAppFloat />
     </div>
   )
 }
