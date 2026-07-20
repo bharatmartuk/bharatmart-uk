@@ -456,7 +456,8 @@ async function seedUsersAndMerchants(passwordHash: string) {
         verificationStatus: MerchantVerificationStatus.APPROVED,
         storeName: merchant.storeName,
         storeSlug: merchant.storeSlug,
-        storeLogoUrl: `https://picsum.photos/seed/${merchant.storeSlug}-logo/240/240`,
+        // Served from apps/web/public/merchants/{storeSlug}.png
+        storeLogoUrl: `/merchants/${merchant.storeSlug}.png`,
         storeBannerUrl: `https://picsum.photos/seed/${merchant.storeSlug}-banner/1200/400`,
         storeDescription: merchant.storeDescription,
         deliveryPostcodes: [...merchant.deliveryPostcodes],
@@ -470,7 +471,7 @@ async function seedUsersAndMerchants(passwordHash: string) {
         verificationDocumentUrls: [],
         storeName: merchant.storeName,
         storeSlug: merchant.storeSlug,
-        storeLogoUrl: `https://picsum.photos/seed/${merchant.storeSlug}-logo/240/240`,
+        storeLogoUrl: `/merchants/${merchant.storeSlug}.png`,
         storeBannerUrl: `https://picsum.photos/seed/${merchant.storeSlug}-banner/1200/400`,
         storeDescription: merchant.storeDescription,
         deliveryPostcodes: [...merchant.deliveryPostcodes],
