@@ -20,7 +20,7 @@ const footerGroups = [
     links: [
       ['Our story', '/about'],
       ['Contact us', '/contact'],
-      ['Privacy policy', '/privacy'],
+      ['Privacy policy', '/privacy-policy'],
       ['Terms of service', '/terms'],
     ],
   },

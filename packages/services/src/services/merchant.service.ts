@@ -37,6 +37,32 @@ export const MerchantService = {
     return merchantRepository.findApprovedForFilters()
   },
 
+  async getApprovedCount() {
+    return prisma.merchant.count({
+      where: { verificationStatus: 'APPROVED' },
+    })
+  },
+
+  /** Distinct UK outward postcode areas from approved merchant delivery lists. */
+  async getServedCityCount() {
+    const merchants = await prisma.merchant.findMany({
+      where: { verificationStatus: 'APPROVED' },
+      select: { deliveryPostcodes: true },
+    })
+    const areas = new Set<string>()
+    for (const merchant of merchants) {
+      for (const code of merchant.deliveryPostcodes) {
+        const prefix = code.trim().toUpperCase().replace(/\s+/g, '').slice(0, 4)
+        if (prefix) areas.add(prefix)
+      }
+    }
+    return areas.size
+  },
+
+  async getCustomerCount() {
+    return prisma.user.count({ where: { role: 'CUSTOMER' } })
+  },
+
   getByUserId(userId: string) {
     return prisma.merchant.findUnique({ where: { userId } })
   },

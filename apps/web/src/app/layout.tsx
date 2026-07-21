@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Montserrat } from 'next/font/google'
+import { Toaster } from '@bharatmart/ui'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
 import './globals.css'
 
@@ -22,7 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <AuthSessionProvider>{children}</AuthSessionProvider>
+        <AuthSessionProvider>
+          {children}
+          <Toaster position="top-right" richColors />
+        </AuthSessionProvider>
       </body>
     </html>
   )
