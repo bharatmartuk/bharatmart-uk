@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import {
   BusinessType,
   MerchantOrderStatus,
@@ -9,8 +11,10 @@ import {
   ProductStatus,
   UserRole,
 } from '../generated/client'
+import { resolveSeedProductImageUrl } from './lib/seed-cloudinary'
 
 const prisma = new PrismaClient()
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
 const DEMO_PASSWORD = 'Password123!'
 const TEMP_AUTH_TEST_EMAILS = [
   'customer@bharatmart.test',
@@ -963,12 +967,8 @@ async function seedProducts(
       merchantId,
     })
 
-    // Prefer local assets for original pickle/snack catalogue; picsum for newer seeds.
-    const imageUrl =
-      product.merchantSlug === 'ammas-andhra-pickle-house' ||
-      product.merchantSlug === 'narasimhas-village-snacks'
-        ? `/products/${product.slug}.png`
-        : `https://picsum.photos/seed/${product.slug}/600/600`
+    // All product images live in Cloudinary — URLs only in the database.
+    const imageUrl = await resolveSeedProductImageUrl(product.slug, REPO_ROOT)
 
     await prisma.productImage.upsert({
       where: { id: `seed_image_${product.slug}_1` },

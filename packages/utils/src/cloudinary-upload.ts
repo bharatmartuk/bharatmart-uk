@@ -38,7 +38,7 @@ export async function uploadFileToCloudinary(
   const signed = (await signResponse.json()) as SignedUploadResponse
   const publicId = `${folder}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`
 
-  if (!signed.apiKey || signed.apiKey === 'stub' || signed.signature === 'pending-cloudinary-secret') {
+  if (!signed.apiKey || signed.signature === 'pending-cloudinary-secret') {
     if (folder === 'bharatmart/merchant-documents') {
       const formData = new FormData()
       formData.append('file', file)
@@ -52,10 +52,9 @@ export async function uploadFileToCloudinary(
       return (await localResponse.json()) as { url: string; publicId: string }
     }
 
-    return {
-      url: `https://picsum.photos/seed/${encodeURIComponent(publicId)}/800/800`,
-      publicId,
-    }
+    throw new Error(
+      'Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to upload images.',
+    )
   }
 
   const resourceType = file.type.startsWith('image/') ? 'image' : 'auto'

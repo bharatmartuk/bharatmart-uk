@@ -35,40 +35,60 @@ function configureCloudinary() {
 }
 
 export const UploadService = {
+  isConfigured() {
+    return configureCloudinary()
+  },
+
   async uploadImage(fileName: string, folder: UploadFolder): Promise<UploadResult> {
     const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase() || 'upload'
     const publicId = `${folder}/${Date.now()}-${safeName}`
 
     if (!configureCloudinary()) {
-      const url = `https://picsum.photos/seed/${encodeURIComponent(publicId)}/800/800`
-      return { url, publicId, folder }
+      throw new Error('Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.')
     }
 
     const url = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`
     return { url, publicId, folder }
   },
 
-  async createSignedUpload(folder: UploadFolder) {
-    const timestamp = Math.floor(Date.now() / 1000)
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME ?? 'stub'
-    const apiKey = process.env.CLOUDINARY_API_KEY ?? 'stub'
-    const apiSecret = process.env.CLOUDINARY_API_SECRET
-
-    if (!apiSecret) {
-      return {
-        cloudName,
-        apiKey,
-        timestamp,
-        folder,
-        signature: 'pending-cloudinary-secret',
-      }
+  /** Server-side upload from a buffer (seed scripts, migrations). */
+  async uploadBuffer(
+    buffer: Buffer,
+    options: { folder: UploadFolder; publicId: string },
+  ): Promise<UploadResult> {
+    if (!configureCloudinary()) {
+      throw new Error('Cloudinary is not configured.')
     }
 
-    // Cloudinary requires params sorted alphabetically before hashing.
-    const signature = cloudinary.utils.api_sign_request(
-      { folder, timestamp },
-      apiSecret,
-    )
+    const result = await new Promise<{ secure_url: string; public_id: string }>((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          public_id: options.publicId,
+          overwrite: true,
+          resource_type: 'image',
+        },
+        (error, uploadResult) => {
+          if (error || !uploadResult) reject(error ?? new Error('Cloudinary upload failed'))
+          else resolve({ secure_url: uploadResult.secure_url, public_id: uploadResult.public_id })
+        },
+      )
+      stream.end(buffer)
+    })
+
+    return { url: result.secure_url, publicId: result.public_id, folder: options.folder }
+  },
+
+  async createSignedUpload(folder: UploadFolder) {
+    const timestamp = Math.floor(Date.now() / 1000)
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME
+    const apiKey = process.env.CLOUDINARY_API_KEY
+    const apiSecret = process.env.CLOUDINARY_API_SECRET
+
+    if (!cloudName || !apiKey || !apiSecret) {
+      throw new Error('Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.')
+    }
+
+    const signature = cloudinary.utils.api_sign_request({ folder, timestamp }, apiSecret)
 
     return {
       cloudName,
