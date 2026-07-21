@@ -56,7 +56,6 @@ function SortableRow({
           <GripVertical className="h-4 w-4" />
         </button>
         {category.iconUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             alt=""
             className="h-10 w-10 rounded-full border border-[#eee7de] object-contain bg-[#fff8f0]"
