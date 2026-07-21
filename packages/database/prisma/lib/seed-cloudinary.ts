@@ -38,6 +38,32 @@ function seedPublicId(slug: string) {
   return `${SEED_PUBLIC_ID_PREFIX}/${slug}`
 }
 
+const FRIENDLY_ASSET_NAMES: Record<string, string> = {
+  'handcrafted-brass-diya-set': 'Handcrafted Brass Diya Set.png',
+  'premium-rangoli-colour-kit': 'Premium Rangoli Colour Kit.png',
+  'festive-gift-hamper-classic': 'Festive Gift Hamper Classic.png',
+  'banarasi-silk-saree-maroon-gold': 'Banarasi Silk Saree \u2014 Maroon Gold.png',
+  'cotton-kurti-everyday-set': 'Cotton Kurti Everyday Set.png',
+  'kids-festival-sherwani': "Kids' Festival Sherwani.png",
+  'homestyle-garam-masala-100g': 'Homestyle Garam Masala.png',
+  'toor-dal-premium-1kg': 'Toor Dal Premium.png',
+  'ready-biryani-masala-kit': 'Ready Biryani Masala Kit.png',
+  'aged-basmati-rice-5kg': 'Aged Basmati Rice.png',
+  'sona-masoori-rice-5kg': 'Sona Masoori Rice.png',
+  'idli-rice-specialty-2kg': 'Idli Rice Specialty.png',
+  'alphonso-mango-box-seasonal': 'Alphonso Mango Box.png',
+  'winter-jaggery-gift-pack': 'Winter Jaggery Gift Pack.png',
+  'organic-moong-dal-1kg': 'Organic Moong Dal.png',
+  'cold-pressed-groundnut-oil-1l': 'Cold-Pressed Groundnut Oil.png',
+  'organic-millet-mix-1kg': 'Organic Millet Mix.png',
+}
+
+function friendlyAssetCandidates(repoRoot: string, slug: string) {
+  const name = FRIENDLY_ASSET_NAMES[slug]
+  if (!name) return [] as string[]
+  return [path.join(repoRoot, 'assets', 'pickle', name)]
+}
+
 function seedDeliveryUrl(cloudName: string, publicId: string) {
   return `https://res.cloudinary.com/${cloudName}/image/upload/${publicId}`
 }
@@ -79,6 +105,8 @@ export async function resolveSeedProductImageUrl(slug: string, repoRoot: string)
   const localCandidates = [
     path.join(repoRoot, 'assets', 'products', `${slug}.png`),
     path.join(repoRoot, 'apps', 'web', 'public', 'products', `${slug}.png`),
+    // Human-readable filenames for the 17 new-category products (local only, gitignored).
+    ...friendlyAssetCandidates(repoRoot, slug),
   ]
 
   for (const localPath of localCandidates) {

@@ -17,6 +17,7 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:migrate-product-images": "tsx prisma/migrate-product-images-to-cloudinary.ts",
+    "db:replace-new-product-images": "tsx prisma/replace-new-product-images.ts",
     "db:wipe-marketplace": "tsx prisma/wipe-marketplace.ts",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",

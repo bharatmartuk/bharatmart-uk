@@ -9,5 +9,7 @@ dist
 packages/database/generated
 /uploads
 
-# Local source product photos (served from apps/web/public/products)
+# Local media source files — never commit (keep the repo light).
+# Product images are stored in Cloudinary; only URLs live in the database.
 assets/pickle/
+assets/products/
