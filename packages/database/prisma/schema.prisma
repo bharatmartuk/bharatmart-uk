@@ -158,6 +158,11 @@ model Merchant {
   registrationNumber       String?
   verificationStatus       MerchantVerificationStatus @default(PENDING)
   verificationDocumentUrls String[]
+  /// Whether the merchant operates a physical high-street / market store.
+  hasPhysicalStore         Boolean                    @default(false)
+  physicalStorePhotoUrl    String?
+  /// Required for food-related business types (pickles, snacks, groceries, etc.).
+  foodLicenseUrl           String?
   storeName                String
   storeSlug                String                     @unique
   storeLogoUrl             String?
@@ -179,13 +184,14 @@ model Merchant {
 }
 
 model Category {
-  id        String  @id @default(cuid())
-  name      String
-  slug      String  @unique
-  iconUrl   String?
-  parentId  String?
-  isActive  Boolean @default(true)
-  sortOrder Int     @default(0)
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  iconUrl     String?
+  parentId    String?
+  isActive    Boolean @default(true)
+  comingSoon  Boolean @default(false)
+  sortOrder   Int     @default(0)
 
   parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
   children Category[] @relation("CategoryHierarchy")
@@ -206,6 +212,7 @@ model Product {
   stockQuantity Int
   sku           String
   status        ProductStatus @default(DRAFT)
+  isFeatured    Boolean       @default(false)
   avgRating     Decimal       @default(0) @db.Decimal(3, 2)
   reviewCount   Int           @default(0)
   createdAt     DateTime      @default(now())

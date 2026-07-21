@@ -7,12 +7,19 @@ export interface CategorySummary {
   name: string
   slug: string
   iconUrl: string | null
+  comingSoon: boolean
 }
 
 export const CategoryService = {
   async getTopLevelCategories(): Promise<CategorySummary[]> {
     const categories = await categoryRepository.findTopLevel()
-    return categories.map(({ id, name, slug, iconUrl }) => ({ id, name, slug, iconUrl }))
+    return categories.map(({ id, name, slug, iconUrl, comingSoon }) => ({
+      id,
+      name,
+      slug,
+      iconUrl,
+      comingSoon,
+    }))
   },
 
   getBySlug(slug: string) {

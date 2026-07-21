@@ -36,11 +36,19 @@ export async function replaceVerificationDocuments(input: MerchantVerificationDo
 
   const parsed = merchantVerificationDocumentsSchema.safeParse(input)
   if (!parsed.success) {
-    return { ok: false as const, error: 'Upload both verification documents.' }
+    return { ok: false as const, error: 'Please complete all required verification uploads.' }
   }
 
   try {
-    await MerchantService.updateVerificationDocuments(user.id, parsed.data)
+    await MerchantService.updateVerificationDocuments(user.id, {
+      businessDocumentUrl: parsed.data.businessDocumentUrl,
+      idProofUrl: parsed.data.idProofUrl,
+      hasPhysicalStore: parsed.data.hasPhysicalStore,
+      ...(parsed.data.physicalStorePhotoUrl
+        ? { physicalStorePhotoUrl: parsed.data.physicalStorePhotoUrl }
+        : {}),
+      ...(parsed.data.foodLicenseUrl ? { foodLicenseUrl: parsed.data.foodLicenseUrl } : {}),
+    })
   } catch (error) {
     if (
       error instanceof ConflictError ||

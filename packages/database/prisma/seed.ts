@@ -27,6 +27,7 @@ type SeedProduct = {
   priceInPence: number
   stockQuantity: number
   sku: string
+  isFeatured?: boolean
 }
 
 const categories = [
@@ -35,12 +36,69 @@ const categories = [
     slug: 'homemade-foods',
     iconUrl: '/categories/homemade-foods.png',
     sortOrder: 1,
+    comingSoon: false,
     children: [
       { name: 'Homemade Pickles', slug: 'homemade-pickles', sortOrder: 1 },
       { name: 'Homemade Snacks', slug: 'homemade-snacks', sortOrder: 2 },
     ],
   },
-] as const
+  {
+    name: 'Festive Collections',
+    slug: 'festive-collections',
+    iconUrl: null as string | null,
+    sortOrder: 2,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Indian Clothing',
+    slug: 'indian-clothing',
+    iconUrl: null as string | null,
+    sortOrder: 3,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Indian Food',
+    slug: 'indian-food',
+    iconUrl: null as string | null,
+    sortOrder: 4,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Rice',
+    slug: 'rice',
+    iconUrl: null as string | null,
+    sortOrder: 5,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Seasonal Stuff',
+    slug: 'seasonal-stuff',
+    iconUrl: null as string | null,
+    sortOrder: 6,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Ayurveda',
+    slug: 'ayurveda',
+    iconUrl: null as string | null,
+    sortOrder: 7,
+    comingSoon: true,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Organic Store',
+    slug: 'organic-store',
+    iconUrl: null as string | null,
+    sortOrder: 8,
+    comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+]
 
 const merchants = [
   {
@@ -55,6 +113,7 @@ const merchants = [
     storeDescription:
       'Small-batch Andhra pickles made from family recipes — mango avakaya, gongura, lemon and more, packed fresh for UK homes.',
     deliveryPostcodes: ['E1', 'E2', 'E3', 'E14', 'IG1', 'RM8'],
+    hasPhysicalStore: true,
   },
   {
     email: 'suresh.narasimha@bharatmart.uk',
@@ -68,6 +127,91 @@ const merchants = [
     storeDescription:
       'Crispy Andhra snacks from a family kitchen in Leicester — murukulu, sakinalu, chekkalu, mixture and festival sweets made to order.',
     deliveryPostcodes: ['LE1', 'LE2', 'LE3', 'LE4', 'LE5', 'CV1'],
+    hasPhysicalStore: true,
+  },
+  {
+    email: 'meera.joshi@bharatmart.uk',
+    name: 'Meera Joshi',
+    phone: '+44 7700 900303',
+    businessName: 'Festival Lights Emporium Ltd',
+    businessType: BusinessType.TEMPLE_STORE,
+    registrationNumber: 'UK-FL-20003',
+    storeName: 'Festival Lights Emporium',
+    storeSlug: 'festival-lights-emporium',
+    storeDescription:
+      'Diwali, Holi and Navratri collections — diyas, rangoli kits, festive décor and gift hampers curated for UK celebrations.',
+    deliveryPostcodes: ['HA1', 'HA2', 'UB1', 'UB5', 'NW9', 'NW10'],
+    hasPhysicalStore: true,
+  },
+  {
+    email: 'priya.kapoor@bharatmart.uk',
+    name: 'Priya Kapoor',
+    phone: '+44 7700 900304',
+    businessName: 'Saree & Style Boutique Ltd',
+    businessType: BusinessType.CLOTHING,
+    registrationNumber: 'UK-SS-20004',
+    storeName: 'Saree & Style Boutique',
+    storeSlug: 'saree-style-boutique',
+    storeDescription:
+      'Ethnic wear for everyday and occasions — sarees, kurtis, sherwanis and kids festive outfits shipped across the UK.',
+    deliveryPostcodes: ['B1', 'B15', 'B16', 'B17', 'CV1', 'CV6'],
+    hasPhysicalStore: true,
+  },
+  {
+    email: 'rajesh.nair@bharatmart.uk',
+    name: 'Rajesh Nair',
+    phone: '+44 7700 900305',
+    businessName: 'Desi Kitchen Staples Ltd',
+    businessType: BusinessType.GROCERY,
+    registrationNumber: 'UK-DK-20005',
+    storeName: 'Desi Kitchen Staples',
+    storeSlug: 'desi-kitchen-staples',
+    storeDescription:
+      'Pantry essentials for Indian cooking — spices, dals, ready masalas and everyday groceries from trusted suppliers.',
+    deliveryPostcodes: ['M1', 'M14', 'M20', 'SK1', 'OL1', 'OL6'],
+    hasPhysicalStore: false,
+  },
+  {
+    email: 'anita.rao@bharatmart.uk',
+    name: 'Anita Rao',
+    phone: '+44 7700 900306',
+    businessName: 'Basmati House UK Ltd',
+    businessType: BusinessType.GROCERY,
+    registrationNumber: 'UK-BH-20006',
+    storeName: 'Basmati House UK',
+    storeSlug: 'basmati-house-uk',
+    storeDescription:
+      'Premium aged basmati, sona masoori and specialty rice varieties for biryani, everyday meals and catering.',
+    deliveryPostcodes: ['CR0', 'CR2', 'SM1', 'SM5', 'KT1', 'SW19'],
+    hasPhysicalStore: true,
+  },
+  {
+    email: 'vikram.desai@bharatmart.uk',
+    name: 'Vikram Desai',
+    phone: '+44 7700 900307',
+    businessName: "Season's Bazaar Ltd",
+    businessType: BusinessType.OTHER,
+    registrationNumber: 'UK-SB-20007',
+    storeName: "Season's Bazaar",
+    storeSlug: 'seasons-bazaar',
+    storeDescription:
+      'Seasonal Indian favourites — mango season boxes, winter warmers, monsoon snacks and limited-time festival drops.',
+    deliveryPostcodes: ['LS1', 'LS6', 'LS11', 'BD1', 'BD7', 'HX1'],
+    hasPhysicalStore: false,
+  },
+  {
+    email: 'neha.patel@bharatmart.uk',
+    name: 'Neha Patel',
+    phone: '+44 7700 900308',
+    businessName: 'Green Leaf Organics Ltd',
+    businessType: BusinessType.GROCERY,
+    registrationNumber: 'UK-GL-20008',
+    storeName: 'Green Leaf Organics',
+    storeSlug: 'green-leaf-organics',
+    storeDescription:
+      'Certified organic dals, millets, cold-pressed oils and clean-label pantry staples for mindful Indian cooking.',
+    deliveryPostcodes: ['BS1', 'BS8', 'BA1', 'BA2', 'GL1', 'GL50'],
+    hasPhysicalStore: true,
   },
 ] as const
 
@@ -83,6 +227,7 @@ const products: SeedProduct[] = [
     priceInPence: 699,
     stockQuantity: 40,
     sku: 'AAP-AVK-001',
+    isFeatured: true,
   },
   {
     merchantSlug: 'ammas-andhra-pickle-house',
@@ -350,6 +495,195 @@ const products: SeedProduct[] = [
     stockQuantity: 48,
     sku: 'NVS-RCK-015',
   },
+
+  // Festive Collections
+  {
+    merchantSlug: 'festival-lights-emporium',
+    categorySlug: 'festive-collections',
+    name: 'Handcrafted Brass Diya Set',
+    slug: 'handcrafted-brass-diya-set',
+    description: 'Set of six brass diyas for Diwali and temple rituals — polished and gift-ready.',
+    priceInPence: 1899,
+    stockQuantity: 40,
+    sku: 'FLE-DYA-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'festival-lights-emporium',
+    categorySlug: 'festive-collections',
+    name: 'Premium Rangoli Colour Kit',
+    slug: 'premium-rangoli-colour-kit',
+    description: 'Vibrant rangoli powders with stencils for festive doorway décor.',
+    priceInPence: 999,
+    stockQuantity: 55,
+    sku: 'FLE-RNG-002',
+  },
+  {
+    merchantSlug: 'festival-lights-emporium',
+    categorySlug: 'festive-collections',
+    name: 'Festive Gift Hamper Classic',
+    slug: 'festive-gift-hamper-classic',
+    description: 'Assorted sweets, dry fruit and a brass diya in a ready-to-gift box.',
+    priceInPence: 3499,
+    stockQuantity: 25,
+    sku: 'FLE-HMP-003',
+    isFeatured: true,
+  },
+
+  // Indian Clothing
+  {
+    merchantSlug: 'saree-style-boutique',
+    categorySlug: 'indian-clothing',
+    name: 'Banarasi Silk Saree — Maroon Gold',
+    slug: 'banarasi-silk-saree-maroon-gold',
+    description: 'Classic Banarasi weave saree with zari border — wedding and festival ready.',
+    priceInPence: 8999,
+    stockQuantity: 12,
+    sku: 'SSB-SAR-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'saree-style-boutique',
+    categorySlug: 'indian-clothing',
+    name: 'Cotton Kurti Everyday Set',
+    slug: 'cotton-kurti-everyday-set',
+    description: 'Soft cotton kurti with matching pants — breathable for daily wear.',
+    priceInPence: 2999,
+    stockQuantity: 30,
+    sku: 'SSB-KUR-002',
+  },
+  {
+    merchantSlug: 'saree-style-boutique',
+    categorySlug: 'indian-clothing',
+    name: "Kids' Festival Sherwani",
+    slug: 'kids-festival-sherwani',
+    description: 'Embroidered sherwani set for boys — ideal for Diwali and weddings.',
+    priceInPence: 4599,
+    stockQuantity: 18,
+    sku: 'SSB-SHR-003',
+  },
+
+  // Indian Food
+  {
+    merchantSlug: 'desi-kitchen-staples',
+    categorySlug: 'indian-food',
+    name: 'Homestyle Garam Masala 100g',
+    slug: 'homestyle-garam-masala-100g',
+    description: 'Freshly roasted spice blend for curries, dals and marinades.',
+    priceInPence: 449,
+    stockQuantity: 80,
+    sku: 'DKS-GRM-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'desi-kitchen-staples',
+    categorySlug: 'indian-food',
+    name: 'Toor Dal Premium 1kg',
+    slug: 'toor-dal-premium-1kg',
+    description: 'Cleaned, polished toor dal for everyday sambar and dal tadka.',
+    priceInPence: 399,
+    stockQuantity: 100,
+    sku: 'DKS-TOOR-002',
+  },
+  {
+    merchantSlug: 'desi-kitchen-staples',
+    categorySlug: 'indian-food',
+    name: 'Ready Biryani Masala Kit',
+    slug: 'ready-biryani-masala-kit',
+    description: 'Whole spices and powdered masala measured for one family biryani.',
+    priceInPence: 599,
+    stockQuantity: 60,
+    sku: 'DKS-BIR-003',
+  },
+
+  // Rice
+  {
+    merchantSlug: 'basmati-house-uk',
+    categorySlug: 'rice',
+    name: 'Aged Basmati Rice 5kg',
+    slug: 'aged-basmati-rice-5kg',
+    description: 'Long-grain aged basmati with excellent elongation for biryani and pulao.',
+    priceInPence: 1899,
+    stockQuantity: 70,
+    sku: 'BHU-BAS-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'basmati-house-uk',
+    categorySlug: 'rice',
+    name: 'Sona Masoori Rice 5kg',
+    slug: 'sona-masoori-rice-5kg',
+    description: 'Lightweight South Indian favourite for everyday meals and tiffin.',
+    priceInPence: 1499,
+    stockQuantity: 65,
+    sku: 'BHU-SON-002',
+  },
+  {
+    merchantSlug: 'basmati-house-uk',
+    categorySlug: 'rice',
+    name: 'Idli Rice Specialty 2kg',
+    slug: 'idli-rice-specialty-2kg',
+    description: 'Parboiled idli rice for soft, fluffy idlis and dosas.',
+    priceInPence: 699,
+    stockQuantity: 50,
+    sku: 'BHU-IDL-003',
+  },
+
+  // Seasonal Stuff
+  {
+    merchantSlug: 'seasons-bazaar',
+    categorySlug: 'seasonal-stuff',
+    name: 'Alphonso Mango Box (Seasonal)',
+    slug: 'alphonso-mango-box-seasonal',
+    description: 'Limited-season Alphonso mangoes — pre-order during peak harvest weeks.',
+    priceInPence: 2499,
+    stockQuantity: 20,
+    sku: 'SBZ-MNG-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'seasons-bazaar',
+    categorySlug: 'seasonal-stuff',
+    name: 'Winter Jaggery Gift Pack',
+    slug: 'winter-jaggery-gift-pack',
+    description: 'Soft jaggery blocks and peanut chikki for colder months.',
+    priceInPence: 1299,
+    stockQuantity: 35,
+    sku: 'SBZ-JAG-002',
+  },
+
+  // Organic Store
+  {
+    merchantSlug: 'green-leaf-organics',
+    categorySlug: 'organic-store',
+    name: 'Organic Moong Dal 1kg',
+    slug: 'organic-moong-dal-1kg',
+    description: 'Certified organic split moong dal — clean label and residue-tested.',
+    priceInPence: 549,
+    stockQuantity: 45,
+    sku: 'GLO-MNG-001',
+    isFeatured: true,
+  },
+  {
+    merchantSlug: 'green-leaf-organics',
+    categorySlug: 'organic-store',
+    name: 'Cold-Pressed Groundnut Oil 1L',
+    slug: 'cold-pressed-groundnut-oil-1l',
+    description: 'Wood-pressed groundnut oil for tadka and everyday cooking.',
+    priceInPence: 999,
+    stockQuantity: 40,
+    sku: 'GLO-OIL-002',
+  },
+  {
+    merchantSlug: 'green-leaf-organics',
+    categorySlug: 'organic-store',
+    name: 'Organic Millet Mix 1kg',
+    slug: 'organic-millet-mix-1kg',
+    description: 'Ragi, jowar and bajra mix for rotis, porridge and baking.',
+    priceInPence: 699,
+    stockQuantity: 38,
+    sku: 'GLO-MLT-003',
+  },
 ]
 
 async function removePreviousTemporaryAuthSeed() {
@@ -371,6 +705,7 @@ async function seedCategories() {
         name: category.name,
         iconUrl: category.iconUrl,
         isActive: true,
+        comingSoon: category.comingSoon,
         sortOrder: category.sortOrder,
         parentId: null,
       },
@@ -379,6 +714,7 @@ async function seedCategories() {
         slug: category.slug,
         iconUrl: category.iconUrl,
         isActive: true,
+        comingSoon: category.comingSoon,
         sortOrder: category.sortOrder,
       },
     })
@@ -391,6 +727,7 @@ async function seedCategories() {
           name: child.name,
           parentId: parent.id,
           isActive: true,
+          comingSoon: false,
           sortOrder: child.sortOrder,
         },
         create: {
@@ -398,6 +735,7 @@ async function seedCategories() {
           slug: child.slug,
           parentId: parent.id,
           isActive: true,
+          comingSoon: false,
           sortOrder: child.sortOrder,
         },
       })
@@ -461,6 +799,16 @@ async function seedUsersAndMerchants(passwordHash: string) {
         storeBannerUrl: `https://picsum.photos/seed/${merchant.storeSlug}-banner/1200/400`,
         storeDescription: merchant.storeDescription,
         deliveryPostcodes: [...merchant.deliveryPostcodes],
+        hasPhysicalStore: merchant.hasPhysicalStore,
+        physicalStorePhotoUrl: merchant.hasPhysicalStore
+          ? `https://picsum.photos/seed/${merchant.storeSlug}-store/800/600`
+          : null,
+        foodLicenseUrl:
+          merchant.businessType === BusinessType.GROCERY ||
+          merchant.businessType === BusinessType.SWEETS_SNACKS ||
+          merchant.businessType === BusinessType.RESTAURANT
+            ? `https://picsum.photos/seed/${merchant.storeSlug}-food-licence/600/800`
+            : null,
       },
       create: {
         userId: user.id,
@@ -468,7 +816,20 @@ async function seedUsersAndMerchants(passwordHash: string) {
         businessType: merchant.businessType,
         registrationNumber: merchant.registrationNumber,
         verificationStatus: MerchantVerificationStatus.APPROVED,
-        verificationDocumentUrls: [],
+        verificationDocumentUrls: [
+          `https://picsum.photos/seed/${merchant.storeSlug}-biz-doc/600/800`,
+          `https://picsum.photos/seed/${merchant.storeSlug}-id-proof/600/800`,
+        ],
+        hasPhysicalStore: merchant.hasPhysicalStore,
+        physicalStorePhotoUrl: merchant.hasPhysicalStore
+          ? `https://picsum.photos/seed/${merchant.storeSlug}-store/800/600`
+          : null,
+        foodLicenseUrl:
+          merchant.businessType === BusinessType.GROCERY ||
+          merchant.businessType === BusinessType.SWEETS_SNACKS ||
+          merchant.businessType === BusinessType.RESTAURANT
+            ? `https://picsum.photos/seed/${merchant.storeSlug}-food-licence/600/800`
+            : null,
         storeName: merchant.storeName,
         storeSlug: merchant.storeSlug,
         storeLogoUrl: `/merchants/${merchant.storeSlug}.png`,
@@ -579,6 +940,7 @@ async function seedProducts(
         stockQuantity: product.stockQuantity,
         sku: product.sku,
         status: ProductStatus.ACTIVE,
+        isFeatured: Boolean(product.isFeatured),
       },
       create: {
         merchantId,
@@ -590,6 +952,7 @@ async function seedProducts(
         stockQuantity: product.stockQuantity,
         sku: product.sku,
         status: ProductStatus.ACTIVE,
+        isFeatured: Boolean(product.isFeatured),
       },
     })
 
@@ -600,18 +963,24 @@ async function seedProducts(
       merchantId,
     })
 
-    // Primary product photo from apps/web/public/products/{slug}.png
+    // Prefer local assets for original pickle/snack catalogue; picsum for newer seeds.
+    const imageUrl =
+      product.merchantSlug === 'ammas-andhra-pickle-house' ||
+      product.merchantSlug === 'narasimhas-village-snacks'
+        ? `/products/${product.slug}.png`
+        : `https://picsum.photos/seed/${product.slug}/600/600`
+
     await prisma.productImage.upsert({
       where: { id: `seed_image_${product.slug}_1` },
       update: {
         productId: record.id,
-        url: `/products/${product.slug}.png`,
+        url: imageUrl,
         sortOrder: 1,
       },
       create: {
         id: `seed_image_${product.slug}_1`,
         productId: record.id,
-        url: `/products/${product.slug}.png`,
+        url: imageUrl,
         sortOrder: 1,
       },
     })

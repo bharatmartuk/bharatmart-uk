@@ -129,6 +129,24 @@ export const productRepository = {
     })
   },
 
+  findNewArrivals(limit: number) {
+    return prisma.product.findMany({
+      where: { status: 'ACTIVE' },
+      include: productCardInclude,
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+    })
+  },
+
+  findFeatured(limit: number) {
+    return prisma.product.findMany({
+      where: { status: 'ACTIVE', isFeatured: true },
+      include: productCardInclude,
+      orderBy: [{ avgRating: 'desc' }, { reviewCount: 'desc' }],
+      take: limit,
+    })
+  },
+
   async search(filters: ProductSearchFilters) {
     const page = Math.max(filters.page ?? 1, 1)
     const pageSize = Math.min(Math.max(filters.pageSize ?? 24, 1), 48)

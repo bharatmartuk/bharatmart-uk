@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   merchantOnboardingSchema,
+  isFoodBusinessType,
   type MerchantOnboardingInput,
 } from '@bharatmart/validation'
 import {
@@ -30,7 +31,13 @@ const steps = ['Business Details', 'Documents', 'Store Setup', 'Review'] as cons
 
 const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
   ['businessName', 'businessType', 'registeredAddress', 'contactPhone'],
-  ['businessDocumentUrl', 'idProofUrl'],
+  [
+    'businessDocumentUrl',
+    'idProofUrl',
+    'hasPhysicalStore',
+    'physicalStorePhotoUrl',
+    'foodLicenseUrl',
+  ],
   ['storeName', 'storeSlug', 'storeDescription', 'deliveryPostcodes'],
   [
     'businessName',
@@ -39,6 +46,9 @@ const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
     'contactPhone',
     'businessDocumentUrl',
     'idProofUrl',
+    'hasPhysicalStore',
+    'physicalStorePhotoUrl',
+    'foodLicenseUrl',
     'storeName',
     'storeSlug',
     'storeDescription',
@@ -87,14 +97,25 @@ export function MerchantOnboardingForm() {
       deliveryPostcodes: [],
       businessDocumentUrl: '',
       idProofUrl: '',
+      hasPhysicalStore: false,
+      physicalStorePhotoUrl: '',
+      foodLicenseUrl: '',
     },
     mode: 'onBlur',
   })
 
   const values = form.watch()
   const fieldErrors = form.formState.errors
+  const needsFoodLicense = isFoodBusinessType(values.businessType)
 
-  async function handleUpload(field: 'businessDocumentUrl' | 'idProofUrl', file: File) {
+  async function handleUpload(
+    field:
+      | 'businessDocumentUrl'
+      | 'idProofUrl'
+      | 'physicalStorePhotoUrl'
+      | 'foodLicenseUrl',
+    file: File,
+  ) {
     setError(null)
     try {
       const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-documents')
@@ -205,6 +226,11 @@ export function MerchantOnboardingForm() {
 
             {step === 1 ? (
               <>
+                <p className="rounded-lg bg-[#f9f3ea] p-3 text-sm text-[#514534]">
+                  We verify the owner&apos;s identity, ask whether you have a physical store (and need a
+                  photo of it), and require a food licence for food businesses such as pickles and
+                  groceries.
+                </p>
                 <div className="space-y-2">
                   <Label>Business document</Label>
                   <Input
@@ -223,7 +249,7 @@ export function MerchantOnboardingForm() {
                   ) : null}
                 </div>
                 <div className="space-y-2">
-                  <Label>ID proof</Label>
+                  <Label>Owner identity proof (passport / driving licence / national ID)</Label>
                   <Input
                     accept=".pdf,.png,.jpg,.jpeg,.webp"
                     onChange={(event) => {
@@ -239,6 +265,65 @@ export function MerchantOnboardingForm() {
                     <p className="text-xs text-[#a83635]">{fieldErrors.idProofUrl.message}</p>
                   ) : null}
                 </div>
+                <div className="flex items-center gap-3 rounded-lg border border-[#d6c4ad] px-3 py-3">
+                  <input
+                    checked={values.hasPhysicalStore}
+                    className="h-4 w-4 accent-[#7f5700]"
+                    id="hasPhysicalStore"
+                    onChange={(event) => {
+                      form.setValue('hasPhysicalStore', event.target.checked, {
+                        shouldValidate: true,
+                      })
+                      if (!event.target.checked) {
+                        form.setValue('physicalStorePhotoUrl', '', { shouldValidate: true })
+                      }
+                    }}
+                    type="checkbox"
+                  />
+                  <Label className="cursor-pointer font-normal" htmlFor="hasPhysicalStore">
+                    I have a physical store / market stall
+                  </Label>
+                </div>
+                {values.hasPhysicalStore ? (
+                  <div className="space-y-2">
+                    <Label>Physical store photo</Label>
+                    <Input
+                      accept=".png,.jpg,.jpeg,.webp"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0]
+                        if (file) void handleUpload('physicalStorePhotoUrl', file)
+                      }}
+                      type="file"
+                    />
+                    {values.physicalStorePhotoUrl ? (
+                      <p className="text-xs text-[#2e6a39]">Photo uploaded</p>
+                    ) : null}
+                    {fieldErrors.physicalStorePhotoUrl ? (
+                      <p className="text-xs text-[#a83635]">
+                        {fieldErrors.physicalStorePhotoUrl.message}
+                      </p>
+                    ) : null}
+                  </div>
+                ) : null}
+                {needsFoodLicense ? (
+                  <div className="space-y-2">
+                    <Label>Food hygiene / licence certificate (required for food businesses)</Label>
+                    <Input
+                      accept=".pdf,.png,.jpg,.jpeg,.webp"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0]
+                        if (file) void handleUpload('foodLicenseUrl', file)
+                      }}
+                      type="file"
+                    />
+                    {values.foodLicenseUrl ? (
+                      <p className="text-xs text-[#2e6a39]">Licence uploaded</p>
+                    ) : null}
+                    {fieldErrors.foodLicenseUrl ? (
+                      <p className="text-xs text-[#a83635]">{fieldErrors.foodLicenseUrl.message}</p>
+                    ) : null}
+                  </div>
+                ) : null}
               </>
             ) : null}
 
@@ -317,8 +402,10 @@ export function MerchantOnboardingForm() {
                 <p>
                   <strong>Documents:</strong>{' '}
                   {values.businessDocumentUrl && values.idProofUrl
-                    ? 'Ready'
+                    ? 'Business + owner ID uploaded'
                     : 'Missing uploads'}
+                  {values.hasPhysicalStore ? ' · Store photo' : ''}
+                  {needsFoodLicense ? ' · Food licence' : ''}
                 </p>
               </div>
             ) : null}

@@ -108,6 +108,11 @@ export const MerchantService = {
             : {}),
           verificationStatus: 'PENDING',
           verificationDocumentUrls: [parsed.data.businessDocumentUrl, parsed.data.idProofUrl],
+          hasPhysicalStore: parsed.data.hasPhysicalStore,
+          physicalStorePhotoUrl: parsed.data.hasPhysicalStore
+            ? parsed.data.physicalStorePhotoUrl || null
+            : null,
+          foodLicenseUrl: parsed.data.foodLicenseUrl || null,
           storeName: parsed.data.storeName,
           storeSlug: parsed.data.storeSlug,
           storeDescription: parsed.data.storeDescription,
@@ -119,7 +124,13 @@ export const MerchantService = {
 
   async updateVerificationDocuments(
     userId: string,
-    input: { businessDocumentUrl: string; idProofUrl: string },
+    input: {
+      businessDocumentUrl: string
+      idProofUrl: string
+      hasPhysicalStore: boolean
+      physicalStorePhotoUrl?: string
+      foodLicenseUrl?: string
+    },
   ) {
     const merchant = await prisma.merchant.findUnique({ where: { userId } })
     if (!merchant) throw new NotFoundError('Merchant profile not found.')
@@ -131,6 +142,11 @@ export const MerchantService = {
       where: { id: merchant.id },
       data: {
         verificationDocumentUrls: [input.businessDocumentUrl, input.idProofUrl],
+        hasPhysicalStore: input.hasPhysicalStore,
+        physicalStorePhotoUrl: input.hasPhysicalStore
+          ? input.physicalStorePhotoUrl || null
+          : null,
+        foodLicenseUrl: input.foodLicenseUrl || null,
         verificationStatus: 'PENDING',
       },
     })

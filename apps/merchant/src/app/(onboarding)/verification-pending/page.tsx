@@ -40,7 +40,7 @@ export default async function VerificationPendingPage() {
               below.
             </p>
           ) : null}
-          <ReplaceVerificationDocuments />
+          <ReplaceVerificationDocuments businessType={merchant.businessType} />
           <Button asChild variant="outline">
             <Link href="/login">Back to login</Link>
           </Button>

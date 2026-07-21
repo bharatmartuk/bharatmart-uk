@@ -63,6 +63,19 @@ export const ProductService = {
     return products.map(toSummary)
   },
 
+  async getNewArrivals(limit = 8): Promise<ProductSummary[]> {
+    const products = await productRepository.findNewArrivals(limit)
+    return products.map(toSummary)
+  },
+
+  async getFeatured(limit = 8): Promise<ProductSummary[]> {
+    const products = await productRepository.findFeatured(limit)
+    if (products.length > 0) return products.map(toSummary)
+    // Fallback when nothing is flagged featured yet: top-rated actives.
+    const fallback = await productRepository.findTrending(limit)
+    return fallback.map(toSummary)
+  },
+
   async searchProducts(filters: ProductSearchFilters = {}) {
     const result = await productRepository.search(filters)
     const items = result.items.map(toSummary)

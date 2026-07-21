@@ -34,7 +34,14 @@ export async function GET(
     return NextResponse.json({ error: 'Merchant not found' }, { status: 404 })
   }
 
-  const url = merchant.verificationDocumentUrls[index]
+  const urls = [
+    merchant.verificationDocumentUrls[0],
+    merchant.verificationDocumentUrls[1],
+    merchant.hasPhysicalStore ? merchant.physicalStorePhotoUrl : null,
+    merchant.foodLicenseUrl,
+  ].filter((value): value is string => Boolean(value))
+
+  const url = urls[index]
   if (!url) {
     return NextResponse.json({ error: 'Document not found' }, { status: 404 })
   }

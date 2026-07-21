@@ -13,21 +13,28 @@ import {
   SheetTrigger,
 } from '@bharatmart/ui'
 import { cn } from '@bharatmart/utils'
+import type { CategorySummary } from '@bharatmart/services'
 import { merchantAppPath } from '@/lib/app-urls'
 
-const allLinks = [
+const baseLinks = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/products', label: 'All products', icon: Package },
-  { href: '/products?category=homemade-pickles', label: 'Homemade Pickles', icon: Package },
-  { href: '/products?category=homemade-snacks', label: 'Homemade Snacks', icon: Package },
   { href: '/wishlist', label: 'Favourites', icon: Heart, requiresAuth: true },
   { href: '/cart', label: 'Cart', icon: ShoppingCart, requiresAuth: true },
 ] as const
 
-export function MobileNav({ isSignedIn }: { isSignedIn: boolean }) {
+export function MobileNav({
+  isSignedIn,
+  categories = [],
+}: {
+  isSignedIn: boolean
+  categories?: CategorySummary[]
+}) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const links = allLinks.filter((link) => !('requiresAuth' in link && link.requiresAuth) || isSignedIn)
+  const links = baseLinks.filter(
+    (link) => !('requiresAuth' in link && link.requiresAuth) || isSignedIn,
+  )
 
   return (
     <Sheet onOpenChange={setOpen} open={open}>
@@ -61,6 +68,35 @@ export function MobileNav({ isSignedIn }: { isSignedIn: boolean }) {
               </Link>
             )
           })}
+
+          {categories.length > 0 ? (
+            <>
+              <p className="mt-3 px-3 text-xs font-semibold uppercase tracking-wide text-[#837561]">
+                Shop by Categories
+              </p>
+              {categories.map((category) =>
+                category.comingSoon ? (
+                  <span
+                    className="flex items-center justify-between gap-2 rounded-lg px-3 py-3 text-sm text-[#837561]"
+                    key={category.id}
+                  >
+                    {category.name}
+                    <span className="text-[10px] font-semibold uppercase text-[#a83635]">Soon</span>
+                  </span>
+                ) : (
+                  <Link
+                    className="rounded-lg px-3 py-3 text-sm font-medium text-[#514534] transition hover:bg-[#f4ede4] hover:text-[#7f5700]"
+                    href={`/products?category=${category.slug}`}
+                    key={category.id}
+                    onClick={() => setOpen(false)}
+                  >
+                    {category.name}
+                  </Link>
+                ),
+              )}
+            </>
+          ) : null}
+
           <div className="my-3 border-t border-[#d6c4ad]" />
           {isSignedIn ? (
             <Link
