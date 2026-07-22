@@ -25,8 +25,8 @@ type CategoryOption = {
 }
 
 /**
- * Sticky toolbar: sort + filters on mobile; sort only on desktop
- * (desktop filters live in the sticky sidebar).
+ * Sort + mobile filters. Sticky positioning is handled by the products page layout
+ * so desktop filters and sort pin together below the site header.
  */
 export function ProductsToolbar({
   categories,
@@ -38,7 +38,7 @@ export function ProductsToolbar({
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="sticky top-16 z-30 -mx-4 mb-5 border-b border-[#e8d9c8] bg-[#fff8f0]/95 px-4 py-3 backdrop-blur-sm md:top-20 md:mx-0 md:px-0">
+    <div className="border-b border-[#e8d9c8] bg-[#fff8f0]/95 py-3 backdrop-blur-sm">
       <div className="flex items-end gap-2 md:justify-end">
         <div className="min-w-0 flex-1 md:flex-none">
           <ProductSortSelect className="w-full md:w-auto" />
