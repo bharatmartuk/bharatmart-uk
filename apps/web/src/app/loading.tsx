@@ -10,7 +10,6 @@ export default function Loading() {
       role="status"
     >
       <div className="flex flex-col items-center gap-4">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt="BharatMart"
           className="h-16 w-16 animate-pulse rounded-full object-cover shadow-sm md:h-20 md:w-20"
@@ -18,7 +17,6 @@ export default function Loading() {
           src="/favicon.png"
           width={80}
         />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt=""
           aria-hidden
