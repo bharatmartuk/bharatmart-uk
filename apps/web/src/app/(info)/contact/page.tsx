@@ -108,7 +108,7 @@ export default function ContactPage() {
               <div className="flex items-center gap-3 rounded-lg bg-[#eee7de] p-4">
                 <Clock aria-hidden className="h-5 w-5 text-[#7f5700]" />
                 <p className="text-sm text-[#514534]">
-                  We typically respond within <span className="font-bold text-[#1e1b16]">2–4 hours</span>{' '}
+                  We typically respond within <span className="font-bold text-[#1e1b16]">2-4 hours</span>{' '}
                   during business hours.
                 </p>
               </div>
