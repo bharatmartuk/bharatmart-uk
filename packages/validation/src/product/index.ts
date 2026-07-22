@@ -18,3 +18,5 @@ export const productSchema = z.object({
 })
 
 export type ProductInput = z.infer<typeof productSchema>
+
+export * from './bulk'

@@ -3,14 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
-import { Flag, FolderTree, LayoutDashboard, LifeBuoy, LogOut, ShoppingBag, Store } from 'lucide-react'
+import { Flag, LayoutDashboard, LifeBuoy, LogOut, ShoppingBag, Store } from 'lucide-react'
 import { cn } from '@bharatmart/utils'
 
 const nav = [
   ['Overview', '/', LayoutDashboard],
   ['Merchants', '/merchants', Store],
-  ['Categories', '/categories', FolderTree],
-  ['Carousel', '/banners', Flag],
+  ['Marketplace', '/marketplace', Flag],
   ['Orders', '/orders', ShoppingBag],
   ['Support', '/support-tickets', LifeBuoy],
 ] as const

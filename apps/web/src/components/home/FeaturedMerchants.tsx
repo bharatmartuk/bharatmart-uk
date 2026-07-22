@@ -1,8 +1,8 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { Star } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import type { FeaturedMerchant } from '@bharatmart/services'
+import { MerchantLogo } from '@/components/merchant/MerchantLogo'
 
 export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[] }) {
   if (merchants.length === 0) return null
@@ -17,17 +17,12 @@ export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[]
           {merchants.map((merchant) => (
             <Card className="border-0 bg-white text-center shadow-sm" key={merchant.id}>
               <CardHeader className="items-center pb-2">
-                <div className="relative h-20 w-20 overflow-hidden rounded-full border-4 border-[#eee7de] bg-white">
-                  {merchant.storeLogoUrl ? (
-                    <Image
-                      alt={`${merchant.storeName} logo`}
-                      className="object-contain p-1"
-                      fill
-                      sizes="80px"
-                      src={merchant.storeLogoUrl}
-                    />
-                  ) : null}
-                </div>
+                <MerchantLogo
+                  className="h-28 w-28 md:h-32 md:w-32"
+                  sizes="(max-width: 768px) 112px, 128px"
+                  storeLogoUrl={merchant.storeLogoUrl}
+                  storeName={merchant.storeName}
+                />
                 <CardTitle className="pt-2 text-lg">{merchant.storeName}</CardTitle>
               </CardHeader>
               <CardContent>

@@ -10,6 +10,6 @@ packages/database/generated
 /uploads
 
 # Local media source files — never commit (keep the repo light).
-# Product images are stored in Cloudinary; only URLs live in the database.
-assets/pickle/
-assets/products/
+# Product images / merchant logos are stored in Cloudinary; only URLs live in the database.
+assets/
+stitch_bharatmart_uk_design_system/

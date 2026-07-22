@@ -18,6 +18,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:migrate-product-images": "tsx prisma/migrate-product-images-to-cloudinary.ts",
     "db:replace-new-product-images": "tsx prisma/replace-new-product-images.ts",
+    "db:sync-category-marketplace": "tsx prisma/sync-category-marketplace.ts",
+    "db:upload-merchant-logos": "tsx prisma/upload-merchant-logos.ts",
     "db:wipe-marketplace": "tsx prisma/wipe-marketplace.ts",
     "type-check": "tsc --noEmit",
     "lint": "eslint .",

@@ -12,6 +12,7 @@ import {
   UserRole,
 } from '../generated/client'
 import { resolveSeedProductImageUrl } from './lib/seed-cloudinary'
+import { resolveSeedMerchantLogoUrl } from './lib/seed-merchant-logos'
 
 const prisma = new PrismaClient()
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
@@ -38,7 +39,7 @@ const categories = [
   {
     name: 'Homemade Foods',
     slug: 'homemade-foods',
-    iconUrl: '/categories/homemade-foods.png',
+    iconUrl: null as string | null,
     sortOrder: 1,
     comingSoon: false,
     children: [
@@ -87,19 +88,19 @@ const categories = [
     children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
   },
   {
-    name: 'Ayurveda',
-    slug: 'ayurveda',
-    iconUrl: null as string | null,
-    sortOrder: 7,
-    comingSoon: true,
-    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
-  },
-  {
     name: 'Organic Store',
     slug: 'organic-store',
     iconUrl: null as string | null,
-    sortOrder: 8,
+    sortOrder: 7,
     comingSoon: false,
+    children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
+  },
+  {
+    name: 'Ayurveda',
+    slug: 'ayurveda',
+    iconUrl: null as string | null,
+    sortOrder: 8,
+    comingSoon: true,
     children: [] as Array<{ name: string; slug: string; sortOrder: number }>,
   },
 ]
@@ -770,6 +771,10 @@ async function seedUsersAndMerchants(passwordHash: string) {
 
   const merchantIds = new Map<string, string>()
   for (const merchant of merchants) {
+    const storeLogoUrl =
+      (await resolveSeedMerchantLogoUrl(merchant.storeSlug, REPO_ROOT)) ??
+      `/merchants/${merchant.storeSlug}.png`
+
     const user = await prisma.user.upsert({
       where: { email: merchant.email },
       update: {
@@ -798,8 +803,7 @@ async function seedUsersAndMerchants(passwordHash: string) {
         verificationStatus: MerchantVerificationStatus.APPROVED,
         storeName: merchant.storeName,
         storeSlug: merchant.storeSlug,
-        // Served from apps/web/public/merchants/{storeSlug}.png
-        storeLogoUrl: `/merchants/${merchant.storeSlug}.png`,
+        storeLogoUrl,
         storeBannerUrl: `https://picsum.photos/seed/${merchant.storeSlug}-banner/1200/400`,
         storeDescription: merchant.storeDescription,
         deliveryPostcodes: [...merchant.deliveryPostcodes],
@@ -836,7 +840,7 @@ async function seedUsersAndMerchants(passwordHash: string) {
             : null,
         storeName: merchant.storeName,
         storeSlug: merchant.storeSlug,
-        storeLogoUrl: `/merchants/${merchant.storeSlug}.png`,
+        storeLogoUrl,
         storeBannerUrl: `https://picsum.photos/seed/${merchant.storeSlug}-banner/1200/400`,
         storeDescription: merchant.storeDescription,
         deliveryPostcodes: [...merchant.deliveryPostcodes],

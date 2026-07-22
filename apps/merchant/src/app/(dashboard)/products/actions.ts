@@ -1,8 +1,14 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { ProductService, ValidationError } from '@bharatmart/services'
-import type { ProductInput } from '@bharatmart/validation'
+import {
+  ProductService,
+  RateLimitError,
+  ValidationError,
+  enforceRateLimit,
+  RATE_LIMITS,
+} from '@bharatmart/services'
+import type { ProductBulkInput, ProductInput } from '@bharatmart/validation'
 import { requireMerchant } from '@/lib/merchant-context'
 
 export async function createProductAction(
@@ -11,13 +17,17 @@ export async function createProductAction(
 ) {
   const { merchant } = await requireMerchant()
   try {
+    await enforceRateLimit(merchant.id, RATE_LIMITS.productWrite, 'add another product')
     const product = await ProductService.create(merchant.id, input, status)
     revalidatePath('/products')
     return { ok: true as const, id: product.id }
   } catch (error) {
     return {
       ok: false as const,
-      error: error instanceof ValidationError ? error.message : 'Unable to save product.',
+      error:
+        error instanceof RateLimitError || error instanceof ValidationError
+          ? error.message
+          : 'Unable to save product.',
     }
   }
 }
@@ -25,6 +35,7 @@ export async function createProductAction(
 export async function updateProductAction(productId: string, input: ProductInput) {
   const { merchant } = await requireMerchant()
   try {
+    await enforceRateLimit(merchant.id, RATE_LIMITS.productWrite, 'update products')
     await ProductService.update(merchant.id, productId, input)
     revalidatePath('/products')
     revalidatePath(`/products/${productId}/edit`)
@@ -32,13 +43,39 @@ export async function updateProductAction(productId: string, input: ProductInput
   } catch (error) {
     return {
       ok: false as const,
-      error: error instanceof ValidationError ? error.message : 'Unable to update product.',
+      error:
+        error instanceof RateLimitError || error instanceof ValidationError
+          ? error.message
+          : 'Unable to update product.',
+    }
+  }
+}
+
+export async function bulkCreateProductsAction(rows: ProductBulkInput) {
+  const { merchant } = await requireMerchant()
+  try {
+    // Bulk jobs are rate-limited separately so a large CSV is not blocked as "20 writes/min".
+    await enforceRateLimit(merchant.id, RATE_LIMITS.productBulk, 'run another bulk import')
+    const result = await ProductService.createBulk(merchant.id, rows)
+    revalidatePath('/products')
+    return { ok: true as const, ...result }
+  } catch (error) {
+    return {
+      ok: false as const,
+      error:
+        error instanceof RateLimitError || error instanceof ValidationError
+          ? error.message
+          : 'Unable to import products.',
+      createdCount: 0,
+      createdIds: [] as string[],
+      errors: [] as Array<{ row: number; message: string }>,
     }
   }
 }
 
 export async function duplicateProductAction(productId: string) {
   const { merchant } = await requireMerchant()
+  await enforceRateLimit(merchant.id, RATE_LIMITS.productWrite, 'duplicate products')
   await ProductService.duplicate(merchant.id, productId)
   revalidatePath('/products')
 }

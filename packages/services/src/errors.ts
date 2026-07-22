@@ -36,3 +36,12 @@ export class ConflictError extends AppError {
     super(message, 409, 'CONFLICT')
   }
 }
+
+export class RateLimitError extends AppError {
+  readonly retryAfterSeconds: number
+
+  constructor(message = 'Too many requests. Please try again later.', retryAfterSeconds = 60) {
+    super(message, 429, 'RATE_LIMITED')
+    this.retryAfterSeconds = retryAfterSeconds
+  }
+}

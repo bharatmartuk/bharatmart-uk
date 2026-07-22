@@ -7,12 +7,33 @@ import Credentials from 'next-auth/providers/credentials'
 import Google from 'next-auth/providers/google'
 import { prisma } from '@bharatmart/database'
 import { UserRole, type UserRole as UserRoleType } from '@bharatmart/types'
+import {
+  RATE_LIMITS,
+  clientIpFromHeaders,
+  consumeRateLimit,
+  formatRateLimitMessage,
+} from '@bharatmart/utils'
+import { CredentialsSignin } from 'next-auth'
 import type { AuthOptions } from './types'
+
+class LoginRateLimitedError extends CredentialsSignin {
+  override code = 'rate_limited'
+}
 
 function isUserRole(value: unknown): value is UserRoleType {
   return (
     value === UserRole.CUSTOMER || value === UserRole.MERCHANT || value === UserRole.ADMIN
   )
+}
+
+async function getRequestIp() {
+  try {
+    const { headers } = await import('next/headers')
+    const headerStore = await headers()
+    return clientIpFromHeaders(headerStore)
+  } catch {
+    return 'unknown'
+  }
 }
 
 function createAdapter(): Adapter {
@@ -66,6 +87,12 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
 
         if (!email || !password) {
           return null
+        }
+
+        const ip = await getRequestIp()
+        const rate = await consumeRateLimit(`${ip}:${email}`, RATE_LIMITS.login)
+        if (!rate.success) {
+          throw new LoginRateLimitedError(formatRateLimitMessage(rate, 'try signing in again'))
         }
 
         const user = await prisma.user.findUnique({

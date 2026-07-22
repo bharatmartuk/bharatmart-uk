@@ -1,14 +1,18 @@
 import Link from 'next/link'
-import Image from 'next/image'
-import { Gem, Home, Package, ShoppingBasket, Sparkles } from 'lucide-react'
-import { Card } from '@bharatmart/ui'
+import { Card, CategoryIcon } from '@bharatmart/ui'
 import type { CategorySummary } from '@bharatmart/services'
-import { categoryIconSrc } from '@/lib/category-icon'
 
-const iconMap = [ShoppingBasket, Sparkles, Package, Gem, Home]
+function sortCategoriesForDisplay(categories: CategorySummary[]) {
+  return [...categories].sort((a, b) => {
+    if (a.comingSoon !== b.comingSoon) return a.comingSoon ? 1 : -1
+    return 0
+  })
+}
 
 export function CategoryGrid({ categories }: { categories: CategorySummary[] }) {
-  if (categories.length === 0) return null
+  const visibleCategories = sortCategoriesForDisplay(categories).slice(0, 8)
+
+  if (visibleCategories.length === 0) return null
 
   return (
     <section
@@ -24,23 +28,15 @@ export function CategoryGrid({ categories }: { categories: CategorySummary[] }) 
         </Link>
       </div>
       <div className="grid grid-cols-4 gap-4 md:grid-cols-8">
-        {categories.slice(0, 8).map((category, index) => {
-          const Icon = iconMap[index % iconMap.length] ?? Package
+        {visibleCategories.map((category) => {
           const content = (
             <>
               <Card className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-[#e8d9c8] bg-transparent shadow-none transition group-hover:scale-105 group-hover:border-[#e8a317] md:h-20 md:w-20">
-                {categoryIconSrc(category) ? (
-                  <Image
-                    alt=""
-                    className="h-full w-full object-contain object-center"
-                    height={80}
-                    src={categoryIconSrc(category)!}
-                    unoptimized
-                    width={80}
-                  />
-                ) : (
-                  <Icon className="h-6 w-6 text-[#7f5700] md:h-8 md:w-8" />
-                )}
+                <CategoryIcon
+                  className="h-6 w-6 md:h-8 md:w-8"
+                  name={category.name}
+                  slug={category.slug}
+                />
                 {category.comingSoon ? (
                   <span className="absolute inset-x-0 bottom-0 bg-[#7f5700]/90 py-0.5 text-center text-[8px] font-bold uppercase tracking-wide text-white">
                     Soon

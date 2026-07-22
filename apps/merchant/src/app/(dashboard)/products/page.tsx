@@ -47,9 +47,14 @@ export default async function MerchantProductsPage({
           <h1 className="font-heading text-3xl font-semibold">Products</h1>
           <p className="text-sm text-[#514534]">{products.length} catalogue items</p>
         </div>
-        <Button asChild className="bg-[#7f5700] text-white hover:bg-[#604100]">
-          <Link href="/products/new">Add product</Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link href="/products/bulk">Bulk import CSV</Link>
+          </Button>
+          <Button asChild className="bg-[#7f5700] text-white hover:bg-[#604100]">
+            <Link href="/products/new">Add product</Link>
+          </Button>
+        </div>
       </div>
 
       <Card className="border-[#d6c4ad]">

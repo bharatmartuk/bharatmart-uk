@@ -21,10 +21,16 @@ async function requireAdminUser() {
   return admin
 }
 
+async function revalidateBannerPaths() {
+  revalidatePath('/banners')
+  revalidatePath('/marketplace')
+  revalidatePath('/')
+}
+
 export async function reorderBannersAction(orderedIds: string[]) {
   await requireAdminUser()
   await BannerAdminService.reorder(orderedIds)
-  revalidatePath('/banners')
+  await revalidateBannerPaths()
 }
 
 export async function createBannerAction(input: BannerFormInput) {
@@ -43,7 +49,7 @@ export async function createBannerAction(input: BannerFormInput) {
     ...(input.ctaText.trim() ? { ctaText: input.ctaText.trim() } : {}),
     ...(input.ctaLink.trim() ? { ctaLink: input.ctaLink.trim() } : {}),
   })
-  revalidatePath('/banners')
+  await revalidateBannerPaths()
 }
 
 export async function updateBannerAction(id: string, input: BannerFormInput) {
@@ -58,17 +64,17 @@ export async function updateBannerAction(id: string, input: BannerFormInput) {
     endDate: new Date(`${input.endDate}T23:59:59.000Z`),
     isActive: input.isActive,
   })
-  revalidatePath('/banners')
+  await revalidateBannerPaths()
 }
 
 export async function toggleBannerActiveAction(id: string, isActive: boolean) {
   await requireAdminUser()
   await BannerAdminService.update(id, { isActive })
-  revalidatePath('/banners')
+  await revalidateBannerPaths()
 }
 
 export async function deleteBannerAction(id: string) {
   await requireAdminUser()
   await BannerAdminService.delete(id)
-  revalidatePath('/banners')
+  await revalidateBannerPaths()
 }

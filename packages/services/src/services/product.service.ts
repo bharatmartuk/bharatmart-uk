@@ -1,6 +1,6 @@
 import 'server-only'
 
-import { productSchema, type ProductInput } from '@bharatmart/validation'
+import { productSchema, productBulkSchema, type ProductInput, type ProductBulkInput } from '@bharatmart/validation'
 import { prisma } from '@bharatmart/database'
 import { fuzzyScore } from '@bharatmart/utils'
 import {
@@ -157,6 +157,68 @@ export const ProductService = {
       },
       include: { images: true },
     })
+  },
+
+  /**
+   * Bulk catalogue import for merchants.
+   * Accepts up to PRODUCT_BULK_MAX_ROWS; skips conflicting slugs/skus with row errors.
+   */
+  async createBulk(merchantId: string, rows: ProductBulkInput) {
+    const parsed = productBulkSchema.safeParse(rows)
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.errors[0]?.message ?? 'Invalid bulk product data.')
+    }
+
+    const categorySlugs = [...new Set(parsed.data.map((row) => row.categorySlug))]
+    const categories = await prisma.category.findMany({
+      where: { slug: { in: categorySlugs }, isActive: true },
+      select: { id: true, slug: true },
+    })
+    const categoryBySlug = new Map(categories.map((category) => [category.slug, category.id]))
+
+    const created: string[] = []
+    const errors: Array<{ row: number; message: string }> = []
+
+    for (const [index, row] of parsed.data.entries()) {
+      const categoryId = categoryBySlug.get(row.categorySlug)
+      if (!categoryId) {
+        errors.push({ row: index + 1, message: `Unknown category slug "${row.categorySlug}".` })
+        continue
+      }
+
+      const priceInPence = Math.round(row.pricePounds * 100)
+      if (priceInPence < 1) {
+        errors.push({ row: index + 1, message: 'Price must be at least £0.01.' })
+        continue
+      }
+
+      try {
+        const product = await prisma.product.create({
+          data: {
+            merchantId,
+            categoryId,
+            name: row.name,
+            slug: row.slug,
+            description: row.description,
+            priceInPence,
+            stockQuantity: row.stockQuantity,
+            sku: row.sku,
+            status: row.status === 'ACTIVE' ? 'ACTIVE' : 'DRAFT',
+            images: {
+              create: [{ url: row.imageUrl, sortOrder: 0 }],
+            },
+          },
+        })
+        created.push(product.id)
+      } catch {
+        errors.push({
+          row: index + 1,
+          message: `Could not create "${row.name}" (slug/SKU may already exist).`,
+        })
+      }
+    }
+
+    return { createdCount: created.length, createdIds: created, errors }
   },
 
   async update(merchantId: string, productId: string, input: ProductInput) {

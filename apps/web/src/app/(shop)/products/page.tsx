@@ -76,51 +76,51 @@ export default async function ProductsPage({
       : `${result.total} products`
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8 md:px-8 lg:px-16">
-      <nav aria-label="Breadcrumb" className="mb-4 text-sm text-[#837561] md:mb-6">
-        <ol className="flex flex-wrap items-center gap-2">
-          <li>
-            <Link className="hover:text-[#7f5700]" href="/">
-              Home
-            </Link>
-          </li>
-          {activeCategory?.parent ? (
-            <>
-              <li>/</li>
-              <li>
-                <Link
-                  className="hover:text-[#7f5700]"
-                  href={`/products?category=${activeCategory.parent.slug}`}
-                >
-                  {activeCategory.parent.name}
-                </Link>
-              </li>
-            </>
-          ) : null}
-          <li>/</li>
-          <li className="font-medium text-[#1e1b16]">
-            {activeCategory?.name ?? (filters.q ? `Search: ${filters.q}` : 'All products')}
-          </li>
-        </ol>
-      </nav>
-
-      <div className="mb-4 md:mb-6">
-        <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
-        <p className="mt-1 text-sm text-[#514534]">
-          Authentic Indian products from verified UK merchants.
-        </p>
-      </div>
-
-      <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
-        <aside className="hidden lg:block lg:col-start-1 lg:row-start-1">
-          <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pb-4">
+    <main className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8 lg:px-16">
+      <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
+        <aside className="hidden lg:block">
+          <div className="sticky top-20 z-20 max-h-[calc(100vh-5.5rem)] overflow-y-auto pb-4">
             <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
               <ProductFilters categories={categories} merchants={merchants} />
             </Suspense>
           </div>
         </aside>
 
-        <section className="lg:col-start-2 lg:row-start-1">
+        <section className="min-w-0">
+          <nav aria-label="Breadcrumb" className="mb-4 text-sm text-[#837561] md:mb-5">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link className="hover:text-[#7f5700]" href="/">
+                  Home
+                </Link>
+              </li>
+              {activeCategory?.parent ? (
+                <>
+                  <li>/</li>
+                  <li>
+                    <Link
+                      className="hover:text-[#7f5700]"
+                      href={`/products?category=${activeCategory.parent.slug}`}
+                    >
+                      {activeCategory.parent.name}
+                    </Link>
+                  </li>
+                </>
+              ) : null}
+              <li>/</li>
+              <li className="font-medium text-[#1e1b16]">
+                {activeCategory?.name ?? (filters.q ? `Search: ${filters.q}` : 'All products')}
+              </li>
+            </ol>
+          </nav>
+
+          <div className="mb-4 md:mb-5">
+            <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
+            <p className="mt-1 text-sm text-[#514534]">
+              Authentic Indian products from verified UK merchants.
+            </p>
+          </div>
+
           <Suspense fallback={null}>
             <ProductsToolbar categories={categories} merchants={merchants} />
           </Suspense>
@@ -131,7 +131,10 @@ export default async function ProductsPage({
               <p className="mt-2 text-sm text-[#514534]">
                 Try clearing a filter or browsing all products.
               </p>
-              <Link className="mt-4 inline-block text-sm font-semibold text-[#7f5700] underline" href="/products">
+              <Link
+                className="mt-4 inline-block text-sm font-semibold text-[#7f5700] underline"
+                href="/products"
+              >
                 Reset filters
               </Link>
             </div>

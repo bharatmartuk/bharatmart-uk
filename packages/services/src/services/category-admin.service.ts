@@ -13,20 +13,25 @@ export const CategoryAdminService = {
     })
   },
 
-  create(input: {
+  async create(input: {
     name: string
     slug: string
     parentId?: string | null
-    iconUrl?: string | null
     sortOrder?: number
+    comingSoon?: boolean
   }) {
+    const maxSortOrder = await prisma.category.aggregate({
+      _max: { sortOrder: true },
+    })
+
     return prisma.category.create({
       data: {
         name: input.name,
         slug: input.slug,
         parentId: input.parentId ?? null,
-        iconUrl: input.iconUrl ?? null,
-        sortOrder: input.sortOrder ?? 0,
+        iconUrl: null,
+        sortOrder: input.sortOrder ?? (maxSortOrder._max.sortOrder ?? 0) + 1,
+        comingSoon: input.comingSoon ?? false,
         isActive: true,
       },
     })
@@ -38,8 +43,8 @@ export const CategoryAdminService = {
       name?: string
       slug?: string
       parentId?: string | null
-      iconUrl?: string | null
       isActive?: boolean
+      comingSoon?: boolean
       sortOrder?: number
     },
   ) {

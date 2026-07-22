@@ -3,35 +3,40 @@
 import { revalidatePath } from 'next/cache'
 import { CategoryAdminService } from '@bharatmart/services'
 
+function revalidateMarketplacePaths() {
+  revalidatePath('/marketplace')
+  revalidatePath('/categories')
+  revalidatePath('/banners')
+  revalidatePath('/')
+}
+
 export async function reorderCategoriesAction(orderedIds: string[]) {
   await CategoryAdminService.reorder(orderedIds)
-  revalidatePath('/categories')
-  revalidatePath('/')
+  revalidateMarketplacePaths()
 }
 
 export async function createCategoryAction(input: {
   name: string
   slug: string
+  comingSoon?: boolean
 }) {
   await CategoryAdminService.create(input)
-  revalidatePath('/categories')
-  revalidatePath('/')
+  revalidateMarketplacePaths()
 }
 
 export async function updateCategoryAction(input: {
   id: string
   name: string
   slug: string
-  iconUrl: string
   isActive: boolean
+  comingSoon: boolean
 }) {
   await CategoryAdminService.update(input.id, {
     name: input.name.trim(),
     slug: input.slug.trim(),
-    iconUrl: input.iconUrl.trim() || null,
     isActive: input.isActive,
+    comingSoon: input.comingSoon,
   })
-  revalidatePath('/categories')
-  revalidatePath('/')
+  revalidateMarketplacePaths()
   revalidatePath('/products')
 }

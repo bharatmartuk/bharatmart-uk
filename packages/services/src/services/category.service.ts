@@ -13,13 +13,26 @@ export interface CategorySummary {
 export const CategoryService = {
   async getTopLevelCategories(): Promise<CategorySummary[]> {
     const categories = await categoryRepository.findTopLevel()
-    return categories.map(({ id, name, slug, iconUrl, comingSoon }) => ({
-      id,
-      name,
-      slug,
-      iconUrl,
-      comingSoon,
-    }))
+    return categories
+      .map(({ id, name, slug, iconUrl, comingSoon, sortOrder }) => ({
+        id,
+        name,
+        slug,
+        iconUrl,
+        comingSoon,
+        sortOrder,
+      }))
+      .sort((a, b) => {
+        if (a.comingSoon !== b.comingSoon) return a.comingSoon ? 1 : -1
+        return a.sortOrder - b.sortOrder
+      })
+      .map(({ id, name, slug, iconUrl, comingSoon }) => ({
+        id,
+        name,
+        slug,
+        iconUrl,
+        comingSoon,
+      }))
   },
 
   getBySlug(slug: string) {

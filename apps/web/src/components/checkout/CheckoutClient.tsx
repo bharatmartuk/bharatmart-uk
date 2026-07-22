@@ -318,20 +318,32 @@ export function CheckoutClient({
                     submitLabel="Save & use this address"
                   />
                 </div>
-              ) : (
-                <Button onClick={() => setShowAddressForm(true)} type="button" variant="outline">
-                  Add another address
-                </Button>
-              )}
+              ) : null}
 
-              <Button
-                className="bg-[#7f5700] text-white hover:bg-[#604100]"
-                disabled={!addressId}
-                onClick={() => setStep(1)}
-                type="button"
+              <div
+                className={`mt-2 flex flex-col gap-3 border-t border-[#eee7de] pt-4 sm:mt-1 sm:flex-row sm:items-center ${
+                  showAddressForm ? 'sm:justify-end' : 'sm:justify-between'
+                }`}
               >
-                Continue to payment
-              </Button>
+                {!showAddressForm ? (
+                  <Button
+                    className="w-full border-[#d6c4ad] sm:w-auto"
+                    onClick={() => setShowAddressForm(true)}
+                    type="button"
+                    variant="outline"
+                  >
+                    Add another address
+                  </Button>
+                ) : null}
+                <Button
+                  className="w-full bg-[#7f5700] text-white hover:bg-[#604100] sm:w-auto sm:min-w-[220px]"
+                  disabled={!addressId}
+                  onClick={() => setStep(1)}
+                  type="button"
+                >
+                  Continue to payment
+                </Button>
+              </div>
             </CardContent>
           </Card>
         ) : null}

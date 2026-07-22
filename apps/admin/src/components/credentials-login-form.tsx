@@ -39,7 +39,11 @@ export function CredentialsLoginForm({
     setPending(false)
 
     if (result?.error) {
-      setError('Invalid email or password, or this account is not allowed here.')
+      if (result.code === 'rate_limited') {
+        setError('Too many login attempts. Please wait a few minutes and try again.')
+      } else {
+        setError('Invalid email or password, or this account is not allowed here.')
+      }
       return
     }
 

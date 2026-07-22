@@ -38,7 +38,7 @@ export function ProductSortSelect({ className }: { className?: string }) {
         }}
         value={value}
       >
-        <SelectTrigger className="w-full border-[#d6c4ad] bg-white sm:w-[190px]">
+        <SelectTrigger className="h-10 w-full border-[#d6c4ad] bg-white sm:w-[190px]">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

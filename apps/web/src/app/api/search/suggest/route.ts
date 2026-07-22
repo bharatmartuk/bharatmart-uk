@@ -1,4 +1,10 @@
 import { NextResponse } from 'next/server'
+import {
+  RateLimitError,
+  clientIpFromHeaders,
+  enforceRateLimit,
+  RATE_LIMITS,
+} from '@bharatmart/services'
 import { prisma } from '@bharatmart/database'
 import { rankByFuzzy } from '@/lib/search-rank'
 
@@ -16,6 +22,19 @@ const SELECT = {
 } as const
 
 export async function GET(request: Request) {
+  try {
+    const ip = clientIpFromHeaders(new Headers(request.headers))
+    await enforceRateLimit(ip, RATE_LIMITS.search, 'search again')
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      return NextResponse.json(
+        { error: error.message, items: [] },
+        { status: 429, headers: { 'Retry-After': String(error.retryAfterSeconds) } },
+      )
+    }
+    throw error
+  }
+
   const { searchParams } = new URL(request.url)
   const q = searchParams.get('q')?.trim() ?? ''
   const limit = Math.min(Number(searchParams.get('limit') ?? 8) || 8, 12)

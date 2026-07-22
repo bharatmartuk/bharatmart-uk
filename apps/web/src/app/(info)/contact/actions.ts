@@ -1,7 +1,14 @@
 'use server'
 
+import { headers } from 'next/headers'
+import {
+  RateLimitError,
+  clientIpFromHeaders,
+  enforceRateLimit,
+  RATE_LIMITS,
+  sendContactFormEmail,
+} from '@bharatmart/services'
 import { contactFormSchema, type ContactFormInput } from '@bharatmart/validation'
-import { sendContactFormEmail } from '@bharatmart/services'
 
 export type SubmitContactResult =
   | { ok: true }
@@ -14,9 +21,15 @@ export async function submitContactForm(data: ContactFormInput): Promise<SubmitC
   }
 
   try {
+    const headerStore = await headers()
+    const ip = clientIpFromHeaders(headerStore)
+    await enforceRateLimit(ip, RATE_LIMITS.contact, 'send another message')
     await sendContactFormEmail(parsed.data)
     return { ok: true }
   } catch (error) {
+    if (error instanceof RateLimitError) {
+      return { ok: false, error: error.message }
+    }
     console.error('[submitContactForm]', error)
     return {
       ok: false,

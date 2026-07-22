@@ -5,6 +5,7 @@ import { MessageCircle, Star } from 'lucide-react'
 import { Badge, Button, Card, CardContent, Separator } from '@bharatmart/ui'
 import { ProductService, ReviewService } from '@bharatmart/services'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
+import { MerchantLogo } from '@/components/merchant/MerchantLogo'
 import { ProductImageGallery } from '@/components/product/ProductImageGallery'
 import { RelatedProducts } from '@/components/product/RelatedProducts'
 import { buildWhatsAppLink } from '@/lib/whatsapp'
@@ -139,22 +140,12 @@ export default async function ProductDetailPage({
 
           <Card className="border-[#d6c4ad] bg-[#f9f3ea]">
             <CardContent className="flex items-center gap-4 p-4">
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-[#e8d9c8] bg-white shadow-sm md:h-20 md:w-20">
-                {product.merchant.storeLogoUrl ? (
-                  <Image
-                    alt={`${product.merchant.storeName} logo`}
-                    className="object-contain p-2"
-                    fill
-                    sizes="(max-width: 768px) 64px, 80px"
-                    src={product.merchant.storeLogoUrl}
-                    unoptimized
-                  />
-                ) : (
-                  <div className="flex h-full items-center justify-center text-xs font-semibold text-[#7f5700]">
-                    {product.merchant.storeName.slice(0, 1)}
-                  </div>
-                )}
-              </div>
+              <MerchantLogo
+                className="h-20 w-20 border md:h-24 md:w-24"
+                sizes="(max-width: 768px) 80px, 96px"
+                storeLogoUrl={product.merchant.storeLogoUrl}
+                storeName={product.merchant.storeName}
+              />
               <div className="min-w-0">
                 <h2 className="font-semibold">{product.merchant.storeName}</h2>
                 <p className="line-clamp-2 text-sm text-[#514534]">

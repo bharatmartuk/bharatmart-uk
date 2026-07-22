@@ -2,12 +2,14 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Button } from '@bharatmart/ui'
 import type { BannerSummary } from '@bharatmart/services'
 
+const AUTO_SLIDE_MS = 6000
+
 function carouselImageSrc(url: string) {
-  // Prefer same-origin relative paths so next/image does not need remote config.
   try {
     if (url.startsWith('/')) return url
     const parsed = new URL(url)
@@ -25,14 +27,28 @@ function carouselImageSrc(url: string) {
 
 export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const touchStartX = useRef<number | null>(null)
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (banners.length === 0) return
+      const next = ((index % banners.length) + banners.length) % banners.length
+      setActiveIndex(next)
+    },
+    [banners.length],
+  )
+
+  const goNext = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo])
+  const goPrev = useCallback(() => goTo(activeIndex - 1), [activeIndex, goTo])
 
   useEffect(() => {
-    if (banners.length < 2) return
+    if (banners.length < 2 || isPaused) return
     const timer = window.setInterval(() => {
       setActiveIndex((current) => (current + 1) % banners.length)
-    }, 6000)
+    }, AUTO_SLIDE_MS)
     return () => window.clearInterval(timer)
-  }, [banners.length])
+  }, [banners.length, isPaused, activeIndex])
 
   if (banners.length === 0) {
     return (
@@ -50,7 +66,26 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
   }
 
   return (
-    <section aria-label="Featured collections" className="relative h-[420px] overflow-hidden md:h-[520px]">
+    <section
+      aria-label="Featured collections"
+      className="group/carousel relative h-[420px] overflow-hidden md:h-[520px]"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchEnd={(event) => {
+        const start = touchStartX.current
+        touchStartX.current = null
+        if (start == null || banners.length < 2) return
+        const delta = event.changedTouches[0]?.clientX ?? start
+        const diff = delta - start
+        if (Math.abs(diff) < 48) return
+        if (diff < 0) goNext()
+        else goPrev()
+      }}
+      onTouchStart={(event) => {
+        touchStartX.current = event.touches[0]?.clientX ?? null
+        setIsPaused(true)
+      }}
+    >
       <div
         className="flex h-full transition-transform duration-700 ease-out"
         style={{ transform: `translateX(-${activeIndex * 100}%)` }}
@@ -93,19 +128,47 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
       </div>
 
       {banners.length > 1 ? (
-        <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
-          {banners.map((banner, index) => (
-            <button
-              aria-label={`Show banner ${index + 1}`}
-              className={`h-2.5 rounded-full transition-all ${
-                activeIndex === index ? 'w-8 bg-[#e8a317]' : 'w-2.5 bg-white/60'
-              }`}
-              key={banner.id}
-              onClick={() => setActiveIndex(index)}
-              type="button"
-            />
-          ))}
-        </div>
+        <>
+          <button
+            aria-label="Previous banner"
+            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white opacity-100 backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a317] md:opacity-0 md:group-hover/carousel:opacity-100 md:left-6"
+            onClick={() => {
+              setIsPaused(true)
+              goPrev()
+            }}
+            type="button"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+          <button
+            aria-label="Next banner"
+            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white opacity-100 backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a317] md:opacity-0 md:group-hover/carousel:opacity-100 md:right-6"
+            onClick={() => {
+              setIsPaused(true)
+              goNext()
+            }}
+            type="button"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
+            {banners.map((banner, index) => (
+              <button
+                aria-label={`Show banner ${index + 1}`}
+                className={`h-2.5 rounded-full transition-all ${
+                  activeIndex === index ? 'w-8 bg-[#e8a317]' : 'w-2.5 bg-white/60'
+                }`}
+                key={banner.id}
+                onClick={() => {
+                  setIsPaused(true)
+                  setActiveIndex(index)
+                }}
+                type="button"
+              />
+            ))}
+          </div>
+        </>
       ) : null}
     </section>
   )

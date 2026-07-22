@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { NextResponse } from 'next/server'
+import { RateLimitError, enforceRateLimit, RATE_LIMITS } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 
 export const runtime = 'nodejs'
@@ -15,6 +16,18 @@ export async function POST(request: Request) {
   const user = await getCurrentUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
+    await enforceRateLimit(user.id, RATE_LIMITS.uploadLocal, 'upload more documents')
+  } catch (error) {
+    if (error instanceof RateLimitError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 429, headers: { 'Retry-After': String(error.retryAfterSeconds) } },
+      )
+    }
+    throw error
   }
 
   const formData = await request.formData()

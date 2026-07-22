@@ -1,4 +1,5 @@
 export * from './errors'
+export * from './rate-limit'
 export * from './repositories/user.repository'
 export * from './repositories/address.repository'
 export * from './repositories/banner.repository'

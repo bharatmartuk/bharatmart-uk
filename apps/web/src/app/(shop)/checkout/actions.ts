@@ -1,6 +1,12 @@
 'use server'
 
-import { OrderService, ValidationError } from '@bharatmart/services'
+import {
+  OrderService,
+  RateLimitError,
+  ValidationError,
+  enforceRateLimit,
+  RATE_LIMITS,
+} from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 
 export type PlaceOrderCartItem = {
@@ -42,6 +48,7 @@ export async function placeOrder(
   }
 
   try {
+    await enforceRateLimit(user.id, RATE_LIMITS.checkout, 'place another order')
     const order = await OrderService.placeOrder({
       customerId: user.id,
       addressId,
@@ -60,7 +67,7 @@ export async function placeOrder(
       finalized: order.finalized,
     }
   } catch (error) {
-    if (error instanceof ValidationError) {
+    if (error instanceof ValidationError || error instanceof RateLimitError) {
       return { ok: false, error: error.message }
     }
     return { ok: false, error: 'Unable to place order. Please try again.' }
