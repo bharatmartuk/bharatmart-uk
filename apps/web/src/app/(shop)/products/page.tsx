@@ -76,93 +76,85 @@ export default async function ProductsPage({
       : `${result.total} products`
 
   return (
-    <main className="pb-10 lg:pb-0">
-      {/* Scrolls away with the page */}
-      <div className="mx-auto max-w-7xl px-4 pt-6 md:px-8 md:pt-8 lg:px-16">
-        <nav aria-label="Breadcrumb" className="mb-4 text-sm text-[#837561] md:mb-5">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link className="hover:text-[#7f5700]" href="/">
-                Home
-              </Link>
-            </li>
-            {activeCategory?.parent ? (
-              <>
-                <li>/</li>
-                <li>
-                  <Link
-                    className="hover:text-[#7f5700]"
-                    href={`/products?category=${activeCategory.parent.slug}`}
-                  >
-                    {activeCategory.parent.name}
-                  </Link>
-                </li>
-              </>
-            ) : null}
-            <li>/</li>
-            <li className="font-medium text-[#1e1b16]">
-              {activeCategory?.name ?? (filters.q ? `Search: ${filters.q}` : 'All products')}
-            </li>
-          </ol>
-        </nav>
+    <main className="mx-auto max-w-7xl px-4 py-6 md:px-8 md:py-8 lg:px-16">
+      <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-8">
+        {/* Desktop filters: stay pinned under the site header */}
+        <aside className="hidden lg:block lg:sticky lg:top-20 lg:z-20 lg:self-start lg:max-h-[calc(100vh-5.5rem)] lg:overflow-y-auto lg:pb-4">
+          <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
+            <ProductFilters categories={categories} merchants={merchants} />
+          </Suspense>
+        </aside>
 
-        <div className="mb-5 md:mb-6">
-          <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
-          <p className="mt-1 text-sm text-[#514534]">
-            Authentic Indian products from verified UK merchants.
-          </p>
-        </div>
-      </div>
+        <section className="min-w-0">
+          {/* Scrolls with the page */}
+          <nav aria-label="Breadcrumb" className="mb-4 text-sm text-[#837561]">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link className="hover:text-[#7f5700]" href="/">
+                  Home
+                </Link>
+              </li>
+              {activeCategory?.parent ? (
+                <>
+                  <li>/</li>
+                  <li>
+                    <Link
+                      className="hover:text-[#7f5700]"
+                      href={`/products?category=${activeCategory.parent.slug}`}
+                    >
+                      {activeCategory.parent.name}
+                    </Link>
+                  </li>
+                </>
+              ) : null}
+              <li>/</li>
+              <li className="font-medium text-[#1e1b16]">
+                {activeCategory?.name ?? (filters.q ? `Search: ${filters.q}` : 'All products')}
+              </li>
+            </ol>
+          </nav>
 
-      {/*
-        Mobile: sticky sort bar; page scrolls products.
-        Desktop: shell pins under header — filters + sort stay fixed; only products scroll.
-      */}
-      <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-16">
-        <div className="grid gap-0 lg:sticky lg:top-20 lg:z-20 lg:h-[calc(100vh-5rem)] lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-6 lg:overflow-hidden lg:bg-[#fff8f0]">
-          <aside className="hidden h-full overflow-y-auto pb-6 lg:block">
-            <Suspense fallback={<div className="h-96 animate-pulse rounded-xl bg-[#f4ede4]" />}>
-              <ProductFilters categories={categories} merchants={merchants} />
+          <div className="mb-4">
+            <h1 className="font-heading text-3xl font-semibold text-[#1e1b16]">{heading}</h1>
+            <p className="mt-1 text-sm text-[#514534]">
+              Authentic Indian products from verified UK merchants.
+            </p>
+          </div>
+
+          {/* Sort (and mobile Filters): pinned under the site header */}
+          <div className="sticky top-16 z-30 -mx-4 mb-4 border-b border-[#e8d9c8] bg-[#fff8f0] px-4 py-3 md:top-20 md:mx-0 md:px-0">
+            <Suspense fallback={null}>
+              <ProductsToolbar categories={categories} merchants={merchants} />
             </Suspense>
-          </aside>
+          </div>
 
-          <section className="flex min-h-0 min-w-0 flex-col lg:overflow-hidden">
-            <div className="sticky top-16 z-30 -mx-4 shrink-0 bg-[#fff8f0] px-4 lg:static lg:top-auto lg:z-auto lg:mx-0 lg:px-0">
-              <Suspense fallback={null}>
-                <ProductsToolbar categories={categories} merchants={merchants} />
-              </Suspense>
+          {result.items.length === 0 ? (
+            <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-10 text-center">
+              <h2 className="text-lg font-semibold">No products match these filters</h2>
+              <p className="mt-2 text-sm text-[#514534]">
+                Try clearing a filter or browsing all products.
+              </p>
+              <Link
+                className="mt-4 inline-block text-sm font-semibold text-[#7f5700] underline"
+                href="/products"
+              >
+                Reset filters
+              </Link>
             </div>
-
-            <div className="min-h-0 flex-1 pt-4 lg:overflow-y-auto lg:pb-8">
-              {result.items.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-10 text-center">
-                  <h2 className="text-lg font-semibold">No products match these filters</h2>
-                  <p className="mt-2 text-sm text-[#514534]">
-                    Try clearing a filter or browsing all products.
-                  </p>
-                  <Link
-                    className="mt-4 inline-block text-sm font-semibold text-[#7f5700] underline"
-                    href="/products"
-                  >
-                    Reset filters
-                  </Link>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
-                  {result.items.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              )}
-
-              <ProductPagination
-                page={result.page}
-                searchParams={plainParams}
-                totalPages={result.totalPages}
-              />
+          ) : (
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
+              {result.items.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
-          </section>
-        </div>
+          )}
+
+          <ProductPagination
+            page={result.page}
+            searchParams={plainParams}
+            totalPages={result.totalPages}
+          />
+        </section>
       </div>
     </main>
   )

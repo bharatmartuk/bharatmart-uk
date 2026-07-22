@@ -25,8 +25,10 @@ export function ProductSortSelect({ className }: { className?: string }) {
   const value = searchParams.get('sort') ?? 'relevance'
 
   return (
-    <div className={cn('flex w-full flex-col gap-1 sm:w-auto sm:flex-row sm:items-center sm:gap-2', className)}>
-      <span className="text-xs font-semibold uppercase tracking-wide text-[#837561]">Sort by</span>
+    <div className={cn('flex w-full flex-row items-center gap-2', className)}>
+      <span className="shrink-0 text-xs font-semibold uppercase tracking-wide text-[#837561]">
+        Sort by
+      </span>
       <Select
         onValueChange={(next) => {
           const params = new URLSearchParams(searchParams.toString())
