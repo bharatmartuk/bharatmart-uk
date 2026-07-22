@@ -25,6 +25,7 @@ function rebuild(url: string) {
   let i = 0
   while (i < segments.length) {
     const seg = segments[i]
+    if (seg == null) break
     if (/^v\d+$/.test(seg)) {
       i += 1
       break
