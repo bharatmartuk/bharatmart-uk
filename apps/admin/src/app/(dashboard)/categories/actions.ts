@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { CategoryAdminService } from '@bharatmart/services'
+import { CategoryAdminService, ValidationError, NotFoundError } from '@bharatmart/services'
 
 function revalidateMarketplacePaths() {
   revalidatePath('/marketplace')
@@ -39,4 +39,21 @@ export async function updateCategoryAction(input: {
   })
   revalidateMarketplacePaths()
   revalidatePath('/products')
+}
+
+export async function deleteCategoryAction(id: string) {
+  try {
+    await CategoryAdminService.remove(id)
+    revalidateMarketplacePaths()
+    revalidatePath('/products')
+    return { ok: true as const }
+  } catch (error) {
+    return {
+      ok: false as const,
+      error:
+        error instanceof ValidationError || error instanceof NotFoundError
+          ? error.message
+          : 'Unable to delete this category.',
+    }
+  }
 }

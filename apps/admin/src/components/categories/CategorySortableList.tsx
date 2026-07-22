@@ -1,6 +1,7 @@
 'use client'
 
-import { useMemo, useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   DndContext,
   PointerSensor,
@@ -16,11 +17,12 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { GripVertical, Pencil } from 'lucide-react'
+import { GripVertical, Pencil, Trash2 } from 'lucide-react'
 import { generateSlug } from '@bharatmart/utils'
 import { Badge, Button, CategoryIcon, Input, Label } from '@bharatmart/ui'
 import {
   createCategoryAction,
+  deleteCategoryAction,
   reorderCategoriesAction,
   updateCategoryAction,
 } from '@/app/(dashboard)/categories/actions'
@@ -86,6 +88,7 @@ function SortableRow({
 }
 
 export function CategorySortableList({ categories }: { categories: CategoryRow[] }) {
+  const router = useRouter()
   const [items, setItems] = useState(categories)
   const [name, setName] = useState('')
   const [slug, setSlug] = useState('')
@@ -96,9 +99,14 @@ export function CategorySortableList({ categories }: { categories: CategoryRow[]
   const [editSlug, setEditSlug] = useState('')
   const [editActive, setEditActive] = useState(true)
   const [editComingSoon, setEditComingSoon] = useState(false)
+  const [deleteError, setDeleteError] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
   const sensors = useSensors(useSensor(PointerSensor))
   const ids = useMemo(() => items.map((item) => item.id), [items])
+
+  useEffect(() => {
+    setItems(categories)
+  }, [categories])
 
   function startEdit(category: CategoryRow) {
     setEditing(category)
@@ -106,6 +114,7 @@ export function CategorySortableList({ categories }: { categories: CategoryRow[]
     setEditSlug(category.slug)
     setEditActive(category.isActive)
     setEditComingSoon(category.comingSoon)
+    setDeleteError(null)
   }
 
   function onDragEnd(event: DragEndEvent) {
@@ -142,6 +151,7 @@ export function CategorySortableList({ categories }: { categories: CategoryRow[]
             setSlug('')
             setSlugTouched(false)
             setCreateComingSoon(false)
+            router.refresh()
           })
         }}
       >
@@ -218,12 +228,20 @@ export function CategorySortableList({ categories }: { categories: CategoryRow[]
                 ),
               )
               setEditing(null)
+              setDeleteError(null)
             })
           }}
         >
           <div className="flex items-center justify-between gap-3">
             <h2 className="font-semibold text-[#1e1b16]">Edit category</h2>
-            <Button onClick={() => setEditing(null)} type="button" variant="ghost">
+            <Button
+              onClick={() => {
+                setEditing(null)
+                setDeleteError(null)
+              }}
+              type="button"
+              variant="ghost"
+            >
               Cancel
             </Button>
           </div>
@@ -269,9 +287,40 @@ export function CategorySortableList({ categories }: { categories: CategoryRow[]
             />
             Coming soon (shown in the corner, not clickable)
           </label>
-          <Button disabled={pending || !editName.trim() || !editSlug.trim()} type="submit">
-            Save changes
-          </Button>
+          {deleteError ? <p className="text-sm text-[#a83635]">{deleteError}</p> : null}
+          <div className="flex flex-wrap items-center gap-3">
+            <Button disabled={pending || !editName.trim() || !editSlug.trim()} type="submit">
+              Save changes
+            </Button>
+            <Button
+              className="border-[#a83635]/40 text-[#a83635] hover:bg-[#fdf2f2] hover:text-[#a83635]"
+              disabled={pending}
+              onClick={() => {
+                if (
+                  !window.confirm(
+                    `Delete "${editing.name}"? This cannot be undone. Categories with products or sub-categories cannot be deleted.`,
+                  )
+                ) {
+                  return
+                }
+                startTransition(async () => {
+                  const result = await deleteCategoryAction(editing.id)
+                  if (!result.ok) {
+                    setDeleteError(result.error)
+                    return
+                  }
+                  setItems((current) => current.filter((item) => item.id !== editing.id))
+                  setEditing(null)
+                  setDeleteError(null)
+                })
+              }}
+              type="button"
+              variant="outline"
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete category
+            </Button>
+          </div>
         </form>
       ) : null}
 
