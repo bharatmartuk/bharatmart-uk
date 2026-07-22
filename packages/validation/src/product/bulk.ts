@@ -14,7 +14,7 @@ export const bulkProductRowSchema = z.object({
   description: z.string().min(10),
   /** Category slug from the marketplace catalogue */
   categorySlug: z.string().min(1),
-  /** Price in pounds (e.g. 14.99) — converted to pence on import */
+  /** Price in pounds (e.g. 14.99) - converted to pence on import */
   pricePounds: z.number().positive(),
   stockQuantity: z.number().int().min(0),
   sku: z.string().min(1),

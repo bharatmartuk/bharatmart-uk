@@ -2,7 +2,7 @@ import type { LegalPageContent } from './types'
 import { CONTACT_EMAIL_HREF } from '@/lib/contact'
 
 const PLACEHOLDER =
-  '[Placeholder — finalize with legal counsel before launch]'
+  '[Placeholder - finalize with legal counsel before launch]'
 
 export const termsOfServiceContent: LegalPageContent = {
   title: 'Terms of Service',

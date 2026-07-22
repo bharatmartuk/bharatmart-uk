@@ -378,7 +378,7 @@ export function MerchantOnboardingForm() {
                     </Button>
                   </div>
                   <p className="text-xs text-[#514534]">
-                    {(values.deliveryPostcodes ?? []).join(', ') || 'None added yet — add at least one'}
+                    {(values.deliveryPostcodes ?? []).join(', ') || 'None added yet - add at least one'}
                   </p>
                   {fieldErrors.deliveryPostcodes ? (
                     <p className="text-xs text-[#a83635]">{fieldErrors.deliveryPostcodes.message}</p>

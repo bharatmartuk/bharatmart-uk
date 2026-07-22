@@ -99,7 +99,7 @@ export function VerificationDocuments({
                 <div className="flex min-h-40 flex-col items-center justify-center gap-2 rounded-lg bg-[#f4ede4] px-4 text-center">
                   <FileText className="h-8 w-8 text-[#837561]" />
                   <p className="text-sm text-[#514534]">
-                    Placeholder upload — ask the merchant to re-upload so you can review the real file.
+                    Placeholder upload - ask the merchant to re-upload so you can review the real file.
                   </p>
                 </div>
               ) : document.kind === 'pdf' || document.kind === 'other' ? (

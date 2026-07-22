@@ -28,7 +28,7 @@ export async function savePayoutDetailsAction(_input: {
   sortCode: string
   accountNumber: string
 }) {
-  // Captured for future payouts — not persisted to bank rails yet.
+  // Captured for future payouts - not persisted to bank rails yet.
   await requireMerchant()
   return { ok: true as const, message: 'Payout details saved locally for future use.' }
 }

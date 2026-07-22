@@ -111,7 +111,7 @@ export default async function AboutPage() {
                 friends find authentic spices in London has evolved into a nationwide digital marketplace.
               </p>
               <p>
-                We saw local merchants—the guardians of heritage—struggling to reach customers beyond
+                We saw local merchants-the guardians of heritage-struggling to reach customers beyond
                 their neighbourhoods. At the same time, we felt the longing of the diaspora for textures
                 and tastes of home that &ldquo;international aisles&rdquo; simply couldn&apos;t satisfy.
               </p>
@@ -169,7 +169,7 @@ export default async function AboutPage() {
         </div>
       </section>
 
-      {/* PLACEHOLDER — Meet the Team: pending real team bios/photos before launch */}
+      {/* PLACEHOLDER - Meet the Team: pending real team bios/photos before launch */}
       <section className="bg-[#fff8f0] px-4 py-20 md:px-8 lg:px-16">
         <div className="mx-auto mb-14 max-w-7xl text-center">
           <h2 className="font-heading text-3xl font-semibold text-[#1e1b16]">Meet the Visionaries</h2>

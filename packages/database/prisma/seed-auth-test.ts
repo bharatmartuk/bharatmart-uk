@@ -1,5 +1,5 @@
 /**
- * Manual auth test users (temporary — replaced by full seed in next phase).
+ * Manual auth test users (temporary - replaced by full seed in next phase).
  * Run: pnpm --filter @bharatmart/database exec tsx prisma/seed-auth-test.ts
  */
 import bcrypt from 'bcryptjs'

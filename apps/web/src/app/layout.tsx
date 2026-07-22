@@ -13,6 +13,11 @@ export const metadata: Metadata = {
     template: '%s | BharatMart UK',
   },
   description: 'Authentic Indian groceries, fashion, festival essentials and local merchants across the UK.',
+  icons: {
+    icon: [{ url: '/favicon.png', type: 'image/png' }],
+    apple: [{ url: '/favicon.png', type: 'image/png' }],
+    shortcut: '/favicon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

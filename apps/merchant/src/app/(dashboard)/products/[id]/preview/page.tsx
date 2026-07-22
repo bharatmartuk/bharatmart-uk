@@ -51,7 +51,7 @@ export default async function ProductPreviewPage({
               </a>
             </Button>
           ) : (
-            <Badge variant="secondary">{product.status} — publish to go live</Badge>
+            <Badge variant="secondary">{product.status} - publish to go live</Badge>
           )}
         </div>
       </div>

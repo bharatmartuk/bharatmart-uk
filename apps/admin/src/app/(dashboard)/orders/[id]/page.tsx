@@ -56,7 +56,7 @@ export default async function AdminOrderDetailPage({
           <CardContent className="space-y-2 text-sm">
             <p>
               <span className="text-[#837561]">Name: </span>
-              <span className="font-medium">{customer.name?.trim() || '—'}</span>
+              <span className="font-medium">{customer.name?.trim() || '-'}</span>
             </p>
             <p>
               <span className="text-[#837561]">Email: </span>
@@ -65,12 +65,12 @@ export default async function AdminOrderDetailPage({
                   {customer.email}
                 </a>
               ) : (
-                '—'
+                '-'
               )}
             </p>
             <p>
               <span className="text-[#837561]">Phone: </span>
-              <span className="font-medium">{customer.phone ?? '—'}</span>
+              <span className="font-medium">{customer.phone ?? '-'}</span>
             </p>
             <p>
               <span className="text-[#837561]">Customer ID: </span>
@@ -115,11 +115,11 @@ export default async function AdminOrderDetailPage({
               <>
                 <p>
                   <span className="text-[#837561]">Courier: </span>
-                  {order.courierName ?? '—'}
+                  {order.courierName ?? '-'}
                 </p>
                 <p>
                   <span className="text-[#837561]">Tracking: </span>
-                  {order.trackingNumber ?? '—'}
+                  {order.trackingNumber ?? '-'}
                 </p>
               </>
             ) : null}

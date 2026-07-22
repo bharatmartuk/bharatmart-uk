@@ -116,7 +116,7 @@ const merchants = [
     storeName: "Amma's Andhra Pickle House",
     storeSlug: 'ammas-andhra-pickle-house',
     storeDescription:
-      'Small-batch Andhra pickles made from family recipes — mango avakaya, gongura, lemon and more, packed fresh for UK homes.',
+      'Small-batch Andhra pickles made from family recipes - mango avakaya, gongura, lemon and more, packed fresh for UK homes.',
     deliveryPostcodes: ['E1', 'E2', 'E3', 'E14', 'IG1', 'RM8'],
     hasPhysicalStore: true,
   },
@@ -130,7 +130,7 @@ const merchants = [
     storeName: "Narasimha's Village Snacks",
     storeSlug: 'narasimhas-village-snacks',
     storeDescription:
-      'Crispy Andhra snacks from a family kitchen in Leicester — murukulu, sakinalu, chekkalu, mixture and festival sweets made to order.',
+      'Crispy Andhra snacks from a family kitchen in Leicester - murukulu, sakinalu, chekkalu, mixture and festival sweets made to order.',
     deliveryPostcodes: ['LE1', 'LE2', 'LE3', 'LE4', 'LE5', 'CV1'],
     hasPhysicalStore: true,
   },
@@ -144,7 +144,7 @@ const merchants = [
     storeName: 'Festival Lights Emporium',
     storeSlug: 'festival-lights-emporium',
     storeDescription:
-      'Diwali, Holi and Navratri collections — diyas, rangoli kits, festive décor and gift hampers curated for UK celebrations.',
+      'Diwali, Holi and Navratri collections - diyas, rangoli kits, festive décor and gift hampers curated for UK celebrations.',
     deliveryPostcodes: ['HA1', 'HA2', 'UB1', 'UB5', 'NW9', 'NW10'],
     hasPhysicalStore: true,
   },
@@ -158,7 +158,7 @@ const merchants = [
     storeName: 'Saree & Style Boutique',
     storeSlug: 'saree-style-boutique',
     storeDescription:
-      'Ethnic wear for everyday and occasions — sarees, kurtis, sherwanis and kids festive outfits shipped across the UK.',
+      'Ethnic wear for everyday and occasions - sarees, kurtis, sherwanis and kids festive outfits shipped across the UK.',
     deliveryPostcodes: ['B1', 'B15', 'B16', 'B17', 'CV1', 'CV6'],
     hasPhysicalStore: true,
   },
@@ -172,7 +172,7 @@ const merchants = [
     storeName: 'Desi Kitchen Staples',
     storeSlug: 'desi-kitchen-staples',
     storeDescription:
-      'Pantry essentials for Indian cooking — spices, dals, ready masalas and everyday groceries from trusted suppliers.',
+      'Pantry essentials for Indian cooking - spices, dals, ready masalas and everyday groceries from trusted suppliers.',
     deliveryPostcodes: ['M1', 'M14', 'M20', 'SK1', 'OL1', 'OL6'],
     hasPhysicalStore: false,
   },
@@ -200,7 +200,7 @@ const merchants = [
     storeName: "Season's Bazaar",
     storeSlug: 'seasons-bazaar',
     storeDescription:
-      'Seasonal Indian favourites — mango season boxes, winter warmers, monsoon snacks and limited-time festival drops.',
+      'Seasonal Indian favourites - mango season boxes, winter warmers, monsoon snacks and limited-time festival drops.',
     deliveryPostcodes: ['LS1', 'LS6', 'LS11', 'BD1', 'BD7', 'HX1'],
     hasPhysicalStore: false,
   },
@@ -221,7 +221,7 @@ const merchants = [
 ] as const
 
 const products: SeedProduct[] = [
-  // Pickles — Amma's Andhra Pickle House
+  // Pickles - Amma's Andhra Pickle House
   {
     merchantSlug: 'ammas-andhra-pickle-house',
     categorySlug: 'homemade-pickles',
@@ -251,7 +251,7 @@ const products: SeedProduct[] = [
     name: "Grandma's Recipe Lemon Pickle",
     slug: 'grandmas-recipe-lemon-pickle',
     description:
-      'Slow-cured lemon pickle with ginger, green chilli and a hint of jaggery — bright, sour and deeply flavoured.',
+      'Slow-cured lemon pickle with ginger, green chilli and a hint of jaggery - bright, sour and deeply flavoured.',
     priceInPence: 599,
     stockQuantity: 50,
     sku: 'AAP-LMN-003',
@@ -262,7 +262,7 @@ const products: SeedProduct[] = [
     name: 'Authentic Andhra Gongura Pickle',
     slug: 'authentic-andhra-gongura-pickle',
     description:
-      'Tangy gongura leaves cooked with garlic and red chilli — a true Andhra favourite for rice, dosa and roti.',
+      'Tangy gongura leaves cooked with garlic and red chilli - a true Andhra favourite for rice, dosa and roti.',
     priceInPence: 679,
     stockQuantity: 38,
     sku: 'AAP-GNG-004',
@@ -284,7 +284,7 @@ const products: SeedProduct[] = [
     name: 'Sun-Cured Homemade Lemon Pickle',
     slug: 'sun-cured-homemade-lemon-pickle',
     description:
-      'Lemons sun-cured for days then finished with mustard and fenugreek — sharp, zesty and long-lasting.',
+      'Lemons sun-cured for days then finished with mustard and fenugreek - sharp, zesty and long-lasting.',
     priceInPence: 619,
     stockQuantity: 42,
     sku: 'AAP-SCL-006',
@@ -317,7 +317,7 @@ const products: SeedProduct[] = [
     name: 'Spicy Village Style Gongura Pickle',
     slug: 'spicy-village-style-gongura-pickle',
     description:
-      'Extra-hot village-style gongura with plenty of chilli and garlic — for those who like true Andhra heat.',
+      'Extra-hot village-style gongura with plenty of chilli and garlic - for those who like true Andhra heat.',
     priceInPence: 699,
     stockQuantity: 32,
     sku: 'AAP-SPG-009',
@@ -328,20 +328,20 @@ const products: SeedProduct[] = [
     name: 'Premium Homemade Mixed Vegetable Pickle',
     slug: 'premium-homemade-mixed-vegetable-pickle',
     description:
-      'Carrot, cauliflower, lemon and mango in a rich mixed pickle masala — a festive jar for the whole family.',
+      'Carrot, cauliflower, lemon and mango in a rich mixed pickle masala - a festive jar for the whole family.',
     priceInPence: 749,
     stockQuantity: 36,
     sku: 'AAP-MXV-010',
   },
 
-  // Snacks — Narasimha's Village Snacks
+  // Snacks - Narasimha's Village Snacks
   {
     merchantSlug: 'narasimhas-village-snacks',
     categorySlug: 'homemade-snacks',
     name: "Amma's Homemade Murukulu",
     slug: 'ammas-homemade-murukulu',
     description:
-      'Crispy spiral murukulu made with rice flour and butter, lightly spiced — tea-time crunch the Amma way.',
+      'Crispy spiral murukulu made with rice flour and butter, lightly spiced - tea-time crunch the Amma way.',
     priceInPence: 499,
     stockQuantity: 55,
     sku: 'NVS-MUR-001',
@@ -363,7 +363,7 @@ const products: SeedProduct[] = [
     name: 'Traditional Andhra Chekkalu',
     slug: 'traditional-andhra-chekkalu',
     description:
-      'Thin, crisp rice-flour discs seasoned with sesame and chilli — a festival staple from coastal Andhra.',
+      'Thin, crisp rice-flour discs seasoned with sesame and chilli - a festival staple from coastal Andhra.',
     priceInPence: 529,
     stockQuantity: 48,
     sku: 'NVS-CHK-003',
@@ -374,7 +374,7 @@ const products: SeedProduct[] = [
     name: 'Handmade Sakinalu',
     slug: 'handmade-sakinalu',
     description:
-      'Hand-pressed sakinalu with sesame and carom seeds — light, fragrant and perfect with filter coffee.',
+      'Hand-pressed sakinalu with sesame and carom seeds - light, fragrant and perfect with filter coffee.',
     priceInPence: 549,
     stockQuantity: 44,
     sku: 'NVS-SAK-004',
@@ -385,7 +385,7 @@ const products: SeedProduct[] = [
     name: "Grandma's Special Mixture",
     slug: 'grandmas-special-mixture',
     description:
-      'A homestyle mixture of sev, peanuts, curry leaves and spices — snackable and generously seasoned.',
+      'A homestyle mixture of sev, peanuts, curry leaves and spices - snackable and generously seasoned.',
     priceInPence: 599,
     stockQuantity: 60,
     sku: 'NVS-MIX-005',
@@ -396,7 +396,7 @@ const products: SeedProduct[] = [
     name: 'Premium Dry Fruit Mixture',
     slug: 'premium-dry-fruit-mixture',
     description:
-      'Cashews, almonds, raisins and crunchy sev tossed in a mild masala — premium gifting and evening snacks.',
+      'Cashews, almonds, raisins and crunchy sev tossed in a mild masala - premium gifting and evening snacks.',
     priceInPence: 899,
     stockQuantity: 30,
     sku: 'NVS-DFM-006',
@@ -407,7 +407,7 @@ const products: SeedProduct[] = [
     name: 'Authentic Janthikalu',
     slug: 'authentic-janthikalu',
     description:
-      'Fine extruded janthikalu with a delicate crunch and gentle spice — classic Andhra tea-time fare.',
+      'Fine extruded janthikalu with a delicate crunch and gentle spice - classic Andhra tea-time fare.',
     priceInPence: 499,
     stockQuantity: 52,
     sku: 'NVS-JAN-007',
@@ -418,7 +418,7 @@ const products: SeedProduct[] = [
     name: 'Homemade Butter Murukulu',
     slug: 'homemade-butter-murukulu',
     description:
-      'Rich butter murukulu that melt as you bite — milder spice, extra crisp, made in small batches.',
+      'Rich butter murukulu that melt as you bite - milder spice, extra crisp, made in small batches.',
     priceInPence: 549,
     stockQuantity: 46,
     sku: 'NVS-BMU-008',
@@ -429,7 +429,7 @@ const products: SeedProduct[] = [
     name: 'Festival Special Ariselu',
     slug: 'festival-special-ariselu',
     description:
-      'Soft jaggery-coated ariselu prepared for festivals — sweet, sticky and fragrant with ghee.',
+      'Soft jaggery-coated ariselu prepared for festivals - sweet, sticky and fragrant with ghee.',
     priceInPence: 699,
     stockQuantity: 34,
     sku: 'NVS-ARI-009',
@@ -440,7 +440,7 @@ const products: SeedProduct[] = [
     name: 'Crispy Ribbon Pakoda',
     slug: 'crispy-ribbon-pakoda',
     description:
-      'Ribbon pakoda strips fried until golden with a peppery, savoury finish — ideal for sharing.',
+      'Ribbon pakoda strips fried until golden with a peppery, savoury finish - ideal for sharing.',
     priceInPence: 479,
     stockQuantity: 58,
     sku: 'NVS-RIB-010',
@@ -451,7 +451,7 @@ const products: SeedProduct[] = [
     name: 'Premium Masala Boondi',
     slug: 'premium-masala-boondi',
     description:
-      'Tiny boondi pearls tossed in chaat-style masala — crunchy, tangy and lightly spicy.',
+      'Tiny boondi pearls tossed in chaat-style masala - crunchy, tangy and lightly spicy.',
     priceInPence: 449,
     stockQuantity: 62,
     sku: 'NVS-BOO-011',
@@ -462,7 +462,7 @@ const products: SeedProduct[] = [
     name: 'Classic Andhra Chegodilu',
     slug: 'classic-andhra-chegodilu',
     description:
-      'Ring-shaped chegodilu with sesame and chilli — a beloved Andhra crunch for evenings and guests.',
+      'Ring-shaped chegodilu with sesame and chilli - a beloved Andhra crunch for evenings and guests.',
     priceInPence: 529,
     stockQuantity: 40,
     sku: 'NVS-CGD-012',
@@ -473,7 +473,7 @@ const products: SeedProduct[] = [
     name: 'Homemade Banana Chips',
     slug: 'homemade-banana-chips',
     description:
-      'Thin Kerala-style banana chips fried in coconut oil and lightly salted — crisp and lightly sweet.',
+      'Thin Kerala-style banana chips fried in coconut oil and lightly salted - crisp and lightly sweet.',
     priceInPence: 499,
     stockQuantity: 55,
     sku: 'NVS-BAN-013',
@@ -484,7 +484,7 @@ const products: SeedProduct[] = [
     name: 'Handcrafted Sunnundalu',
     slug: 'handcrafted-sunnundalu',
     description:
-      'Roasted urad dal laddoos bound with jaggery and ghee — traditional protein-rich sweets.',
+      'Roasted urad dal laddoos bound with jaggery and ghee - traditional protein-rich sweets.',
     priceInPence: 649,
     stockQuantity: 36,
     sku: 'NVS-SUN-014',
@@ -495,7 +495,7 @@ const products: SeedProduct[] = [
     name: 'Authentic Rice Chekkalu',
     slug: 'authentic-rice-chekkalu',
     description:
-      'Rice-flour chekkalu with curry leaves and sesame — thin, brittle and addictive.',
+      'Rice-flour chekkalu with curry leaves and sesame - thin, brittle and addictive.',
     priceInPence: 519,
     stockQuantity: 48,
     sku: 'NVS-RCK-015',
@@ -507,7 +507,7 @@ const products: SeedProduct[] = [
     categorySlug: 'festive-collections',
     name: 'Handcrafted Brass Diya Set',
     slug: 'handcrafted-brass-diya-set',
-    description: 'Set of six brass diyas for Diwali and temple rituals — polished and gift-ready.',
+    description: 'Set of six brass diyas for Diwali and temple rituals - polished and gift-ready.',
     priceInPence: 1899,
     stockQuantity: 40,
     sku: 'FLE-DYA-001',
@@ -539,9 +539,9 @@ const products: SeedProduct[] = [
   {
     merchantSlug: 'saree-style-boutique',
     categorySlug: 'indian-clothing',
-    name: 'Banarasi Silk Saree — Maroon Gold',
+    name: 'Banarasi Silk Saree - Maroon Gold',
     slug: 'banarasi-silk-saree-maroon-gold',
-    description: 'Classic Banarasi weave saree with zari border — wedding and festival ready.',
+    description: 'Classic Banarasi weave saree with zari border - wedding and festival ready.',
     priceInPence: 8999,
     stockQuantity: 12,
     sku: 'SSB-SAR-001',
@@ -552,7 +552,7 @@ const products: SeedProduct[] = [
     categorySlug: 'indian-clothing',
     name: 'Cotton Kurti Everyday Set',
     slug: 'cotton-kurti-everyday-set',
-    description: 'Soft cotton kurti with matching pants — breathable for daily wear.',
+    description: 'Soft cotton kurti with matching pants - breathable for daily wear.',
     priceInPence: 2999,
     stockQuantity: 30,
     sku: 'SSB-KUR-002',
@@ -562,7 +562,7 @@ const products: SeedProduct[] = [
     categorySlug: 'indian-clothing',
     name: "Kids' Festival Sherwani",
     slug: 'kids-festival-sherwani',
-    description: 'Embroidered sherwani set for boys — ideal for Diwali and weddings.',
+    description: 'Embroidered sherwani set for boys - ideal for Diwali and weddings.',
     priceInPence: 4599,
     stockQuantity: 18,
     sku: 'SSB-SHR-003',
@@ -640,7 +640,7 @@ const products: SeedProduct[] = [
     categorySlug: 'seasonal-stuff',
     name: 'Alphonso Mango Box (Seasonal)',
     slug: 'alphonso-mango-box-seasonal',
-    description: 'Limited-season Alphonso mangoes — pre-order during peak harvest weeks.',
+    description: 'Limited-season Alphonso mangoes - pre-order during peak harvest weeks.',
     priceInPence: 2499,
     stockQuantity: 20,
     sku: 'SBZ-MNG-001',
@@ -663,7 +663,7 @@ const products: SeedProduct[] = [
     categorySlug: 'organic-store',
     name: 'Organic Moong Dal 1kg',
     slug: 'organic-moong-dal-1kg',
-    description: 'Certified organic split moong dal — clean label and residue-tested.',
+    description: 'Certified organic split moong dal - clean label and residue-tested.',
     priceInPence: 549,
     stockQuantity: 45,
     sku: 'GLO-MNG-001',
@@ -971,7 +971,7 @@ async function seedProducts(
       merchantId,
     })
 
-    // All product images live in Cloudinary — URLs only in the database.
+    // All product images live in Cloudinary - URLs only in the database.
     const imageUrl = await resolveSeedProductImageUrl(product.slug, REPO_ROOT)
 
     await prisma.productImage.upsert({
@@ -1199,7 +1199,7 @@ async function seedReviews(
       productSlug: 'ammas-homemade-andhra-avakaya',
       customerEmail: 'ananya.patel@bharatmart.uk',
       rating: 5,
-      comment: 'Proper Andhra heat and mango flavour — tastes just like home.',
+      comment: 'Proper Andhra heat and mango flavour - tastes just like home.',
     },
     {
       productSlug: 'grandmas-recipe-lemon-pickle',
@@ -1211,7 +1211,7 @@ async function seedReviews(
       productSlug: 'ammas-homemade-murukulu',
       customerEmail: 'rohan.singh@bharatmart.uk',
       rating: 5,
-      comment: 'Crispy and fresh — disappeared during our tea-time.',
+      comment: 'Crispy and fresh - disappeared during our tea-time.',
     },
     {
       productSlug: 'handmade-sakinalu',
@@ -1229,7 +1229,7 @@ async function seedReviews(
       productSlug: 'authentic-andhra-gongura-pickle',
       customerEmail: 'ananya.patel@bharatmart.uk',
       rating: 5,
-      comment: 'Authentic gongura tang — perfect with hot rice.',
+      comment: 'Authentic gongura tang - perfect with hot rice.',
     },
   ] as const
 
@@ -1295,7 +1295,7 @@ async function seedBanners() {
       imageUrl: '/carousel/homemade-pickles.png',
       headline: 'Homemade Indian Pickles',
       subtext:
-        'Tangy mango, lemon and family-recipe achar — made for everyday meals and festive thalis.',
+        'Tangy mango, lemon and family-recipe achar - made for everyday meals and festive thalis.',
       ctaText: 'Shop pickles',
       ctaLink: '/products?category=homemade-pickles',
       sortOrder: 1,
@@ -1305,7 +1305,7 @@ async function seedBanners() {
       imageUrl: '/carousel/homemade-snacks.png',
       headline: 'Crispy Homemade Snacks',
       subtext:
-        'Murukulu, janthikalu, sakinalu, gaarelu and more — festive crunch, delivered across the UK.',
+        'Murukulu, janthikalu, sakinalu, gaarelu and more - festive crunch, delivered across the UK.',
       ctaText: 'Shop snacks',
       ctaLink: '/products?category=homemade-snacks',
       sortOrder: 2,

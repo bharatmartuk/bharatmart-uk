@@ -33,7 +33,7 @@ export function ContactForm() {
       toast.error(result.error)
       return
     }
-    toast.success('Message sent — we will get back to you soon.')
+    toast.success('Message sent - we will get back to you soon.')
     reset()
   }
 

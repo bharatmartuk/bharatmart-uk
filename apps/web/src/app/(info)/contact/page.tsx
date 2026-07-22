@@ -40,7 +40,7 @@ const faqs = [
 
 export default function ContactPage() {
   const whatsappUrl = getWhatsAppSupportUrl(
-    'Hi BharatMart UK — I have a question about my order / becoming a merchant.',
+    'Hi BharatMart UK - I have a question about my order / becoming a merchant.',
   )
 
   return (

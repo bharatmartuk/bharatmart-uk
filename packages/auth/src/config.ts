@@ -156,7 +156,7 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
           return false
         }
 
-        // Prefer email — on first OAuth pass, `user.id` may not be the DB cuid yet.
+        // Prefer email - on first OAuth pass, `user.id` may not be the DB cuid yet.
         const dbUser = await prisma.user.findUnique({
           where: { email },
           select: { role: true },
@@ -184,7 +184,7 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
         }
 
         // Keep role/merchantId in sync (e.g. CUSTOMER → MERCHANT after onboarding).
-        // Never throw here — a DB blip must not invalidate the whole session/action.
+        // Never throw here - a DB blip must not invalidate the whole session/action.
         if (token.sub) {
           try {
             const dbUser = await prisma.user.findUnique({

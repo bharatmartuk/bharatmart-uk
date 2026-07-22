@@ -10,7 +10,7 @@ function isUserRole(value: unknown): value is UserRoleType {
 
 /**
  * Auth.js sets `__Secure-authjs.session-token` on HTTPS. getToken() picks the
- * cookie name from AUTH_URL by default — a wrong/localhost AUTH_URL on Vercel
+ * cookie name from AUTH_URL by default - a wrong/localhost AUTH_URL on Vercel
  * makes middleware miss the session and bounce users back to /login.
  */
 async function readSessionToken(req: NextRequest, secret: string) {

@@ -1,4 +1,4 @@
-# BharatMart UK — Vercel deployment
+# BharatMart UK - Vercel deployment
 
 This monorepo has **three separate Next.js apps**. Prefer one Vercel project per app.
 
@@ -84,7 +84,7 @@ Also keep local URIs if you develop locally:
 
 3. Redeploy **both** projects after saving env vars.
 
-4. Confirm: open `/api/auth/providers` — the JSON should include a `"google"` entry.
+4. Confirm: open `/api/auth/providers` - the JSON should include a `"google"` entry.
 
 ## Seed production
 
@@ -96,4 +96,4 @@ Demo admin (admin project only): `admin@bharatmart.uk` / `Password123!`
 
 ## Stripe webhook
 
-`https://bharatmart-uk.vercel.app/api/webhooks/stripe` — event `payment_intent.succeeded`
+`https://bharatmart-uk.vercel.app/api/webhooks/stripe` - event `payment_intent.succeeded`

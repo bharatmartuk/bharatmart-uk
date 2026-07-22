@@ -76,7 +76,7 @@ export default async function AdminOrdersPage({
         <div className="space-y-3">
           {result.items.map((order) => {
             const customerName = order.order.customer.name?.trim() || 'Customer'
-            const customerEmail = order.order.customer.email ?? '—'
+            const customerEmail = order.order.customer.email ?? '-'
             return (
               <Card className="border-[#d6c4ad]" key={order.id}>
                 <CardContent className="flex flex-wrap items-start justify-between gap-4 p-4 text-sm">

@@ -57,7 +57,7 @@ const paymentOptions: Array<{
   {
     id: 'CARD',
     title: 'Debit / Credit card',
-    description: 'Visa, Mastercard, Amex — including Apple Pay & Google Pay when available.',
+    description: 'Visa, Mastercard, Amex - including Apple Pay & Google Pay when available.',
     icon: CreditCard,
   },
   {
@@ -400,7 +400,7 @@ export function CheckoutClient({
                     Pay securely by debit or credit card. When Stripe is configured, Apple Pay and
                     Google Pay also appear automatically for supported devices.
                     {!publishableKey
-                      ? ' Stripe keys are not set yet — you can still review the flow, or choose Cash on delivery.'
+                      ? ' Stripe keys are not set yet - you can still review the flow, or choose Cash on delivery.'
                       : null}
                   </p>
                 </div>
@@ -495,7 +495,7 @@ export function CheckoutClient({
                     disabled={isPending || !prepared}
                     onClick={() => {
                       if (!prepared) return
-                      // Dev fallback without Stripe keys — order stays PENDING.
+                      // Dev fallback without Stripe keys - order stays PENDING.
                       completeCheckout(prepared.orderId)
                     }}
                     type="button"

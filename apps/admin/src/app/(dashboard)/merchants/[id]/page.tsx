@@ -46,7 +46,7 @@ export default async function MerchantVerificationPage({
             </p>
             <p>
               <strong>Physical store:</strong>{' '}
-              {merchant.hasPhysicalStore ? 'Yes — photo required' : 'No (online-only)'}
+              {merchant.hasPhysicalStore ? 'Yes - photo required' : 'No (online-only)'}
             </p>
             <p>
               <strong>Food licence:</strong>{' '}

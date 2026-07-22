@@ -137,7 +137,7 @@ async function main() {
   const assetsDir = path.join(REPO_ROOT, 'assets', 'pickle')
   const uploaded: Array<{ slug: string; url: string }> = []
 
-  console.log(`Phase 1/2 — upload ${ASSET_MAP.length} images to Cloudinary…`)
+  console.log(`Phase 1/2 - upload ${ASSET_MAP.length} images to Cloudinary…`)
   for (const { file, slug } of ASSET_MAP) {
     const localPath = path.join(assetsDir, file)
     const buffer = await readFile(localPath)
@@ -148,14 +148,14 @@ async function main() {
     await sleep(1000)
   }
 
-  console.log(`Phase 2/2 — update ${uploaded.length} ProductImage rows…`)
+  console.log(`Phase 2/2 - update ${uploaded.length} ProductImage rows…`)
   for (const { slug, url } of uploaded) {
     await updateProductImageUrl(slug, url)
     console.log(`  ✓ db ${slug}`)
   }
 
   console.log(`Done. Images on Cloudinary under ${cloudName}/${SEED_PREFIX}/`)
-  console.log('Local PNGs remain in assets/pickle (gitignored) — not pushed to GitHub.')
+  console.log('Local PNGs remain in assets/pickle (gitignored) - not pushed to GitHub.')
 }
 
 main().catch((error) => {

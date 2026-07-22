@@ -115,6 +115,6 @@ export async function resolveSeedProductImageUrl(slug: string, repoRoot: string)
     return uploadBuffer(buffer, publicId)
   }
 
-  // No local asset — ingest a stable placeholder into our Cloudinary account (not picsum in DB).
+  // No local asset - ingest a stable placeholder into our Cloudinary account (not picsum in DB).
   return uploadRemote(`https://picsum.photos/seed/${encodeURIComponent(slug)}/600/600`, publicId)
 }
