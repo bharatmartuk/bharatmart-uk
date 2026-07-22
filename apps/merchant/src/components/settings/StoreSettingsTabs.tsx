@@ -106,7 +106,6 @@ export function StoreSettingsTabs({
           <div className="space-y-2">
             <Label>Store logo</Label>
             {profile.storeLogoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 alt="Store logo preview"
                 className="h-20 w-20 rounded-full border border-[#d6c4ad] object-cover"
@@ -130,7 +129,6 @@ export function StoreSettingsTabs({
           <div className="space-y-2">
             <Label>Store banner</Label>
             {profile.storeBannerUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 alt="Store banner preview"
                 className="h-20 w-full rounded-md border border-[#d6c4ad] object-cover"
