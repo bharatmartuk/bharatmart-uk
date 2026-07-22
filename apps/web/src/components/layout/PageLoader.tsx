@@ -39,10 +39,18 @@ export function PageLoader() {
       <div className="flex flex-col items-center gap-4">
         <img
           alt="BharatMart"
-          className="h-16 w-auto animate-pulse object-contain md:h-20"
-          height={98}
+          className="h-16 w-16 animate-pulse rounded-full object-cover shadow-sm md:h-20 md:w-20"
+          height={80}
+          src="/favicon.png"
+          width={80}
+        />
+        <img
+          alt=""
+          aria-hidden
+          className="h-8 w-auto object-contain opacity-90 md:h-9"
+          height={36}
           src="/bharatmart-logo.png"
-          width={217}
+          width={120}
         />
         <span className="sr-only">Loading</span>
       </div>

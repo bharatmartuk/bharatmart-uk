@@ -49,7 +49,7 @@ function logoPublicId(storeSlug: string) {
 }
 
 function logoDeliveryUrl(cloudName: string, publicId: string) {
-  return `https://res.cloudinary.com/${cloudName}/image/upload/e_trim,c_fill,g_center,w_500,h_500/${publicId}`
+  return `https://res.cloudinary.com/${cloudName}/image/upload/e_trim:40/c_fill,g_center,w_800,h_800,q_auto,f_auto/${publicId}`
 }
 
 function localLogoCandidates(repoRoot: string, storeSlug: string) {

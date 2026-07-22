@@ -9,10 +9,42 @@ type MerchantLogoProps = {
   sizes?: string
 }
 
-/** Cloudinary transform so logos fill the circle (trim padding, then crop to square). */
+const FILL_TRANSFORMS = 'e_trim:40/c_fill,g_center,w_800,h_800,q_auto,f_auto'
+
+/**
+ * Rebuild Cloudinary URLs so illustrated logos (with lots of white canvas)
+ * are trimmed and hard-cropped before we zoom them into the circle.
+ */
 function filledMerchantLogoUrl(url: string) {
-  if (!url.includes('res.cloudinary.com/') || !url.includes('/upload/')) return url
-  return url.replace(/\/upload\/(?:[^/]+\/)?/, '/upload/e_trim,c_fill,g_center,w_500,h_500/')
+  const marker = '/image/upload/'
+  const idx = url.indexOf(marker)
+  if (!url.includes('res.cloudinary.com') || idx === -1) return url
+
+  const prefix = url.slice(0, idx + marker.length)
+  const rest = url.slice(idx + marker.length)
+  const segments = rest.split('/').filter(Boolean)
+
+  let i = 0
+  while (i < segments.length) {
+    const seg = segments[i]
+    if (/^v\d+$/.test(seg)) {
+      i += 1
+      break
+    }
+    // Drop existing transformation segments (comma lists or known prefixes)
+    if (
+      seg.includes(',') ||
+      /^(c_|e_|w_|h_|q_|f_|g_|b_|ar_|fl_|dpr_|r_)/.test(seg)
+    ) {
+      i += 1
+      continue
+    }
+    break
+  }
+
+  const publicId = segments.slice(i).join('/')
+  if (!publicId) return url
+  return `${prefix}${FILL_TRANSFORMS}/${publicId}`
 }
 
 export function MerchantLogo({
@@ -20,21 +52,25 @@ export function MerchantLogo({
   storeLogoUrl,
   className,
   imageClassName,
-  sizes = '112px',
+  sizes = '128px',
 }: MerchantLogoProps) {
   const src = storeLogoUrl ? filledMerchantLogoUrl(storeLogoUrl) : null
 
   return (
     <div
       className={cn(
-        'relative shrink-0 overflow-hidden rounded-full border-2 border-[#e8d9c8] bg-[#f4ede4]',
+        'relative shrink-0 overflow-hidden rounded-full border-2 border-[#e8d9c8] bg-white',
         className,
       )}
     >
       {src ? (
         <Image
           alt={`${storeName} logo`}
-          className={cn('scale-125 object-cover object-center', imageClassName)}
+          className={cn(
+            // Illustrations ship with large white margins; zoom until art hits the rim
+            'scale-[2.55] object-cover object-center',
+            imageClassName,
+          )}
           fill
           sizes={sizes}
           src={src}
