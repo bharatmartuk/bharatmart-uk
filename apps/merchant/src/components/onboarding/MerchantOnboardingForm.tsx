@@ -120,8 +120,12 @@ export function MerchantOnboardingForm() {
     try {
       const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-documents')
       form.setValue(field, uploaded.url, { shouldValidate: true })
-    } catch {
-      setError('Document upload failed. Please try again.')
+    } catch (uploadError) {
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message
+          : 'Document upload failed. Please try again.',
+      )
     }
   }
 

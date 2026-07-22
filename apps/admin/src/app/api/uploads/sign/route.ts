@@ -8,7 +8,7 @@ import {
 } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 
-const allowedFolders: UploadFolder[] = ['bharatmart/banners']
+const allowedFolders: UploadFolder[] = ['bharatmart/banners', 'bharatmart/merchant-logos']
 
 export async function POST(request: Request) {
   const user = await getCurrentUser()
@@ -34,6 +34,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid upload folder' }, { status: 400 })
   }
 
-  const signed = await UploadService.createSignedUpload(folder)
-  return NextResponse.json(signed)
+  try {
+    const signed = await UploadService.createSignedUpload(folder)
+    return NextResponse.json(signed)
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Cloudinary is not configured on this server.'
+    return NextResponse.json({ error: message }, { status: 503 })
+  }
 }

@@ -39,8 +39,12 @@ export function ReplaceVerificationDocuments({
       else if (field === 'id') setIdProofUrl(uploaded.url)
       else if (field === 'store') setPhysicalStorePhotoUrl(uploaded.url)
       else setFoodLicenseUrl(uploaded.url)
-    } catch {
-      setError('Document upload failed. Please try again.')
+    } catch (uploadError) {
+      setError(
+        uploadError instanceof Error
+          ? uploadError.message
+          : 'Document upload failed. Please try again.',
+      )
     }
   }
 

@@ -39,6 +39,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid upload folder' }, { status: 400 })
   }
 
-  const signed = await UploadService.createSignedUpload(folder)
-  return NextResponse.json(signed)
+  try {
+    const signed = await UploadService.createSignedUpload(folder)
+    return NextResponse.json(signed)
+  } catch (error) {
+    const message =
+      error instanceof Error
+        ? error.message
+        : 'Cloudinary is not configured on this server.'
+    return NextResponse.json({ error: message }, { status: 503 })
+  }
 }

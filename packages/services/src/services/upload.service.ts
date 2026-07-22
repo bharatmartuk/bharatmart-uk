@@ -6,6 +6,8 @@ import { v2 as cloudinary } from 'cloudinary'
  * Signed Cloudinary uploads:
  * - server generates signature (API secret never leaves the server)
  * - browser uploads directly to Cloudinary with that signature
+ *
+ * Also supports server-side buffer uploads (merchant docs, product images).
  */
 export type UploadFolder =
   | 'bharatmart/products'
@@ -34,6 +36,12 @@ function configureCloudinary() {
   return true
 }
 
+function missingCloudinaryError() {
+  return new Error(
+    'Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET on this Vercel project.',
+  )
+}
+
 export const UploadService = {
   isConfigured() {
     return configureCloudinary()
@@ -44,28 +52,45 @@ export const UploadService = {
     const publicId = `${folder}/${Date.now()}-${safeName}`
 
     if (!configureCloudinary()) {
-      throw new Error('Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.')
+      throw missingCloudinaryError()
     }
 
     const url = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload/${publicId}`
     return { url, publicId, folder }
   },
 
-  /** Server-side upload from a buffer (seed scripts, migrations). */
+  /**
+   * Server-side upload for merchant docs (PDF/images), product photos, logos, banners.
+   * Uses resource_type auto so PDFs and images both land in Cloudinary.
+   */
   async uploadBuffer(
     buffer: Buffer,
-    options: { folder: UploadFolder; publicId: string },
+    options: {
+      folder: UploadFolder
+      publicId?: string
+      fileName?: string
+      resourceType?: 'image' | 'auto' | 'raw'
+    },
   ): Promise<UploadResult> {
     if (!configureCloudinary()) {
-      throw new Error('Cloudinary is not configured.')
+      throw missingCloudinaryError()
     }
+
+    const safeName =
+      (options.fileName || 'upload')
+        .replace(/[^a-zA-Z0-9._-]/g, '-')
+        .replace(/\.[^.]+$/, '')
+        .toLowerCase() || 'upload'
 
     const result = await new Promise<{ secure_url: string; public_id: string }>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
-          public_id: options.publicId,
+          // When publicId is provided use it as-is; otherwise let Cloudinary nest under folder.
+          ...(options.publicId
+            ? { public_id: options.publicId }
+            : { folder: options.folder, public_id: `${Date.now()}-${safeName}` }),
           overwrite: true,
-          resource_type: 'image',
+          resource_type: options.resourceType ?? 'auto',
         },
         (error, uploadResult) => {
           if (error || !uploadResult) reject(error ?? new Error('Cloudinary upload failed'))
@@ -85,9 +110,10 @@ export const UploadService = {
     const apiSecret = process.env.CLOUDINARY_API_SECRET
 
     if (!cloudName || !apiKey || !apiSecret) {
-      throw new Error('Cloudinary is not configured. Set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET.')
+      throw missingCloudinaryError()
     }
 
+    configureCloudinary()
     const signature = cloudinary.utils.api_sign_request({ folder, timestamp }, apiSecret)
 
     return {

@@ -12,6 +12,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@bharatmart/ui'
+import { uploadFileToCloudinary } from '@bharatmart/utils'
 import {
   saveDeliveryAreasAction,
   saveNotificationSettingsAction,
@@ -33,7 +34,9 @@ export function StoreSettingsTabs({
   deliveryPostcodes: string[]
 }) {
   const [pending, startTransition] = useTransition()
+  const [uploading, setUploading] = useState<'logo' | 'banner' | null>(null)
   const [message, setMessage] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [profile, setProfile] = useState({
     storeName,
     storeDescription,
@@ -51,6 +54,27 @@ export function StoreSettingsTabs({
     emailStock: true,
     emailMarketing: false,
   })
+
+  async function handleImageUpload(kind: 'logo' | 'banner', file: File) {
+    setError(null)
+    setMessage(null)
+    setUploading(kind)
+    try {
+      const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-logos')
+      setProfile((current) =>
+        kind === 'logo'
+          ? { ...current, storeLogoUrl: uploaded.url }
+          : { ...current, storeBannerUrl: uploaded.url },
+      )
+      setMessage(
+        `${kind === 'logo' ? 'Logo' : 'Banner'} uploaded to Cloudinary. Click Save profile to keep it.`,
+      )
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : 'Image upload failed.')
+    } finally {
+      setUploading(null)
+    }
+  }
 
   return (
     <Tabs defaultValue="profile">
@@ -78,10 +102,61 @@ export function StoreSettingsTabs({
             value={profile.storeDescription}
           />
         </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2">
+            <Label>Store logo</Label>
+            {profile.storeLogoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt="Store logo preview"
+                className="h-20 w-20 rounded-full border border-[#d6c4ad] object-cover"
+                src={profile.storeLogoUrl}
+              />
+            ) : null}
+            <Input
+              accept="image/png,image/jpeg,image/webp"
+              disabled={uploading !== null || pending}
+              onChange={(event) => {
+                const file = event.target.files?.[0]
+                if (file) void handleImageUpload('logo', file)
+                event.target.value = ''
+              }}
+              type="file"
+            />
+            <p className="text-xs text-[#514534]">
+              {uploading === 'logo' ? 'Uploading logo…' : 'PNG/JPG/WebP, stored on Cloudinary'}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <Label>Store banner</Label>
+            {profile.storeBannerUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                alt="Store banner preview"
+                className="h-20 w-full rounded-md border border-[#d6c4ad] object-cover"
+                src={profile.storeBannerUrl}
+              />
+            ) : null}
+            <Input
+              accept="image/png,image/jpeg,image/webp"
+              disabled={uploading !== null || pending}
+              onChange={(event) => {
+                const file = event.target.files?.[0]
+                if (file) void handleImageUpload('banner', file)
+                event.target.value = ''
+              }}
+              type="file"
+            />
+            <p className="text-xs text-[#514534]">
+              {uploading === 'banner' ? 'Uploading banner…' : 'PNG/JPG/WebP, stored on Cloudinary'}
+            </p>
+          </div>
+        </div>
         <Button
-          disabled={pending}
+          disabled={pending || uploading !== null}
           onClick={() =>
             startTransition(async () => {
+              setError(null)
               await saveStoreProfileAction(profile)
               setMessage('Store profile saved.')
             })
@@ -194,6 +269,7 @@ export function StoreSettingsTabs({
         </Button>
       </TabsContent>
 
+      {error ? <p className="mt-4 text-sm text-[#a83635]">{error}</p> : null}
       {message ? <p className="mt-4 text-sm text-[#2e6a39]">{message}</p> : null}
     </Tabs>
   )

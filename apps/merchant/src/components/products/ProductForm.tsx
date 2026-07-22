@@ -138,8 +138,12 @@ export function ProductForm({
                   [...imageUrls, ...uploaded.map((item) => item.url)].slice(0, 8),
                   { shouldValidate: true, shouldDirty: true },
                 )
-              } catch {
-                setError('Image upload failed. Please try again.')
+              } catch (uploadError) {
+                setError(
+                  uploadError instanceof Error
+                    ? uploadError.message
+                    : 'Image upload failed. Please try again.',
+                )
               } finally {
                 setUploading(false)
                 event.target.value = ''
