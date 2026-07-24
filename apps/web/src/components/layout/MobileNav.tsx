@@ -126,12 +126,14 @@ export function MobileNav({
               </Link>
             </>
           )}
-          <a
-            className="mt-4 px-3 text-xs font-medium text-[#837561] hover:text-[#7f5700]"
-            href={merchantAppPath('/register-business')}
-          >
-            Become a seller
-          </a>
+          {!isSignedIn ? (
+            <a
+              className="mt-4 px-3 text-xs font-medium text-[#837561] hover:text-[#7f5700]"
+              href={merchantAppPath('/register-business')}
+            >
+              Become a seller
+            </a>
+          ) : null}
         </nav>
       </SheetContent>
     </Sheet>

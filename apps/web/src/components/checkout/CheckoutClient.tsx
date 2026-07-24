@@ -1,13 +1,26 @@
 'use client'
 
 import { useMemo, useState, useTransition } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CreditCard, Banknote, WalletCards } from 'lucide-react'
+import { CreditCard, Banknote, Eye, WalletCards } from 'lucide-react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { Button, Card, CardContent, CardHeader, CardTitle, toast } from '@bharatmart/ui'
-import { useCartStore } from '@/lib/store/cart-store'
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  toast,
+} from '@bharatmart/ui'
+import { useCartStore, type CartItem } from '@/lib/store/cart-store'
 import {
   placeGuestOrder,
   placeOrder,
@@ -41,13 +54,6 @@ type PreparedCheckout = {
   isGuest: boolean
 }
 
-type CartLine = {
-  productId: string
-  name: string
-  quantity: number
-  priceInPence: number
-}
-
 const steps = ['Address', 'Payment', 'Review'] as const
 
 const priceFormatter = new Intl.NumberFormat('en-GB', {
@@ -78,18 +84,104 @@ const paymentOptions: Array<{
   },
 ]
 
-function OrderLines({ items }: { items: CartLine[] }) {
+function OrderLines({ items }: { items: CartItem[] }) {
+  const [previewItem, setPreviewItem] = useState<CartItem | null>(null)
+
   return (
-    <ul className="space-y-2 text-sm">
-      {items.map((item) => (
-        <li className="flex justify-between gap-3" key={item.productId}>
-          <span>
-            {item.name} × {item.quantity}
-          </span>
-          <span>{priceFormatter.format((item.priceInPence * item.quantity) / 100)}</span>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="space-y-3">
+        {items.map((item) => (
+          <li
+            className="flex items-center gap-3 rounded-xl border border-[#d6c4ad] bg-white p-3"
+            key={item.productId}
+          >
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-[#f9f3ea]">
+              {item.imageUrl ? (
+                <Image
+                  alt={item.name}
+                  className="object-cover"
+                  fill
+                  sizes="64px"
+                  src={item.imageUrl}
+                  unoptimized
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-[10px] text-[#837561]">
+                  No image
+                </div>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-medium text-[#1e1b16]">{item.name}</p>
+              <p className="mt-0.5 text-xs text-[#837561]">
+                Sold by {item.merchantName} · Qty {item.quantity}
+              </p>
+              <p className="mt-1 text-sm font-semibold text-[#a83635]">
+                {priceFormatter.format((item.priceInPence * item.quantity) / 100)}
+              </p>
+            </div>
+            <Button
+              className="shrink-0 border-[#d6c4ad] text-[#7f5700]"
+              onClick={() => setPreviewItem(item)}
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              <Eye className="mr-1.5 h-4 w-4" />
+              Preview
+            </Button>
+          </li>
+        ))}
+      </ul>
+
+      <Dialog
+        onOpenChange={(open) => {
+          if (!open) setPreviewItem(null)
+        }}
+        open={Boolean(previewItem)}
+      >
+        <DialogContent className="max-w-md border-[#d6c4ad] bg-[#fff8f0]">
+          {previewItem ? (
+            <>
+              <DialogHeader>
+                <DialogTitle className="pr-6">{previewItem.name}</DialogTitle>
+                <DialogDescription>
+                  Sold by {previewItem.merchantName} · Qty {previewItem.quantity}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[#f9f3ea]">
+                {previewItem.imageUrl ? (
+                  <Image
+                    alt={previewItem.name}
+                    className="object-cover"
+                    fill
+                    sizes="(max-width: 448px) 100vw, 448px"
+                    src={previewItem.imageUrl}
+                    unoptimized
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-sm text-[#837561]">
+                    Image coming soon
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-lg font-bold text-[#a83635]">
+                  {priceFormatter.format(
+                    (previewItem.priceInPence * previewItem.quantity) / 100,
+                  )}
+                </p>
+                <Button asChild className="bg-[#7f5700] text-white hover:bg-[#604100]">
+                  <Link href={`/products/${previewItem.slug}`} target="_blank">
+                    View product
+                  </Link>
+                </Button>
+              </div>
+            </>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
