@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { addressSchema, type AddressInput } from '@bharatmart/validation'
-import { Button, Input, Label } from '@bharatmart/ui'
+import { Button, Input, Label, toast } from '@bharatmart/ui'
 import { createAddressAction, updateAddressAction } from '@/app/(shop)/account/actions'
 
 export type AddressRecord = {
@@ -84,16 +84,20 @@ export function AddressForm({
 
     if (!result.ok) {
       setError(result.error)
+      toast.error(result.error)
       return
     }
 
     if (!('address' in result) || !result.address) {
-      setError('Address saved, but the response was incomplete.')
+      const message = 'Address saved, but the response was incomplete.'
+      setError(message)
+      toast.error(message)
       return
     }
 
     if (mode === 'edit') {
       setSuccess('Address updated.')
+      toast.success('Delivery address updated')
       onUpdated?.(result.address)
     } else {
       form.reset({
@@ -106,6 +110,7 @@ export function AddressForm({
         isDefault: false,
       })
       setSuccess('Address saved.')
+      toast.success('New delivery address added')
       onCreated?.(result.address)
     }
 

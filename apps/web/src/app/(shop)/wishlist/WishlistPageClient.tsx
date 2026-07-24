@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Trash2 } from 'lucide-react'
-import { Button, Card, CardContent } from '@bharatmart/ui'
+import { Button, Card, CardContent, toast } from '@bharatmart/ui'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { useWishlistStore } from '@/lib/store/wishlist-store'
 
@@ -55,7 +55,10 @@ export function WishlistPageClient() {
               <button
                 aria-label={`Remove ${item.name} from favourites`}
                 className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-[#a83635] shadow-sm transition hover:bg-white"
-                onClick={() => removeItem(item.productId)}
+                onClick={() => {
+                  removeItem(item.productId)
+                  toast.success(`Removed “${item.name}” from favourites`)
+                }}
                 type="button"
               >
                 <Trash2 className="h-4 w-4" />

@@ -4,6 +4,7 @@ import { hash } from 'bcryptjs'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
 import { UserRole } from '@bharatmart/types'
 import { userRepository } from '../repositories/user.repository'
+import { orderRepository } from '../repositories/order.repository'
 import { ConflictError, ValidationError } from '../errors'
 
 export const AuthService = {
@@ -27,12 +28,15 @@ export const AuthService = {
 
     const passwordHash = await hash(parsed.data.password, 12)
     const fallbackName = parsed.data.email.split('@')[0] ?? 'Customer'
-    return userRepository.create({
+    const user = await userRepository.create({
       name: parsed.data.name?.trim() || fallbackName,
       email: parsed.data.email,
       passwordHash,
       role: UserRole.CUSTOMER,
     })
+
+    await orderRepository.attachGuestOrdersToUser(user.id, parsed.data.email)
+    return user
   },
 }
 

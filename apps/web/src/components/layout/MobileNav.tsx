@@ -20,7 +20,7 @@ const baseLinks = [
   { href: '/', label: 'Home', icon: Home },
   { href: '/products', label: 'All products', icon: Package },
   { href: '/wishlist', label: 'Favourites', icon: Heart, requiresAuth: true },
-  { href: '/cart', label: 'Cart', icon: ShoppingCart, requiresAuth: true },
+  { href: '/cart', label: 'Cart', icon: ShoppingCart },
 ] as const
 
 export function MobileNav({

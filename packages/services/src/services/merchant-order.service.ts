@@ -83,6 +83,9 @@ export const MerchantOrderService = {
             orderNumber: true,
             placedAt: true,
             customer: { select: { name: true, email: true } },
+            guestFirstName: true,
+            guestLastName: true,
+            guestEmail: true,
           },
         },
         orderItems: true,
@@ -105,6 +108,10 @@ export const MerchantOrderService = {
             placedAt: true,
             address: true,
             customer: { select: { name: true, email: true, phone: true } },
+            guestFirstName: true,
+            guestLastName: true,
+            guestEmail: true,
+            guestPhone: true,
           },
         },
         orderItems: true,
@@ -156,13 +163,21 @@ export const MerchantOrderService = {
         deliveredAt: newStatus === 'DELIVERED' ? new Date() : current.deliveredAt,
       },
       include: {
-        order: { select: { id: true, orderNumber: true, customerId: true } },
+        order: {
+          select: {
+            id: true,
+            orderNumber: true,
+            customerId: true,
+            guestEmail: true,
+          },
+        },
         merchant: { select: { storeName: true } },
       },
     })
 
     await NotificationService.notifyOrderStatusChanged({
       customerId: updated.order.customerId,
+      guestEmail: updated.order.guestEmail,
       orderNumber: updated.order.orderNumber,
       storeName: updated.merchant.storeName,
       status: newStatus,

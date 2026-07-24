@@ -58,21 +58,21 @@ function toSummary(product: {
 }
 
 export const ProductService = {
-  async getTrending(limit = 8): Promise<ProductSummary[]> {
-    const products = await productRepository.findTrending(limit)
+  async getTrending(limit = 8, deliveryArea?: string): Promise<ProductSummary[]> {
+    const products = await productRepository.findTrending(limit, deliveryArea)
     return products.map(toSummary)
   },
 
-  async getNewArrivals(limit = 8): Promise<ProductSummary[]> {
-    const products = await productRepository.findNewArrivals(limit)
+  async getNewArrivals(limit = 8, deliveryArea?: string): Promise<ProductSummary[]> {
+    const products = await productRepository.findNewArrivals(limit, deliveryArea)
     return products.map(toSummary)
   },
 
-  async getFeatured(limit = 8): Promise<ProductSummary[]> {
-    const products = await productRepository.findFeatured(limit)
+  async getFeatured(limit = 8, deliveryArea?: string): Promise<ProductSummary[]> {
+    const products = await productRepository.findFeatured(limit, deliveryArea)
     if (products.length > 0) return products.map(toSummary)
     // Fallback when nothing is flagged featured yet: top-rated actives.
-    const fallback = await productRepository.findTrending(limit)
+    const fallback = await productRepository.findTrending(limit, deliveryArea)
     return fallback.map(toSummary)
   },
 

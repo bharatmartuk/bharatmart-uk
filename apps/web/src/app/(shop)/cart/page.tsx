@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState, useTransition } from 'react'
 import { Minus, Plus, Trash2 } from 'lucide-react'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Separator } from '@bharatmart/ui'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Separator, toast } from '@bharatmart/ui'
 import { useCartStore } from '@/lib/store/cart-store'
 import { validateCoupon } from './actions'
 
@@ -55,10 +55,13 @@ export default function CartPage() {
       if (!result.ok) {
         setDiscountInPence(0)
         setCouponMessage(result.error)
+        toast.error(result.error)
         return
       }
       setDiscountInPence(result.discountInPence)
-      setCouponMessage(`Applied ${result.code}: −${priceFormatter.format(result.discountInPence / 100)}`)
+      const message = `Applied ${result.code}: −${priceFormatter.format(result.discountInPence / 100)}`
+      setCouponMessage(message)
+      toast.success(message)
     })
   }
 
@@ -111,7 +114,14 @@ export default function CartPage() {
                           <button
                             aria-label="Decrease quantity"
                             className="p-2"
-                            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                            onClick={() => {
+                              if (item.quantity <= 1) {
+                                removeItem(item.productId)
+                                toast.success(`Removed “${item.name}” from cart`)
+                                return
+                              }
+                              updateQuantity(item.productId, item.quantity - 1)
+                            }}
                             type="button"
                           >
                             <Minus className="h-4 w-4" />
@@ -129,7 +139,10 @@ export default function CartPage() {
                         <button
                           aria-label={`Remove ${item.name}`}
                           className="inline-flex items-center gap-1 text-sm text-[#a83635]"
-                          onClick={() => removeItem(item.productId)}
+                          onClick={() => {
+                            removeItem(item.productId)
+                            toast.success(`Removed “${item.name}” from cart`)
+                          }}
                           type="button"
                         >
                           <Trash2 className="h-4 w-4" />

@@ -63,8 +63,14 @@ export default async function MerchantOrdersPage({
                   {order.order.orderNumber}
                 </Link>
                 <p className="text-sm text-[#514534]">
-                  {order.order.customer.name ?? order.order.customer.email} ·{' '}
-                  {order.orderItems.length} items · £{(order.subtotalInPence / 100).toFixed(2)}
+                  {order.order.customer?.name ??
+                    order.order.customer?.email ??
+                    ([order.order.guestFirstName, order.order.guestLastName]
+                      .filter(Boolean)
+                      .join(' ') ||
+                      order.order.guestEmail ||
+                      'Guest')}{' '}
+                  · {order.orderItems.length} items · £{(order.subtotalInPence / 100).toFixed(2)}
                 </p>
               </div>
               <Badge>{order.status}</Badge>

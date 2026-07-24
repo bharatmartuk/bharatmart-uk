@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import { toast } from '@bharatmart/ui'
 import { consumePendingAction } from '@/lib/pending-action'
 import { useCartStore } from '@/lib/store/cart-store'
 import { useWishlistStore } from '@/lib/store/wishlist-store'
@@ -19,10 +20,12 @@ export function PendingActionHydrator() {
 
     if (action.type === 'cart') {
       addCartItem(action.item, action.quantity ?? 1)
+      toast.success(`Added “${action.item.name}” to cart`)
       return
     }
 
     addWishlistItem(action.item)
+    toast.success(`Added “${action.item.name}” to favourites`)
   }, [addCartItem, addWishlistItem, status])
 
   return null

@@ -9,17 +9,25 @@ import { FeaturedMerchants } from '@/components/home/FeaturedMerchants'
 import { HeroCarousel } from '@/components/home/HeroCarousel'
 import { ProductSection } from '@/components/home/ProductSection'
 import { TrustStrip } from '@/components/home/TrustStrip'
+import { getCustomerLocation } from '@/lib/customer-location'
+import { getCurrentUser } from '@/auth'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomePage() {
+  const user = await getCurrentUser()
+  const location = await getCustomerLocation(user?.id)
+  const area = location.status === 'set' ? location.area ?? undefined : undefined
+
   const [banners, categories, merchants, newArrivals, featuredProducts] = await Promise.all([
     BannerService.getActiveBanners(),
     CategoryService.getTopLevelCategories(),
-    MerchantService.getFeatured(5),
-    ProductService.getNewArrivals(8),
-    ProductService.getFeatured(8),
+    MerchantService.getFeatured(5, area),
+    ProductService.getNewArrivals(8, area),
+    ProductService.getFeatured(8, area),
   ])
+
+  const areaLabel = location.status === 'set' && location.postcode ? location.postcode : null
 
   return (
     <main>
@@ -28,17 +36,32 @@ export default async function HomePage() {
       <ProductSection
         id="new-arrivals-heading"
         products={newArrivals}
-        subtitle="Fresh listings from merchants across the UK"
+        subtitle={
+          areaLabel
+            ? `Fresh listings that deliver to ${areaLabel}`
+            : 'Fresh listings from merchants across the UK'
+        }
         title="New Arrivals"
-        viewAllHref="/products?sort=newest"
+        viewAllHref={
+          area && location.postcode
+            ? `/products?sort=newest&postcode=${encodeURIComponent(location.postcode)}`
+            : '/products?sort=newest'
+        }
       />
       <ProductSection
         id="featured-products-heading"
         products={featuredProducts}
-        subtitle="Curated picks our community loves"
+        subtitle={
+          areaLabel
+            ? `Curated picks available near ${areaLabel}`
+            : 'Curated picks our community loves'
+        }
         title="Featured Products"
       />
-      <FeaturedMerchants merchants={merchants} />
+      <FeaturedMerchants
+        merchants={merchants}
+        title={areaLabel ? `Merchants near ${areaLabel}` : 'Top Rated Merchants'}
+      />
       <TrustStrip />
     </main>
   )

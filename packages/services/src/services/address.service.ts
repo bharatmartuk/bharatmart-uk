@@ -10,6 +10,7 @@ function toWriteData(input: AddressInput) {
     line1: input.line1,
     line2: input.line2?.trim() ? input.line2.trim() : null,
     city: input.city,
+    county: input.county?.trim() ? input.county.trim() : null,
     postcode: input.postcode,
     country: input.country,
     isDefault: input.isDefault,
@@ -34,6 +35,24 @@ export const AddressService = {
     return addressRepository.create({
       userId,
       ...toWriteData(parsed.data),
+    })
+  },
+
+  async createGuestAddress(input: {
+    line1: string
+    line2?: string | null | undefined
+    city: string
+    county?: string | null | undefined
+    postcode: string
+    country?: string | undefined
+  }) {
+    return addressRepository.createGuestAddress({
+      line1: input.line1,
+      line2: input.line2,
+      city: input.city,
+      county: input.county,
+      postcode: input.postcode,
+      country: input.country,
     })
   },
 

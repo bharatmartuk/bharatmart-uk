@@ -114,7 +114,7 @@ export function ProductFilters({ merchants, categories, variant = 'card' }: Prod
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#837561]" />
             <Input
-              className="pl-9"
+              className="pl-9 uppercase"
               defaultValue={searchParams.get('postcode') ?? ''}
               id="postcode"
               onBlur={(event) =>
@@ -123,9 +123,10 @@ export function ProductFilters({ merchants, categories, variant = 'card' }: Prod
                   else params.delete('postcode')
                 })
               }
-              placeholder="Enter postcode"
+              placeholder="e.g. E14 8PX"
             />
           </div>
+          <p className="text-xs text-[#837561]">Filters products to merchants serving this area</p>
         </div>
 
         <div className="space-y-3">

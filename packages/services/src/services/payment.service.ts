@@ -13,7 +13,8 @@ function getStripe() {
 export const PaymentService = {
   async createPaymentIntent(input: {
     amountInPence: number
-    customerId: string
+    customerId?: string | null
+    guestEmail?: string | null
     orderId: string
     orderNumber: string
   }) {
@@ -22,7 +23,8 @@ export const PaymentService = {
       amount: input.amountInPence,
       currency: 'gbp',
       metadata: {
-        customerId: input.customerId,
+        ...(input.customerId ? { customerId: input.customerId } : {}),
+        ...(input.guestEmail ? { guestEmail: input.guestEmail.toLowerCase() } : {}),
         orderId: input.orderId,
         orderNumber: input.orderNumber,
       },

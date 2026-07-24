@@ -20,9 +20,13 @@ function renderEmail(subject: string, bodyHtml: string) {
 }
 
 const templates = {
-  ORDER_CONFIRMATION: (orderNumber: string) => ({
+  ORDER_CONFIRMATION: (orderNumber: string, trackHint?: string) => ({
     title: `Order ${orderNumber} confirmed`,
-    body: `Thanks for shopping on BharatMart UK. Your merchants are preparing order <strong>${orderNumber}</strong>.`,
+    body: `Thanks for shopping on BharatMart UK. Your merchants are preparing order <strong>${orderNumber}</strong>.${
+      trackHint
+        ? `<p style="margin:16px 0 0">Track your order anytime with your order number and email: <a href="${trackHint}">${trackHint}</a></p>`
+        : ''
+    }`,
   }),
   MERCHANT_APPROVED: (storeName: string) => ({
     title: 'Store approved',
@@ -102,11 +106,49 @@ export const NotificationService = {
   async sendOrderConfirmation(orderId: string): Promise<void> {
     const order = await prisma.order.findUnique({
       where: { id: orderId },
-      select: { id: true, orderNumber: true, customerId: true },
+      select: {
+        id: true,
+        orderNumber: true,
+        customerId: true,
+        guestEmail: true,
+        guestFirstName: true,
+        paymentMethod: true,
+        totalInPence: true,
+      },
     })
     if (!order) return
-    const template = templates.ORDER_CONFIRMATION(order.orderNumber)
-    await this.notify(order.customerId, 'ORDER_CONFIRMATION', template)
+
+    const appUrl = (
+      process.env.NEXT_PUBLIC_WEB_APP_URL ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      process.env.NEXTAUTH_URL ||
+      process.env.AUTH_URL ||
+      ''
+    ).replace(/\/$/, '')
+    const trackUrl = appUrl ? `${appUrl}/orders/track` : undefined
+    const greeting = order.guestFirstName ? `Hi ${order.guestFirstName}, ` : ''
+    const total = `£${(order.totalInPence / 100).toFixed(2)}`
+    const paymentLabel =
+      order.paymentMethod === 'CASH_ON_DELIVERY' ? 'Cash on delivery' : 'Card'
+
+    const template = {
+      title: `Order ${order.orderNumber} confirmed`,
+      body: `${greeting}thanks for shopping on BharatMart UK.
+        <p style="margin:12px 0 0">Your order <strong>${order.orderNumber}</strong> (${total}, ${paymentLabel}) is confirmed and merchants are preparing it.</p>
+        ${
+          trackUrl
+            ? `<p style="margin:16px 0 0">Track your order with your order number and the email used at checkout: <a href="${trackUrl}">${trackUrl}</a></p>`
+            : `<p style="margin:16px 0 0">Track your order anytime with your order number and the email used at checkout.</p>`
+        }`,
+    }
+
+    if (order.customerId) {
+      await this.notify(order.customerId, 'ORDER_CONFIRMATION', template)
+      return
+    }
+    if (order.guestEmail) {
+      await this.sendEmail(order.guestEmail, template.title, template.body)
+    }
   },
 
   async notifyMerchantNewOrder(merchantId: string, orderId: string): Promise<void> {
@@ -119,16 +161,24 @@ export const NotificationService = {
   },
 
   async notifyOrderStatusChanged(input: {
-    customerId: string
+    customerId?: string | null
+    guestEmail?: string | null
     orderNumber: string
     storeName: string
     status: string
   }): Promise<void> {
-    await this.notify(
-      input.customerId,
-      'ORDER_STATUS_CHANGED',
-      templates.ORDER_STATUS_CHANGED(input.orderNumber, input.storeName, input.status),
+    const template = templates.ORDER_STATUS_CHANGED(
+      input.orderNumber,
+      input.storeName,
+      input.status,
     )
+    if (input.customerId) {
+      await this.notify(input.customerId, 'ORDER_STATUS_CHANGED', template)
+      return
+    }
+    if (input.guestEmail) {
+      await this.sendEmail(input.guestEmail, template.title, template.body)
+    }
   },
 
   async notifySupportReply(userId: string, ticketSubject: string): Promise<void> {
@@ -137,13 +187,20 @@ export const NotificationService = {
 
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
     const resend = getResend()
-    if (!resend) return
-    await resend.emails.send({
+    if (!resend) {
+      console.warn('[email] RESEND_API_KEY is not set — skipping email to', to)
+      return
+    }
+    const result = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL ?? 'BharatMart UK <onboarding@resend.dev>',
       to,
       subject,
       html: renderEmail(subject, body),
     })
+    if (result.error) {
+      console.error('[email] Resend failed for', to, result.error)
+      throw new Error(result.error.message || 'Failed to send email.')
+    }
   },
 }
 

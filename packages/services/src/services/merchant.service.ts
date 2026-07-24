@@ -16,8 +16,8 @@ export interface FeaturedMerchant {
 }
 
 export const MerchantService = {
-  async getFeatured(limit = 5): Promise<FeaturedMerchant[]> {
-    const merchants = await merchantRepository.findFeatured(limit)
+  async getFeatured(limit = 5, deliveryArea?: string): Promise<FeaturedMerchant[]> {
+    const merchants = await merchantRepository.findFeatured(limit, deliveryArea)
     return merchants.map((merchant) => ({
       id: merchant.id,
       storeName: merchant.storeName,
@@ -33,8 +33,8 @@ export const MerchantService = {
     return merchantRepository.findByVerificationStatus('PENDING')
   },
 
-  getFilterOptions() {
-    return merchantRepository.findApprovedForFilters()
+  getFilterOptions(deliveryArea?: string) {
+    return merchantRepository.findApprovedForFilters(20, deliveryArea)
   },
 
   async getApprovedCount() {

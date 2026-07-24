@@ -19,11 +19,11 @@ export function CategoriesNav({ categories }: { categories: CategorySummary[] })
     >
       <button
         aria-expanded={open}
-        className="inline-flex items-center gap-1 text-sm font-semibold text-[#514534] transition hover:text-[#7f5700]"
+        className="inline-flex items-center gap-1 whitespace-nowrap rounded-md px-2 py-1.5 text-sm font-semibold text-[#514534] transition hover:bg-[#f4ede4] hover:text-[#7f5700]"
         onClick={() => setOpen((value) => !value)}
         type="button"
       >
-        Shop by Categories
+        Categories
         <ChevronDown className={cn('h-4 w-4 transition', open && 'rotate-180')} />
       </button>
 

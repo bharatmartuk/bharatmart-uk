@@ -8,7 +8,7 @@ import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { safeInternalPath } from '@bharatmart/utils'
 import { loginSchema, type LoginInput } from '@bharatmart/validation'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@bharatmart/ui'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, toast } from '@bharatmart/ui'
 import { useGoogleAuthAvailable } from '@/hooks/use-google-auth-available'
 
 type CredentialsLoginFormProps = {
@@ -45,14 +45,16 @@ export function CredentialsLoginForm({
     })
 
     if (result?.error) {
-      if (result.code === 'rate_limited') {
-        setError('Too many login attempts. Please wait a few minutes and try again.')
-      } else {
-        setError('Invalid email or password, or this account is not allowed here.')
-      }
+      const message =
+        result.code === 'rate_limited'
+          ? 'Too many login attempts. Please wait a few minutes and try again.'
+          : 'Invalid email or password, or this account is not allowed here.'
+      setError(message)
+      toast.error(message)
       return
     }
 
+    toast.success('Signed in successfully')
     window.location.assign(safeInternalPath(callbackUrl, '/', result?.url))
   }
 
@@ -61,7 +63,9 @@ export function CredentialsLoginForm({
     try {
       await signIn('google', { callbackUrl })
     } catch {
-      setError('Google sign-in could not be started. Please try again.')
+      const message = 'Google sign-in could not be started. Please try again.'
+      setError(message)
+      toast.error(message)
     }
   }
 

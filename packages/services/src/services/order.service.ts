@@ -3,6 +3,7 @@ import 'server-only'
 import { addressRepository } from '../repositories/address.repository'
 import {
   orderRepository,
+  type PlaceGuestOrderInput,
   type PlaceOrderInput,
 } from '../repositories/order.repository'
 import { NotFoundError, ValidationError } from '../errors'
@@ -13,9 +14,66 @@ async function notifyOrderParties(order: {
   id: string
   merchantOrders: Array<{ merchantId: string }>
 }) {
-  await NotificationService.sendOrderConfirmation(order.id)
+  try {
+    await NotificationService.sendOrderConfirmation(order.id)
+  } catch (error) {
+    console.error('[orders] Failed to send order confirmation', error)
+  }
   for (const merchantOrder of order.merchantOrders) {
-    await NotificationService.notifyMerchantNewOrder(merchantOrder.merchantId, order.id)
+    try {
+      await NotificationService.notifyMerchantNewOrder(merchantOrder.merchantId, order.id)
+    } catch (error) {
+      console.error('[orders] Failed to notify merchant of new order', error)
+    }
+  }
+}
+
+async function placePendingAndPay(
+  pendingInput: PlaceOrderInput | PlaceGuestOrderInput,
+  paymentMeta: {
+    customerId?: string | null
+    guestEmail?: string | null
+  },
+) {
+  const paymentMethod = pendingInput.paymentMethod ?? 'CARD'
+  const pending = await orderRepository.createPendingOrder({
+    ...pendingInput,
+    paymentMethod,
+  })
+
+  if (paymentMethod === 'CASH_ON_DELIVERY') {
+    const finalized = await orderRepository.finalizeOrder(pending.id, {
+      paymentStatus: 'PENDING',
+    })
+    await notifyOrderParties(finalized)
+    return {
+      ...finalized,
+      clientSecret: null as string | null,
+      finalized: true as const,
+    }
+  }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return {
+      ...pending,
+      clientSecret: null as string | null,
+      finalized: false as const,
+    }
+  }
+
+  const paymentIntent = await PaymentService.createPaymentIntent({
+    amountInPence: pending.totalInPence,
+    customerId: paymentMeta.customerId ?? null,
+    guestEmail: paymentMeta.guestEmail ?? null,
+    orderId: pending.id,
+    orderNumber: pending.orderNumber,
+  })
+
+  const order = await orderRepository.attachPaymentIntent(pending.id, paymentIntent.id)
+  return {
+    ...order,
+    clientSecret: paymentIntent.client_secret,
+    finalized: false as const,
   }
 }
 
@@ -26,6 +84,18 @@ export const OrderService = {
 
   getById(orderId: string) {
     return orderRepository.findById(orderId)
+  },
+
+  getByOrderNumber(orderNumber: string) {
+    return orderRepository.findByOrderNumber(orderNumber)
+  },
+
+  trackByOrderNumberAndEmail(orderNumber: string, email: string) {
+    return orderRepository.findGuestOrderForTrack(orderNumber, email)
+  },
+
+  attachGuestOrdersToUser(userId: string, email: string) {
+    return orderRepository.attachGuestOrdersToUser(userId, email)
   },
 
   /**
@@ -42,48 +112,39 @@ export const OrderService = {
       throw new NotFoundError('Delivery address not found.')
     }
 
-    const paymentMethod = input.paymentMethod ?? 'CARD'
+    try {
+      return await placePendingAndPay(input, { customerId: input.customerId })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unable to place order.'
+      throw new ValidationError(message)
+    }
+  },
+
+  /**
+   * Guest checkout: address must already exist (created via createGuestAddress).
+   * Never requires a session user.
+   */
+  async placeGuestOrder(input: PlaceGuestOrderInput) {
+    if (!input.items.length) {
+      throw new ValidationError('Cart is empty.')
+    }
+
+    const address = await addressRepository.findById(input.addressId)
+    if (!address || address.userId != null) {
+      throw new ValidationError('Delivery address not found.')
+    }
 
     try {
-      const pending = await orderRepository.createPendingOrder({
-        ...input,
-        paymentMethod,
+      return await placePendingAndPay(input, {
+        customerId: null,
+        guestEmail: input.guest.email,
       })
-
-      if (paymentMethod === 'CASH_ON_DELIVERY') {
-        const finalized = await orderRepository.finalizeOrder(pending.id, {
-          paymentStatus: 'PENDING',
-        })
-        await notifyOrderParties(finalized)
-        return {
-          ...finalized,
-          clientSecret: null as string | null,
-          finalized: true as const,
-        }
-      }
-
-      if (!process.env.STRIPE_SECRET_KEY) {
-        return {
-          ...pending,
-          clientSecret: null as string | null,
-          finalized: false as const,
-        }
-      }
-
-      const paymentIntent = await PaymentService.createPaymentIntent({
-        amountInPence: pending.totalInPence,
-        customerId: input.customerId,
-        orderId: pending.id,
-        orderNumber: pending.orderNumber,
-      })
-
-      const order = await orderRepository.attachPaymentIntent(pending.id, paymentIntent.id)
-      return {
-        ...order,
-        clientSecret: paymentIntent.client_secret,
-        finalized: false as const,
-      }
     } catch (error) {
+      if (error instanceof ValidationError || error instanceof NotFoundError) {
+        throw error instanceof ValidationError
+          ? error
+          : new ValidationError(error.message)
+      }
       const message = error instanceof Error ? error.message : 'Unable to place order.'
       throw new ValidationError(message)
     }

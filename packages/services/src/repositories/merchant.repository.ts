@@ -11,11 +11,12 @@ export const merchantRepository = {
     return prisma.merchant.findUnique({ where: { storeSlug } })
   },
 
-  findFeatured(limit: number) {
+  findFeatured(limit: number, deliveryArea?: string) {
     return prisma.merchant.findMany({
       where: {
         verificationStatus: 'APPROVED',
-        products: { some: {} },
+        products: { some: { status: 'ACTIVE' } },
+        ...(deliveryArea ? { deliveryPostcodes: { has: deliveryArea } } : {}),
       },
       include: { _count: { select: { products: true } } },
       orderBy: [{ avgRating: 'desc' }, { createdAt: 'asc' }],
@@ -31,9 +32,12 @@ export const merchantRepository = {
     })
   },
 
-  findApprovedForFilters(limit = 20) {
+  findApprovedForFilters(limit = 20, deliveryArea?: string) {
     return prisma.merchant.findMany({
-      where: { verificationStatus: 'APPROVED' },
+      where: {
+        verificationStatus: 'APPROVED',
+        ...(deliveryArea ? { deliveryPostcodes: { has: deliveryArea } } : {}),
+      },
       select: { id: true, storeName: true, storeSlug: true },
       orderBy: { storeName: 'asc' },
       take: limit,

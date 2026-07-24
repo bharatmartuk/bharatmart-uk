@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { Pencil, Star, Trash2 } from 'lucide-react'
-import { Button } from '@bharatmart/ui'
+import { Button, toast } from '@bharatmart/ui'
 import {
   deleteAddressAction,
   setDefaultAddressAction,
@@ -27,9 +27,11 @@ export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
       const result = await setDefaultAddressAction(addressId)
       if (!result.ok) {
         setError(result.error)
+        toast.error(result.error)
         return
       }
       setEditingId(null)
+      toast.success('Default delivery address updated')
       refresh()
     })
   }
@@ -43,9 +45,11 @@ export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
       const result = await deleteAddressAction(addressId)
       if (!result.ok) {
         setError(result.error)
+        toast.error(result.error)
         return
       }
       if (editingId === addressId) setEditingId(null)
+      toast.success('Delivery address deleted')
       refresh()
     })
   }

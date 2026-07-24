@@ -21,8 +21,12 @@ export default async function MerchantOrderDetailPage({
       <div>
         <h1 className="font-heading text-3xl font-semibold">{order.order.orderNumber}</h1>
         <p className="text-sm text-[#514534]">
-          {order.order.customer.name ?? 'Customer'} · {order.order.address.line1},{' '}
-          {order.order.address.city} {order.order.address.postcode}
+          {order.order.customer?.name ??
+            order.order.customer?.email ??
+            ([order.order.guestFirstName, order.order.guestLastName].filter(Boolean).join(' ') ||
+              order.order.guestEmail ||
+              'Guest')}{' '}
+          · {order.order.address.line1}, {order.order.address.city} {order.order.address.postcode}
         </p>
       </div>
 

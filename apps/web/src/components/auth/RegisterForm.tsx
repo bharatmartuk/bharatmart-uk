@@ -7,10 +7,16 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@bharatmart/ui'
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, toast } from '@bharatmart/ui'
 import { registerCustomerAction } from '@/app/(auth)/actions'
 
-export function RegisterForm() {
+export function RegisterForm({
+  defaultEmail = '',
+  callbackUrl = '/',
+}: {
+  defaultEmail?: string
+  callbackUrl?: string
+}) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const {
@@ -19,7 +25,7 @@ export function RegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm<RegisterInput>({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: '', email: '', password: '' },
+    defaultValues: { name: '', email: defaultEmail, password: '' },
   })
 
   async function onSubmit(values: RegisterInput) {
@@ -27,6 +33,7 @@ export function RegisterForm() {
     const created = await registerCustomerAction(values)
     if (!created.ok) {
       setError(created.error)
+      toast.error(created.error)
       return
     }
 
@@ -34,25 +41,32 @@ export function RegisterForm() {
       email: values.email,
       password: values.password,
       redirect: false,
-      callbackUrl: '/',
+      callbackUrl,
     })
 
     if (result?.error) {
-      setError('Account created, but sign-in failed. Please log in.')
-      router.push('/login')
+      const message = 'Account created, but sign-in failed. Please log in.'
+      setError(message)
+      toast.message('Account created', { description: 'Please sign in to continue.' })
+      router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`)
       return
     }
 
-    router.push('/')
+    toast.success('Welcome to BharatMart', {
+      description: 'Your account is ready — happy shopping.',
+    })
+    router.push(callbackUrl || '/')
     router.refresh()
   }
 
   async function onGoogleSignUp() {
     setError(null)
     try {
-      await signIn('google', { callbackUrl: '/' })
+      await signIn('google', { callbackUrl: callbackUrl || '/' })
     } catch {
-      setError('Google sign-up could not be started. Please try again.')
+      const message = 'Google sign-up could not be started. Please try again.'
+      setError(message)
+      toast.error(message)
     }
   }
 
@@ -131,7 +145,10 @@ export function RegisterForm() {
           </Button>
           <p className="mt-4 text-center text-sm text-[#514534]">
             Already registered?{' '}
-            <Link className="font-semibold text-[#a83635] hover:underline" href="/login">
+            <Link
+              className="font-semibold text-[#a83635] hover:underline"
+              href={`/login?callbackUrl=${encodeURIComponent(callbackUrl || '/')}`}
+            >
               Sign in
             </Link>
           </p>

@@ -4,14 +4,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import type { FeaturedMerchant } from '@bharatmart/services'
 import { MerchantLogo } from '@/components/merchant/MerchantLogo'
 
-export function FeaturedMerchants({ merchants }: { merchants: FeaturedMerchant[] }) {
+export function FeaturedMerchants({
+  merchants,
+  title = 'Top Rated Merchants',
+}: {
+  merchants: FeaturedMerchant[]
+  title?: string
+}) {
   if (merchants.length === 0) return null
 
   return (
     <section aria-labelledby="merchant-heading" className="bg-[#f4ede4] py-14 md:py-16">
       <div className="mx-auto max-w-7xl px-4 md:px-8 lg:px-16">
         <h2 className="mb-8 font-heading text-2xl font-semibold md:text-center md:text-3xl" id="merchant-heading">
-          Top Rated Merchants
+          {title}
         </h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {merchants.map((merchant) => (

@@ -25,6 +25,13 @@ export default async function AdminOrderDetailPage({
   if (!order) notFound()
 
   const customer = order.order.customer
+  const guestName = [order.order.guestFirstName, order.order.guestLastName]
+    .filter(Boolean)
+    .join(' ')
+    .trim()
+  const customerName = customer?.name?.trim() || guestName || 'Guest customer'
+  const customerEmail = customer?.email ?? order.order.guestEmail ?? null
+  const customerPhone = customer?.phone ?? order.order.guestPhone ?? null
   const address = order.order.address
   const itemTotal = order.orderItems.reduce(
     (sum, item) => sum + item.priceInPenceSnapshot * item.quantity,
@@ -42,6 +49,7 @@ export default async function AdminOrderDetailPage({
             <h1 className="text-3xl font-semibold">{order.order.orderNumber}</h1>
             <p className="mt-1 text-sm text-[#514534]">
               Placed {dateFormatter.format(order.order.placedAt)}
+              {!customer ? ' · Guest checkout' : ''}
             </p>
           </div>
           <Badge className="text-sm">{order.status}</Badge>
@@ -56,13 +64,13 @@ export default async function AdminOrderDetailPage({
           <CardContent className="space-y-2 text-sm">
             <p>
               <span className="text-[#837561]">Name: </span>
-              <span className="font-medium">{customer.name?.trim() || '-'}</span>
+              <span className="font-medium">{customerName}</span>
             </p>
             <p>
               <span className="text-[#837561]">Email: </span>
-              {customer.email ? (
-                <a className="font-medium text-[#7f5700] hover:underline" href={`mailto:${customer.email}`}>
-                  {customer.email}
+              {customerEmail ? (
+                <a className="font-medium text-[#7f5700] hover:underline" href={`mailto:${customerEmail}`}>
+                  {customerEmail}
                 </a>
               ) : (
                 '-'
@@ -70,11 +78,11 @@ export default async function AdminOrderDetailPage({
             </p>
             <p>
               <span className="text-[#837561]">Phone: </span>
-              <span className="font-medium">{customer.phone ?? '-'}</span>
+              <span className="font-medium">{customerPhone ?? '-'}</span>
             </p>
             <p>
               <span className="text-[#837561]">Customer ID: </span>
-              <span className="font-mono text-xs">{customer.id}</span>
+              <span className="font-mono text-xs">{customer?.id ?? 'Guest (no account)'}</span>
             </p>
           </CardContent>
         </Card>

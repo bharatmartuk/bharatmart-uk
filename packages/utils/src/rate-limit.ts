@@ -25,6 +25,10 @@ export const RATE_LIMITS = {
   contact: { name: 'contact', limit: 3, windowMs: 10 * 60 * 1000 },
   /** Checkout / payment intent churn: 8 orders / 10 min / user. */
   checkout: { name: 'checkout', limit: 8, windowMs: 10 * 60 * 1000 },
+  /** Guest checkout: stricter — 5 orders / 10 min per email (and IP in the action). */
+  guestCheckout: { name: 'guest-checkout', limit: 5, windowMs: 10 * 60 * 1000 },
+  /** Public order track lookups: 15 / 10 min per IP+email. */
+  guestTrack: { name: 'guest-track', limit: 15, windowMs: 10 * 60 * 1000 },
   /** Coupon probing: 20 attempts / 10 min / user. */
   coupon: { name: 'coupon', limit: 20, windowMs: 10 * 60 * 1000 },
   /** Cloudinary signature minting: 60 / min / user. */

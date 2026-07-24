@@ -34,12 +34,22 @@ export function HeaderSearch({
   const router = useRouter()
   const listId = useId()
   const rootRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [query, setQuery] = useState('')
   const [open, setOpen] = useState(false)
   const [items, setItems] = useState<SuggestItem[]>([])
   const [mode, setMode] = useState<'recommendations' | 'autocomplete'>('recommendations')
   const [activeIndex, setActiveIndex] = useState(-1)
   const [pending, startTransition] = useTransition()
+
+  function openSuggestions() {
+    setOpen(true)
+    setActiveIndex(-1)
+    // Defer focus so the dropdown mounts before the input receives focus
+    window.requestAnimationFrame(() => {
+      inputRef.current?.focus()
+    })
+  }
 
   useEffect(() => {
     const controller = new AbortController()
@@ -83,12 +93,14 @@ export function HeaderSearch({
   function goToResults(value = query) {
     const trimmed = value.trim()
     setOpen(false)
+    setActiveIndex(-1)
     onNavigate?.()
     router.push(trimmed ? `/products?q=${encodeURIComponent(trimmed)}` : '/products')
   }
 
   function goToProduct(slug: string) {
     setOpen(false)
+    setActiveIndex(-1)
     onNavigate?.()
     router.push(`/products/${slug}`)
   }
@@ -96,22 +108,24 @@ export function HeaderSearch({
   return (
     <div className={cn('relative w-full', className)} ref={rootRef}>
       <form
+        className="flex items-stretch gap-0 overflow-hidden rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] focus-within:ring-2 focus-within:ring-[#e8a317]/50"
         onSubmit={(event) => {
           event.preventDefault()
-          if (activeIndex >= 0 && items[activeIndex]) {
+          // Keyboard Enter with an arrow-selected suggestion → product page
+          if (open && activeIndex >= 0 && items[activeIndex]) {
             goToProduct(items[activeIndex].slug)
             return
           }
           goToResults()
         }}
       >
-        <label className="relative block">
+        <label className="relative min-w-0 flex-1">
           <span className="sr-only">Search BharatMart</span>
-          <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#514534]" />
           <Input
+            ref={inputRef}
             autoComplete="off"
             autoFocus={autoFocus}
-            className="h-11 rounded-xl border-[#d6c4ad] bg-[#f9f3ea] pl-11 pr-10 focus-visible:ring-[#e8a317]"
+            className="h-9 border-0 bg-transparent pl-3 pr-8 text-sm shadow-none focus-visible:ring-0"
             name="q"
             onChange={(event) => {
               setQuery(event.target.value)
@@ -128,20 +142,21 @@ export function HeaderSearch({
                 setActiveIndex((index) => (index <= 0 ? items.length - 1 : index - 1))
               } else if (event.key === 'Escape') {
                 setOpen(false)
+                setActiveIndex(-1)
               }
             }}
-            placeholder="Search pickles, snacks, merchants..."
+            placeholder="Search pickles, snacks..."
             role="combobox"
             aria-autocomplete="list"
             aria-controls={listId}
             aria-expanded={open}
-            type="search"
+            type="text"
             value={query}
           />
           {query ? (
             <button
               aria-label="Clear search"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#837561] hover:bg-[#eee7de]"
+              className="absolute right-2 top-1/2 z-[1] -translate-y-1/2 rounded-full p-1 text-[#837561] hover:bg-[#eee7de]"
               onClick={() => {
                 setQuery('')
                 setOpen(true)
@@ -152,6 +167,20 @@ export function HeaderSearch({
             </button>
           ) : null}
         </label>
+        <button
+          aria-label="Open search suggestions"
+          aria-expanded={open}
+          aria-controls={listId}
+          className="relative z-[1] inline-flex h-9 w-9 shrink-0 items-center justify-center bg-[#7f5700] text-white transition hover:bg-[#604100] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8a317] focus-visible:ring-offset-1"
+          onClick={(event) => {
+            event.preventDefault()
+            // Open the recommendation/autocomplete dropdown instead of navigating away
+            openSuggestions()
+          }}
+          type="button"
+        >
+          <Search className="h-4 w-4" />
+        </button>
       </form>
 
       {open ? (

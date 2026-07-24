@@ -25,6 +25,17 @@ export const AdminOrderService = {
               { merchant: { storeName: { contains: filters.q, mode: 'insensitive' as const } } },
               { order: { customer: { name: { contains: filters.q, mode: 'insensitive' as const } } } },
               { order: { customer: { email: { contains: filters.q, mode: 'insensitive' as const } } } },
+              { order: { guestEmail: { contains: filters.q, mode: 'insensitive' as const } } },
+              {
+                order: {
+                  guestFirstName: { contains: filters.q, mode: 'insensitive' as const },
+                },
+              },
+              {
+                order: {
+                  guestLastName: { contains: filters.q, mode: 'insensitive' as const },
+                },
+              },
             ],
           }
         : {}),
@@ -44,6 +55,10 @@ export const AdminOrderService = {
               paymentStatus: true,
               paymentMethod: true,
               customer: { select: { id: true, name: true, email: true, phone: true } },
+              guestFirstName: true,
+              guestLastName: true,
+              guestEmail: true,
+              guestPhone: true,
               address: {
                 select: {
                   label: true,
@@ -111,6 +126,10 @@ export const AdminOrderService = {
                 createdAt: true,
               },
             },
+            guestFirstName: true,
+            guestLastName: true,
+            guestEmail: true,
+            guestPhone: true,
             address: {
               select: {
                 id: true,
@@ -118,6 +137,7 @@ export const AdminOrderService = {
                 line1: true,
                 line2: true,
                 city: true,
+                county: true,
                 postcode: true,
                 country: true,
               },

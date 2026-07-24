@@ -9,6 +9,13 @@ export type PlaceOrderItemInput = {
 
 export type PaymentMethodInput = 'CARD' | 'CASH_ON_DELIVERY'
 
+export type GuestContactInput = {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+}
+
 export type PlaceOrderInput = {
   customerId: string
   addressId: string
@@ -17,6 +24,16 @@ export type PlaceOrderInput = {
   deliveryFeeInPence?: number
   discountInPence?: number
   items: PlaceOrderItemInput[]
+}
+
+export type PlaceGuestOrderInput = {
+  addressId: string
+  paymentMethod?: PaymentMethodInput
+  paymentIntentId?: string | null
+  deliveryFeeInPence?: number
+  discountInPence?: number
+  items: PlaceOrderItemInput[]
+  guest: GuestContactInput
 }
 
 export const orderRepository = {
@@ -61,7 +78,7 @@ export const orderRepository = {
     })
   },
 
-  async createPendingOrder(input: PlaceOrderInput) {
+  async createPendingOrder(input: PlaceOrderInput | PlaceGuestOrderInput) {
     const products = await prisma.product.findMany({
       where: { id: { in: input.items.map((item) => item.productId) }, status: 'ACTIVE' },
     })
@@ -89,11 +106,13 @@ export const orderRepository = {
     const sequence = Math.floor(Math.random() * 900000) + 100000
     const orderNumber = `BM-${year}-${sequence}`
     const paymentMethod = input.paymentMethod ?? 'CARD'
+    const guest = 'guest' in input ? input.guest : null
+    const customerId = 'customerId' in input ? input.customerId : null
 
     return prisma.order.create({
       data: {
         orderNumber,
-        customerId: input.customerId,
+        customerId,
         addressId: input.addressId,
         totalInPence,
         deliveryFeeInPence,
@@ -101,10 +120,68 @@ export const orderRepository = {
         paymentStatus: 'PENDING',
         paymentMethod,
         checkoutSnapshot: input.items,
+        ...(guest
+          ? {
+              guestFirstName: guest.firstName,
+              guestLastName: guest.lastName,
+              guestEmail: guest.email.toLowerCase(),
+              guestPhone: guest.phone,
+            }
+          : {}),
         ...(input.paymentIntentId
           ? { stripePaymentIntentId: input.paymentIntentId }
           : {}),
       },
+    })
+  },
+
+  findByOrderNumber(orderNumber: string) {
+    return prisma.order.findUnique({
+      where: { orderNumber },
+      include: {
+        address: true,
+        customer: { select: { id: true, name: true, email: true, phone: true } },
+        merchantOrders: {
+          include: {
+            merchant: { select: { id: true, storeName: true, storeSlug: true } },
+            orderItems: true,
+          },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    })
+  },
+
+  findGuestOrderForTrack(orderNumber: string, email: string) {
+    return prisma.order.findFirst({
+      where: {
+        orderNumber,
+        OR: [
+          { guestEmail: { equals: email, mode: 'insensitive' } },
+          { customer: { email: { equals: email, mode: 'insensitive' } } },
+        ],
+      },
+      include: {
+        address: true,
+        customer: { select: { id: true, name: true, email: true, phone: true } },
+        merchantOrders: {
+          include: {
+            merchant: { select: { id: true, storeName: true, storeSlug: true } },
+            orderItems: true,
+          },
+          orderBy: { createdAt: 'asc' },
+        },
+      },
+    })
+  },
+
+  attachGuestOrdersToUser(userId: string, email: string) {
+    return prisma.order.updateMany({
+      where: {
+        customerId: null,
+        guestEmail: { equals: email, mode: 'insensitive' },
+      },
+      data: { customerId: userId },
     })
   },
 

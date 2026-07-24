@@ -6,10 +6,19 @@ import { useRouter } from 'next/navigation'
 import { CreditCard, Banknote, WalletCards } from 'lucide-react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
+import { Button, Card, CardContent, CardHeader, CardTitle, toast } from '@bharatmart/ui'
 import { useCartStore } from '@/lib/store/cart-store'
-import { placeOrder, type CheckoutPaymentMethod } from '@/app/(shop)/checkout/actions'
+import {
+  placeGuestOrder,
+  placeOrder,
+  type CheckoutPaymentMethod,
+} from '@/app/(shop)/checkout/actions'
 import { AddressForm } from '@/components/account/AddressForm'
+import { GuestCheckoutChooser } from '@/components/checkout/GuestCheckoutChooser'
+import {
+  GuestDetailsForm,
+  type GuestDetailsFormValues,
+} from '@/components/checkout/GuestDetailsForm'
 
 type AddressOption = {
   id: string
@@ -29,6 +38,7 @@ type PreparedCheckout = {
   paymentMethod: CheckoutPaymentMethod
   totalInPence: number
   finalized: boolean
+  isGuest: boolean
 }
 
 type CartLine = {
@@ -85,11 +95,15 @@ function OrderLines({ items }: { items: CartLine[] }) {
 
 function StripePayButton({
   orderId,
+  orderNumber,
+  isGuest,
   isPending,
   onError,
   onSuccess,
 }: {
   orderId: string
+  orderNumber: string
+  isGuest: boolean
   isPending: boolean
   onError: (message: string) => void
   onSuccess: () => void
@@ -104,11 +118,15 @@ function StripePayButton({
       return
     }
 
+    const returnUrl = isGuest
+      ? `${window.location.origin}/orders/confirmation/${encodeURIComponent(orderNumber)}?placed=1`
+      : `${window.location.origin}/account/orders/${orderId}?placed=1`
+
     setConfirming(true)
     const result = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${window.location.origin}/account/orders/${orderId}?placed=1`,
+        return_url: returnUrl,
       },
       redirect: 'if_required',
     })
@@ -144,12 +162,15 @@ export function CheckoutClient({
   const router = useRouter()
   const items = useCartStore((state) => state.items)
   const clearCart = useCartStore((state) => state.clearCart)
+  const [guestMode, setGuestMode] = useState(false)
+  const [guestDetails, setGuestDetails] = useState<GuestDetailsFormValues | null>(null)
   const [step, setStep] = useState(0)
   const [savedAddresses, setSavedAddresses] = useState(addresses)
   const [addressId, setAddressId] = useState(
     addresses.find((a) => a.isDefault)?.id ?? addresses[0]?.id ?? '',
   )
   const [showAddressForm, setShowAddressForm] = useState(addresses.length === 0)
+  const [editingAddressId, setEditingAddressId] = useState<string | null>(null)
   const [paymentMethod, setPaymentMethod] = useState<CheckoutPaymentMethod>('CARD')
   const [error, setError] = useState<string | null>(null)
   const [prepared, setPrepared] = useState<PreparedCheckout | null>(null)
@@ -160,22 +181,25 @@ export function CheckoutClient({
     [items],
   )
 
-  if (!isAuthenticated) {
-    return (
-      <Card className="mx-auto max-w-lg border-[#d6c4ad]">
-        <CardHeader>
-          <CardTitle>Sign in to checkout</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-sm text-[#514534]">
-            Checkout needs a saved delivery address from your customer account.
-          </p>
-          <Button asChild className="bg-[#7f5700] text-white hover:bg-[#604100]">
-            <Link href="/login?callbackUrl=/checkout">Sign in</Link>
-          </Button>
-        </CardContent>
-      </Card>
-    )
+  const isGuestCheckout = !isAuthenticated && guestMode
+
+  if (!isAuthenticated && !guestMode) {
+    if (items.length === 0) {
+      return (
+        <Card className="mx-auto max-w-lg border-[#d6c4ad]">
+          <CardHeader>
+            <CardTitle>Your cart is empty</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button asChild>
+              <Link href="/products">Browse products</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )
+    }
+
+    return <GuestCheckoutChooser onContinueAsGuest={() => setGuestMode(true)} />
   }
 
   if (items.length === 0 && !prepared) {
@@ -193,12 +217,24 @@ export function CheckoutClient({
     )
   }
 
-  function completeCheckout(orderId: string) {
+  function completeCheckout(order: PreparedCheckout) {
     clearCart()
-    router.push(`/account/orders/${orderId}?placed=1`)
+    toast.success('Order placed successfully', {
+      description: order.isGuest
+        ? 'Save your order number to track delivery.'
+        : 'You can track it anytime from My orders.',
+    })
+    if (order.isGuest) {
+      router.push(`/orders/confirmation/${encodeURIComponent(order.orderNumber)}?placed=1`)
+      return
+    }
+    router.push(`/account/orders/${order.orderId}?placed=1`)
   }
 
-  function createOrder(method: CheckoutPaymentMethod, onSuccess: (order: PreparedCheckout) => void) {
+  function createAuthOrder(
+    method: CheckoutPaymentMethod,
+    onSuccess: (order: PreparedCheckout) => void,
+  ) {
     setError(null)
     startTransition(async () => {
       const result = await placeOrder(
@@ -209,6 +245,7 @@ export function CheckoutClient({
 
       if (!result.ok) {
         setError(result.error)
+        toast.error(result.error)
         return
       }
 
@@ -220,6 +257,50 @@ export function CheckoutClient({
         paymentMethod: result.paymentMethod,
         totalInPence: result.totalInPence,
         finalized: result.finalized,
+        isGuest: false,
+      }
+      setPrepared(next)
+      onSuccess(next)
+    })
+  }
+
+  function createGuestOrder(
+    method: CheckoutPaymentMethod,
+    details: GuestDetailsFormValues,
+    onSuccess: (order: PreparedCheckout) => void,
+  ) {
+    setError(null)
+    startTransition(async () => {
+      const result = await placeGuestOrder({
+        firstName: details.firstName,
+        lastName: details.lastName,
+        email: details.email,
+        phone: details.phone,
+        line1: details.line1,
+        ...(details.line2?.trim() ? { line2: details.line2.trim() } : {}),
+        city: details.city,
+        county: details.county,
+        postcode: details.postcode,
+        country: details.country || 'GB',
+        paymentMethod: method,
+        items: items.map((item) => ({ productId: item.productId, quantity: item.quantity })),
+      })
+
+      if (!result.ok) {
+        setError(result.error)
+        toast.error(result.error)
+        return
+      }
+
+      const next: PreparedCheckout = {
+        orderId: result.orderId,
+        orderNumber: result.orderNumber,
+        clientSecret: result.clientSecret,
+        paymentIntentId: result.paymentIntentId,
+        paymentMethod: result.paymentMethod,
+        totalInPence: result.totalInPence,
+        finalized: result.finalized,
+        isGuest: true,
       }
       setPrepared(next)
       onSuccess(next)
@@ -233,12 +314,30 @@ export function CheckoutClient({
       return
     }
 
-    // Card: create PaymentIntent now so Elements can render on Review.
-    createOrder('CARD', () => setStep(2))
+    if (isGuestCheckout) {
+      if (!guestDetails) {
+        setError('Enter your delivery details first.')
+        setStep(0)
+        return
+      }
+      createGuestOrder('CARD', guestDetails, () => setStep(2))
+      return
+    }
+
+    createAuthOrder('CARD', () => setStep(2))
   }
 
   function placeCodOrder() {
-    createOrder('CASH_ON_DELIVERY', (order) => completeCheckout(order.orderId))
+    if (isGuestCheckout) {
+      if (!guestDetails) {
+        setError('Enter your delivery details first.')
+        setStep(0)
+        return
+      }
+      createGuestOrder('CASH_ON_DELIVERY', guestDetails, (order) => completeCheckout(order))
+      return
+    }
+    createAuthOrder('CASH_ON_DELIVERY', (order) => completeCheckout(order))
   }
 
   return (
@@ -264,86 +363,186 @@ export function CheckoutClient({
         {step === 0 ? (
           <Card className="border-[#d6c4ad]">
             <CardHeader>
-              <CardTitle>Delivery address</CardTitle>
+              <CardTitle>
+                {isGuestCheckout ? 'Your details & delivery' : 'Delivery address'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {savedAddresses.length === 0 ? (
-                <p className="text-sm text-[#514534]">
-                  No saved addresses yet. Add a delivery address below to continue.
-                </p>
-              ) : (
-                savedAddresses.map((address) => (
-                  <label
-                    className={`block cursor-pointer rounded-xl border p-4 ${
-                      addressId === address.id ? 'border-[#7f5700] bg-[#f9f3ea]' : 'border-[#d6c4ad]'
-                    }`}
-                    key={address.id}
-                  >
-                    <input
-                      checked={addressId === address.id}
-                      className="mr-3"
-                      name="address"
-                      onChange={() => {
-                        setAddressId(address.id)
-                        setPrepared(null)
-                      }}
-                      type="radio"
-                    />
-                    <span className="font-medium">{address.label}</span>
-                    <p className="mt-1 text-sm text-[#514534]">
-                      {address.line1}
-                      {address.line2 ? `, ${address.line2}` : ''}, {address.city},{' '}
-                      {address.postcode}
-                    </p>
-                  </label>
-                ))
-              )}
-
-              {showAddressForm ? (
-                <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-4">
-                  <h3 className="mb-4 font-semibold">Add a delivery address</h3>
-                  <AddressForm
-                    onCreated={(address) => {
-                      setSavedAddresses((current) => {
-                        const next = address.isDefault
-                          ? current.map((item) => ({ ...item, isDefault: false }))
-                          : current
-                        return [...next, address]
-                      })
-                      setAddressId(address.id)
+              {isGuestCheckout ? (
+                <>
+                  <GuestDetailsForm
+                    {...(guestDetails ? { defaultValues: guestDetails } : {})}
+                    onSubmit={(values) => {
+                      setGuestDetails(values)
                       setPrepared(null)
-                      setShowAddressForm(false)
-                      router.refresh()
+                      setStep(1)
                     }}
-                    submitLabel="Save & use this address"
+                    submitLabel="Continue to payment"
                   />
-                </div>
-              ) : null}
-
-              <div
-                className={`mt-2 flex flex-col gap-3 border-t border-[#eee7de] pt-4 sm:mt-1 sm:flex-row sm:items-center ${
-                  showAddressForm ? 'sm:justify-end' : 'sm:justify-between'
-                }`}
-              >
-                {!showAddressForm ? (
-                  <Button
-                    className="w-full border-[#d6c4ad] sm:w-auto"
-                    onClick={() => setShowAddressForm(true)}
+                  <button
+                    className="text-sm font-medium text-[#7f5700] hover:underline"
+                    onClick={() => {
+                      setGuestMode(false)
+                      setGuestDetails(null)
+                      setStep(0)
+                    }}
                     type="button"
-                    variant="outline"
                   >
-                    Add another address
-                  </Button>
-                ) : null}
-                <Button
-                  className="w-full bg-[#7f5700] text-white hover:bg-[#604100] sm:w-auto sm:min-w-[220px]"
-                  disabled={!addressId}
-                  onClick={() => setStep(1)}
-                  type="button"
-                >
-                  Continue to payment
-                </Button>
-              </div>
+                    Prefer to sign in instead?
+                  </button>
+                </>
+              ) : (
+                <>
+                  {savedAddresses.length === 0 ? (
+                    <p className="text-sm text-[#514534]">
+                      No saved addresses yet. Add a delivery address below to continue.
+                    </p>
+                  ) : (
+                    savedAddresses.map((address) => (
+                      <div
+                        className={`rounded-xl border p-4 ${
+                          addressId === address.id
+                            ? 'border-[#7f5700] bg-[#f9f3ea]'
+                            : 'border-[#d6c4ad]'
+                        }`}
+                        key={address.id}
+                      >
+                        {editingAddressId === address.id ? (
+                          <div>
+                            <h3 className="mb-4 font-semibold">Edit address</h3>
+                            <AddressForm
+                              addressId={address.id}
+                              initialValues={{
+                                label: address.label,
+                                line1: address.line1,
+                                line2: address.line2 ?? '',
+                                city: address.city,
+                                postcode: address.postcode,
+                                country: 'GB',
+                                isDefault: address.isDefault,
+                              }}
+                              mode="edit"
+                              onCancel={() => setEditingAddressId(null)}
+                              onUpdated={(updated) => {
+                                setSavedAddresses((current) =>
+                                  current.map((item) => {
+                                    if (item.id === updated.id) return updated
+                                    if (updated.isDefault) {
+                                      return { ...item, isDefault: false }
+                                    }
+                                    return item
+                                  }),
+                                )
+                                setAddressId(updated.id)
+                                setPrepared(null)
+                                setEditingAddressId(null)
+                                router.refresh()
+                              }}
+                              submitLabel="Save changes"
+                            />
+                          </div>
+                        ) : (
+                          <div className="flex items-start justify-between gap-3">
+                            <label className="min-w-0 flex-1 cursor-pointer">
+                              <input
+                                checked={addressId === address.id}
+                                className="mr-3"
+                                name="address"
+                                onChange={() => {
+                                  setAddressId(address.id)
+                                  setPrepared(null)
+                                }}
+                                type="radio"
+                              />
+                              <span className="font-medium">{address.label}</span>
+                              {address.isDefault ? (
+                                <span className="ml-2 text-xs font-medium text-[#7f5700]">
+                                  Default
+                                </span>
+                              ) : null}
+                              <p className="mt-1 text-sm text-[#514534]">
+                                {address.line1}
+                                {address.line2 ? `, ${address.line2}` : ''}, {address.city},{' '}
+                                {address.postcode}
+                              </p>
+                            </label>
+                            <Button
+                              className="shrink-0 border-[#d6c4ad] text-[#7f5700]"
+                              onClick={() => {
+                                setEditingAddressId(address.id)
+                                setAddressId(address.id)
+                                setShowAddressForm(false)
+                                setPrepared(null)
+                              }}
+                              size="sm"
+                              type="button"
+                              variant="outline"
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+
+                  {showAddressForm && !editingAddressId ? (
+                    <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-4">
+                      <h3 className="mb-4 font-semibold">Add a delivery address</h3>
+                      <AddressForm
+                        onCancel={
+                          savedAddresses.length > 0
+                            ? () => setShowAddressForm(false)
+                            : undefined
+                        }
+                        onCreated={(address) => {
+                          setSavedAddresses((current) => {
+                            const next = address.isDefault
+                              ? current.map((item) => ({ ...item, isDefault: false }))
+                              : current
+                            return [...next, address]
+                          })
+                          setAddressId(address.id)
+                          setPrepared(null)
+                          setShowAddressForm(false)
+                          router.refresh()
+                        }}
+                        submitLabel="Save & use this address"
+                      />
+                    </div>
+                  ) : null}
+
+                  <div
+                    className={`mt-2 flex flex-col gap-3 border-t border-[#eee7de] pt-4 sm:mt-1 sm:flex-row sm:items-center ${
+                      showAddressForm || editingAddressId
+                        ? 'sm:justify-end'
+                        : 'sm:justify-between'
+                    }`}
+                  >
+                    {!showAddressForm && !editingAddressId ? (
+                      <Button
+                        className="w-full border-[#d6c4ad] sm:w-auto"
+                        onClick={() => {
+                          setShowAddressForm(true)
+                          setEditingAddressId(null)
+                        }}
+                        type="button"
+                        variant="outline"
+                      >
+                        Add another address
+                      </Button>
+                    ) : null}
+                    <Button
+                      className="w-full bg-[#7f5700] text-white hover:bg-[#604100] sm:w-auto sm:min-w-[220px]"
+                      disabled={!addressId || Boolean(editingAddressId)}
+                      onClick={() => setStep(1)}
+                      type="button"
+                    >
+                      Continue to payment
+                    </Button>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         ) : null}
@@ -447,6 +646,22 @@ export function CheckoutClient({
                 ) : null}
               </div>
 
+              {isGuestCheckout && guestDetails ? (
+                <div className="rounded-lg border border-[#d6c4ad] px-3 py-2 text-sm text-[#514534]">
+                  <p className="font-medium text-[#1e1b16]">
+                    {guestDetails.firstName} {guestDetails.lastName}
+                  </p>
+                  <p>
+                    {guestDetails.line1}
+                    {guestDetails.line2 ? `, ${guestDetails.line2}` : ''}, {guestDetails.city},{' '}
+                    {guestDetails.county}, {guestDetails.postcode}
+                  </p>
+                  <p>
+                    {guestDetails.email} · {guestDetails.phone}
+                  </p>
+                </div>
+              ) : null}
+
               <OrderLines items={items} />
               {error ? <p className="text-sm text-[#a83635]">{error}</p> : null}
 
@@ -482,10 +697,15 @@ export function CheckoutClient({
                     <div className="w-full space-y-4">
                       <PaymentElement />
                       <StripePayButton
+                        isGuest={prepared.isGuest}
                         isPending={isPending}
-                        onError={setError}
-                        onSuccess={() => completeCheckout(prepared.orderId)}
+                        onError={(message) => {
+                          setError(message)
+                          toast.error(message)
+                        }}
+                        onSuccess={() => completeCheckout(prepared)}
                         orderId={prepared.orderId}
+                        orderNumber={prepared.orderNumber}
                       />
                     </div>
                   </Elements>
@@ -495,8 +715,7 @@ export function CheckoutClient({
                     disabled={isPending || !prepared}
                     onClick={() => {
                       if (!prepared) return
-                      // Dev fallback without Stripe keys - order stays PENDING.
-                      completeCheckout(prepared.orderId)
+                      completeCheckout(prepared)
                     }}
                     type="button"
                   >
@@ -526,9 +745,7 @@ export function CheckoutClient({
             <div className="flex justify-between font-semibold">
               <span>Total</span>
               <span className="text-[#a83635]">
-                {priceFormatter.format(
-                  (prepared?.totalInPence ?? subtotalInPence) / 100,
-                )}
+                {priceFormatter.format((prepared?.totalInPence ?? subtotalInPence) / 100)}
               </span>
             </div>
             <p className="pt-2 text-xs text-[#837561]">
@@ -536,6 +753,15 @@ export function CheckoutClient({
                 ? 'Card charged securely at confirmation.'
                 : 'Cash collected on delivery.'}
             </p>
+            {isGuestCheckout ? (
+              <p className="text-xs text-[#837561]">
+                Track later with your order number and email at{' '}
+                <Link className="font-medium text-[#7f5700] hover:underline" href="/orders/track">
+                  /orders/track
+                </Link>
+                .
+              </p>
+            ) : null}
           </CardContent>
         </Card>
       </aside>

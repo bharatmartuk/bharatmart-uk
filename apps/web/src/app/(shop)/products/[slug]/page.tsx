@@ -1,13 +1,13 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { MessageCircle, Star } from 'lucide-react'
-import { Badge, Button, Card, CardContent, Separator } from '@bharatmart/ui'
+import { Star } from 'lucide-react'
+import { Badge, Card, CardContent, Separator } from '@bharatmart/ui'
 import { ProductService, ReviewService } from '@bharatmart/services'
 import { AddToCartButton } from '@/components/cart/AddToCartButton'
 import { MerchantLogo } from '@/components/merchant/MerchantLogo'
+import { FavoriteButton } from '@/components/product/FavoriteButton'
 import { ProductImageGallery } from '@/components/product/ProductImageGallery'
 import { RelatedProducts } from '@/components/product/RelatedProducts'
-import { buildWhatsAppLink } from '@/lib/whatsapp'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,10 +38,16 @@ export default async function ProductDetailPage({
     .filter((item) => item.id !== product.id)
     .slice(0, 4)
 
-  const whatsappHref = buildWhatsAppLink(
-    product.merchant.user.phone,
-    `Hi ${product.merchant.storeName}, I'm interested in "${product.name}" on BharatMart UK.`,
-  )
+  const wishlistItem = {
+    productId: product.id,
+    slug: product.slug,
+    name: product.name,
+    imageUrl: product.images[0]?.url ?? null,
+    priceInPence: product.priceInPence,
+    stockQuantity: product.stockQuantity,
+    merchantId: product.merchantId,
+    merchantName: product.merchant.storeName,
+  }
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 md:px-8 lg:px-16">
@@ -65,16 +71,7 @@ export default async function ProductDetailPage({
 
       <div className="grid gap-8 lg:grid-cols-2">
         <ProductImageGallery
-          favorite={{
-            productId: product.id,
-            slug: product.slug,
-            name: product.name,
-            imageUrl: product.images[0]?.url ?? null,
-            priceInPence: product.priceInPence,
-            stockQuantity: product.stockQuantity,
-            merchantId: product.merchantId,
-            merchantName: product.merchant.storeName,
-          }}
+          favorite={wishlistItem}
           images={product.images}
           productName={product.name}
         />
@@ -83,7 +80,10 @@ export default async function ProductDetailPage({
           <div>
             <p className="text-sm text-[#837561]">
               Sold by{' '}
-              <Link className="font-medium text-[#a83635] hover:underline" href={`/products?merchantId=${product.merchantId}`}>
+              <Link
+                className="font-medium text-[#a83635] hover:underline"
+                href={`/products?merchantId=${product.merchantId}`}
+              >
                 {product.merchant.storeName}
               </Link>
             </p>
@@ -111,30 +111,10 @@ export default async function ProductDetailPage({
           <div className="flex flex-wrap gap-3">
             <AddToCartButton
               className="h-11 bg-[#2e6a39] px-6 text-white hover:bg-[#135224]"
-              item={{
-                productId: product.id,
-                slug: product.slug,
-                name: product.name,
-                imageUrl: product.images[0]?.url ?? null,
-                priceInPence: product.priceInPence,
-                stockQuantity: product.stockQuantity,
-                merchantId: product.merchantId,
-                merchantName: product.merchant.storeName,
-              }}
+              item={wishlistItem}
               showIcon
             />
-            {whatsappHref ? (
-              <Button asChild className="h-11 border-[#2e6a39] text-[#2e6a39]" variant="outline">
-                <a href={whatsappHref} rel="noreferrer" target="_blank">
-                  <MessageCircle className="mr-2 h-4 w-4" />
-                  Chat with Seller on WhatsApp
-                </a>
-              </Button>
-            ) : (
-              <Button className="h-11" disabled variant="outline">
-                Seller WhatsApp unavailable
-              </Button>
-            )}
+            <FavoriteButton item={wishlistItem} variant="labeled" />
           </div>
 
           <Card className="border-[#d6c4ad] bg-[#f9f3ea]">

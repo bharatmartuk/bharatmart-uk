@@ -7,6 +7,8 @@ export type ProductSearchFilters = {
   q?: string | undefined
   category?: string | undefined
   merchantId?: string | undefined
+  /** UK outward postcode area (e.g. E14) - match Merchant.deliveryPostcodes */
+  deliveryArea?: string | undefined
   minPrice?: number | undefined
   maxPrice?: number | undefined
   minRating?: number | undefined
@@ -73,6 +75,15 @@ function buildWhere(filters: ProductSearchFilters): Prisma.ProductWhereInput {
     and.push({ stockQuantity: { gt: 0 } })
   }
 
+  if (filters.deliveryArea) {
+    and.push({
+      merchant: {
+        verificationStatus: 'APPROVED',
+        deliveryPostcodes: { has: filters.deliveryArea },
+      },
+    })
+  }
+
   return { AND: and }
 }
 
@@ -120,27 +131,58 @@ export const productRepository = {
     })
   },
 
-  findTrending(limit: number) {
+  findTrending(limit: number, deliveryArea?: string) {
     return prisma.product.findMany({
-      where: { status: 'ACTIVE' },
+      where: {
+        status: 'ACTIVE',
+        ...(deliveryArea
+          ? {
+              merchant: {
+                verificationStatus: 'APPROVED' as const,
+                deliveryPostcodes: { has: deliveryArea },
+              },
+            }
+          : {}),
+      },
       include: productCardInclude,
       orderBy: [{ reviewCount: 'desc' }, { avgRating: 'desc' }],
       take: limit,
     })
   },
 
-  findNewArrivals(limit: number) {
+  findNewArrivals(limit: number, deliveryArea?: string) {
     return prisma.product.findMany({
-      where: { status: 'ACTIVE' },
+      where: {
+        status: 'ACTIVE',
+        ...(deliveryArea
+          ? {
+              merchant: {
+                verificationStatus: 'APPROVED' as const,
+                deliveryPostcodes: { has: deliveryArea },
+              },
+            }
+          : {}),
+      },
       include: productCardInclude,
       orderBy: { createdAt: 'desc' },
       take: limit,
     })
   },
 
-  findFeatured(limit: number) {
+  findFeatured(limit: number, deliveryArea?: string) {
     return prisma.product.findMany({
-      where: { status: 'ACTIVE', isFeatured: true },
+      where: {
+        status: 'ACTIVE',
+        isFeatured: true,
+        ...(deliveryArea
+          ? {
+              merchant: {
+                verificationStatus: 'APPROVED' as const,
+                deliveryPostcodes: { has: deliveryArea },
+              },
+            }
+          : {}),
+      },
       include: productCardInclude,
       orderBy: [{ avgRating: 'desc' }, { reviewCount: 'desc' }],
       take: limit,

@@ -1,8 +1,7 @@
 'use client'
 
 import { ShoppingBag } from 'lucide-react'
-import { Button } from '@bharatmart/ui'
-import { useRequireAuth } from '@/hooks/use-require-auth'
+import { Button, toast } from '@bharatmart/ui'
 import { useCartStore, type CartItem } from '@/lib/store/cart-store'
 
 interface AddToCartButtonProps {
@@ -12,11 +11,11 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ item, className, showIcon = false }: AddToCartButtonProps) {
-  const { requireAuth } = useRequireAuth()
   const addItem = useCartStore((state) => state.addItem)
 
   function handleClick() {
-    requireAuth({ type: 'cart', item }, () => addItem(item))
+    addItem(item)
+    toast.success(`Added “${item.name}” to cart`)
   }
 
   return (

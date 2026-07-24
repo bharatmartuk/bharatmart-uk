@@ -75,8 +75,15 @@ export default async function AdminOrdersPage({
       ) : (
         <div className="space-y-3">
           {result.items.map((order) => {
-            const customerName = order.order.customer.name?.trim() || 'Customer'
-            const customerEmail = order.order.customer.email ?? '-'
+            const guestName = [order.order.guestFirstName, order.order.guestLastName]
+              .filter(Boolean)
+              .join(' ')
+              .trim()
+            const customerName =
+              order.order.customer?.name?.trim() || guestName || 'Guest customer'
+            const customerEmail =
+              order.order.customer?.email ?? order.order.guestEmail ?? '-'
+            const customerPhone = order.order.customer?.phone ?? order.order.guestPhone
             return (
               <Card className="border-[#d6c4ad]" key={order.id}>
                 <CardContent className="flex flex-wrap items-start justify-between gap-4 p-4 text-sm">
@@ -91,7 +98,8 @@ export default async function AdminOrdersPage({
                       <span className="font-medium text-[#1e1b16]">{customerName}</span>
                       {' · '}
                       {customerEmail}
-                      {order.order.customer.phone ? ` · ${order.order.customer.phone}` : ''}
+                      {customerPhone ? ` · ${customerPhone}` : ''}
+                      {!order.order.customer ? ' · Guest' : ''}
                     </p>
                     <p className="text-[#837561]">
                       Merchant: {order.merchant.storeName} · {order.orderItems.length} item

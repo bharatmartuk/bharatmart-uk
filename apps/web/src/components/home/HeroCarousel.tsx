@@ -52,9 +52,9 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
 
   if (banners.length === 0) {
     return (
-      <section className="flex min-h-[360px] items-center bg-[#33302a] px-4 text-white md:min-h-[520px] md:px-16">
-        <div className="mx-auto w-full max-w-7xl">
-          <h1 className="max-w-xl font-heading text-4xl font-bold md:text-5xl">
+      <section className="flex min-h-[360px] items-center bg-[#33302a] pl-[2cm] pr-3 text-white md:min-h-[520px] md:pl-[2.2cm] md:pr-5 lg:pr-6">
+        <div className="w-full max-w-xl">
+          <h1 className="font-heading text-4xl font-bold md:text-5xl">
             The best of India, delivered across the UK
           </h1>
           <Button asChild className="mt-7 bg-[#e8a317] text-[#281900] hover:bg-[#ffba3e]">
@@ -102,7 +102,7 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
               unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent">
-              <div className="mx-auto flex h-full max-w-7xl items-center px-4 md:px-8 lg:px-16">
+              <div className="flex h-full items-center pl-[2cm] pr-3 md:pl-[2.2cm] md:pr-5 lg:pr-6">
                 <div className="max-w-xl text-white">
                   <h1 className="font-heading text-4xl font-bold leading-tight md:text-5xl">
                     {banner.headline}

@@ -1,12 +1,16 @@
-import { AddressService } from '@bharatmart/services'
+import { AddressService, ProductService } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 import { CheckoutClient } from '@/components/checkout/CheckoutClient'
+import { RelatedProducts } from '@/components/product/RelatedProducts'
 
 export const dynamic = 'force-dynamic'
 
 export default async function CheckoutPage() {
   const user = await getCurrentUser()
-  const addresses = user ? await AddressService.getForUser(user.id) : []
+  const [addresses, recommendedProducts] = await Promise.all([
+    user ? AddressService.getForUser(user.id) : Promise.resolve([]),
+    ProductService.getFeatured(8),
+  ])
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 md:px-8 lg:px-16">
@@ -22,6 +26,12 @@ export default async function CheckoutPage() {
           isDefault: address.isDefault,
         }))}
         isAuthenticated={Boolean(user)}
+      />
+      <RelatedProducts
+        embedded
+        products={recommendedProducts}
+        subtitle="Popular picks you can add before you place your order"
+        title="Recommended for you"
       />
     </main>
   )
