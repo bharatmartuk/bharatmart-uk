@@ -18,7 +18,7 @@ export type PlaceOrderCartItem = {
   quantity: number
 }
 
-export type CheckoutPaymentMethod = 'CARD' | 'CASH_ON_DELIVERY'
+export type CheckoutPaymentMethod = 'CARD'
 
 export type PlaceOrderState =
   | {
@@ -36,7 +36,7 @@ export type PlaceOrderState =
 
 /**
  * CARD → PENDING order + Stripe PaymentIntent (webhook finalizes).
- * CASH_ON_DELIVERY → order + MerchantOrders immediately (payment collected on delivery).
+ * Cash on delivery is not offered for UK checkout.
  */
 export async function placeOrder(
   cart: PlaceOrderCartItem[],
@@ -52,12 +52,16 @@ export async function placeOrder(
     return { ok: false, error: 'Select a delivery address.' }
   }
 
+  if (paymentMethod !== 'CARD') {
+    return { ok: false, error: 'Only card payment is available.' }
+  }
+
   try {
     await enforceRateLimit(user.id, RATE_LIMITS.checkout, 'place another order')
     const order = await OrderService.placeOrder({
       customerId: user.id,
       addressId,
-      paymentMethod,
+      paymentMethod: 'CARD',
       items: cart,
     })
 
@@ -154,9 +158,13 @@ export async function placeGuestOrder(input: PlaceGuestOrderInput): Promise<Plac
       country: parsed.data.address.country,
     })
 
+    if (parsed.data.paymentMethod !== 'CARD') {
+      return { ok: false, error: 'Only card payment is available.' }
+    }
+
     const order = await OrderService.placeGuestOrder({
       addressId: address.id,
-      paymentMethod: parsed.data.paymentMethod,
+      paymentMethod: 'CARD',
       items: parsed.data.items,
       guest: parsed.data.contact,
     })
@@ -167,7 +175,7 @@ export async function placeGuestOrder(input: PlaceGuestOrderInput): Promise<Plac
       orderNumber: order.orderNumber,
       clientSecret: order.clientSecret,
       paymentIntentId: order.stripePaymentIntentId,
-      paymentMethod: parsed.data.paymentMethod,
+      paymentMethod: 'CARD',
       totalInPence: order.totalInPence,
       finalized: order.finalized,
       isGuest: true,

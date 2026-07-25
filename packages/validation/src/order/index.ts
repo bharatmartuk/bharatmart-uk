@@ -56,7 +56,7 @@ export type GuestCheckoutAddressInput = z.infer<typeof guestCheckoutAddressSchem
 export const guestCheckoutSchema = z.object({
   contact: guestCheckoutContactSchema,
   address: guestCheckoutAddressSchema,
-  paymentMethod: z.enum(['CARD', 'CASH_ON_DELIVERY']).default('CARD'),
+  paymentMethod: z.enum(['CARD']).default('CARD'),
   items: z
     .array(
       z.object({

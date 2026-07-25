@@ -60,14 +60,18 @@ async function placePendingAndPay(
   },
 ) {
   const paymentMethod = pendingInput.paymentMethod ?? 'CARD'
+  if (paymentMethod !== 'CARD') {
+    throw new ValidationError('Only card payment is available.')
+  }
+
   const pending = await orderRepository.createPendingOrder({
     ...pendingInput,
-    paymentMethod,
+    paymentMethod: 'CARD',
   })
 
-  // Cash on delivery is collected later, and without Stripe keys a card cannot
-  // be charged online at all. Both finalize now so the order is trackable.
-  if (paymentMethod === 'CASH_ON_DELIVERY' || !process.env.STRIPE_SECRET_KEY) {
+  // Without Stripe keys a card cannot be charged online yet. Finalize now so
+  // the order stays trackable until Stripe is connected.
+  if (!process.env.STRIPE_SECRET_KEY) {
     const finalized = await orderRepository.finalizeOrder(pending.id, {
       paymentStatus: 'PENDING',
     })
@@ -146,7 +150,6 @@ export const OrderService = {
 
   /**
    * CARD: create PENDING order + Stripe PaymentIntent; webhook finalizes MerchantOrders.
-   * CASH_ON_DELIVERY: create order and immediately fan out MerchantOrders (payment still PENDING).
    */
   async placeOrder(input: PlaceOrderInput) {
     if (!input.items.length) {

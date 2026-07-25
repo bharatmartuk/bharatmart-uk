@@ -4,7 +4,7 @@ import { useMemo, useState, useTransition } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { CreditCard, Banknote, Eye, WalletCards } from 'lucide-react'
+import { CreditCard, Eye, WalletCards } from 'lucide-react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import {
@@ -76,12 +76,6 @@ const paymentOptions: Array<{
     title: 'Debit / Credit card',
     description: 'Visa, Mastercard, Amex - including Apple Pay & Google Pay when available.',
     icon: CreditCard,
-  },
-  {
-    id: 'CASH_ON_DELIVERY',
-    title: 'Cash on delivery',
-    description: 'Pay the courier in cash when your order arrives.',
-    icon: Banknote,
   },
 ]
 
@@ -405,12 +399,6 @@ export function CheckoutClient({
   }
 
   function continueFromPayment() {
-    if (paymentMethod === 'CASH_ON_DELIVERY') {
-      setPrepared(null)
-      setStep(2)
-      return
-    }
-
     if (isGuestCheckout) {
       if (!guestDetails) {
         setError('Enter your delivery details first.')
@@ -422,19 +410,6 @@ export function CheckoutClient({
     }
 
     createAuthOrder('CARD', () => setStep(2))
-  }
-
-  function placeCodOrder() {
-    if (isGuestCheckout) {
-      if (!guestDetails) {
-        setError('Enter your delivery details first.')
-        setStep(0)
-        return
-      }
-      createGuestOrder('CASH_ON_DELIVERY', guestDetails, (order) => completeCheckout(order))
-      return
-    }
-    createAuthOrder('CASH_ON_DELIVERY', (order) => completeCheckout(order))
   }
 
   return (
@@ -696,16 +671,11 @@ export function CheckoutClient({
                     Pay securely by debit or credit card. When Stripe is configured, Apple Pay and
                     Google Pay also appear automatically for supported devices.
                     {!publishableKey
-                      ? ' Stripe keys are not set yet - you can still review the flow, or choose Cash on delivery.'
+                      ? ' Stripe keys are not set yet - card checkout will be enabled once Stripe is connected.'
                       : null}
                   </p>
                 </div>
-              ) : (
-                <div className="rounded-lg bg-[#f9f3ea] p-3 text-sm text-[#514534]">
-                  Have the exact cash amount ready for the delivery partner. Your order is confirmed
-                  immediately and merchants start preparing it.
-                </div>
-              )}
+              ) : null}
 
               <div className="flex gap-3">
                 <Button onClick={() => setStep(0)} type="button" variant="outline">
@@ -731,10 +701,7 @@ export function CheckoutClient({
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="rounded-lg bg-[#f9f3ea] px-3 py-2 text-sm text-[#514534]">
-                Payment:{' '}
-                <strong>
-                  {paymentMethod === 'CARD' ? 'Debit / Credit card' : 'Cash on delivery'}
-                </strong>
+                Payment: <strong>Debit / Credit card</strong>
                 {prepared ? (
                   <>
                     {' '}
@@ -774,16 +741,7 @@ export function CheckoutClient({
                   Back
                 </Button>
 
-                {paymentMethod === 'CASH_ON_DELIVERY' ? (
-                  <Button
-                    className="bg-[#2e6a39] text-white hover:bg-[#135224]"
-                    disabled={isPending}
-                    onClick={placeCodOrder}
-                    type="button"
-                  >
-                    {isPending ? 'Placing order…' : 'Place COD order'}
-                  </Button>
-                ) : prepared?.clientSecret && stripePromise ? (
+                {prepared?.clientSecret && stripePromise ? (
                   <Elements
                     options={{
                       clientSecret: prepared.clientSecret,
@@ -846,9 +804,7 @@ export function CheckoutClient({
               </span>
             </div>
             <p className="pt-2 text-xs text-[#837561]">
-              {paymentMethod === 'CARD'
-                ? 'Card charged securely at confirmation.'
-                : 'Cash collected on delivery.'}
+              Card charged securely at confirmation.
             </p>
             {isGuestCheckout ? (
               <p className="text-xs text-[#837561]">
