@@ -145,7 +145,7 @@ export default function ContactPage() {
             Want to sell with us?{' '}
             <a
               className="font-semibold text-[#7f5700] hover:underline"
-              href={merchantAppPath('/register-business')}
+              href={merchantAppPath('/login')}
             >
               Become a merchant
             </a>

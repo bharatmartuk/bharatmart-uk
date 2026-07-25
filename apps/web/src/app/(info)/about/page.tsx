@@ -231,7 +231,7 @@ export default async function AboutPage() {
               className="border-2 border-[#e8a317] bg-transparent px-10 py-6 text-base font-semibold text-[#e8a317] hover:bg-[#e8a317]/10"
               variant="outline"
             >
-              <a href={merchantAppPath('/register-business')}>Become a Seller</a>
+              <a href={merchantAppPath('/login')}>Become a Seller</a>
             </Button>
           </div>
         </div>

@@ -54,7 +54,7 @@ export async function SiteHeader({ location }: { location?: CustomerLocation }) 
           {!user ? (
             <a
               className="ml-1 hidden h-9 items-center justify-center rounded-md bg-[#a83635] px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-[#8f2e2d] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#a83635]/40 lg:inline-flex"
-              href={merchantAppPath('/register-business')}
+              href={merchantAppPath('/login')}
             >
               Become a Seller
             </a>
