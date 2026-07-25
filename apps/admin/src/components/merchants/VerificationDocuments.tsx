@@ -1,4 +1,7 @@
-import { ExternalLink, FileText } from 'lucide-react'
+'use client'
+
+import { useState } from 'react'
+import { ExternalLink, FileText, AlertTriangle } from 'lucide-react'
 
 export type VerificationDocumentMeta = {
   label: string
@@ -78,6 +81,8 @@ function DocumentPreview({
   openUrl: string
   previewUrl: string
 }) {
+  const [failed, setFailed] = useState(false)
+
   if (kind === 'stub') {
     return (
       <div className="flex min-h-40 flex-col items-center justify-center gap-2 rounded-lg bg-[#f4ede4] px-4 text-center">
@@ -89,19 +94,42 @@ function DocumentPreview({
     )
   }
 
-  // PDFs: show first-page image preview (Cloudinary blocks public PDF URLs).
-  // Images / other: show the proxied file directly.
+  if (failed) {
+    return (
+      <div className="flex min-h-40 flex-col items-center justify-center gap-2 rounded-lg border border-[#f5c2c0] bg-[#fff5f4] px-4 text-center">
+        <AlertTriangle className="h-8 w-8 text-[#a83635]" />
+        <p className="text-sm text-[#a83635]">
+          Preview failed to load. Use Open to download the file, or ask the merchant to re-upload.
+        </p>
+        <a
+          className="text-xs font-medium text-[#7f5700] hover:underline"
+          href={openUrl}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Open document
+        </a>
+      </div>
+    )
+  }
+
   if (kind === 'pdf') {
     return (
       <div className="space-y-2">
         <img
           alt={`${label} preview`}
           className="max-h-72 w-full rounded-lg border border-[#d6c4ad] bg-white object-contain"
+          onError={() => setFailed(true)}
           src={previewUrl}
         />
         <p className="text-xs text-[#837561]">
           Preview of page 1.{' '}
-          <a className="font-medium text-[#7f5700] hover:underline" href={openUrl} target="_blank" rel="noreferrer">
+          <a
+            className="font-medium text-[#7f5700] hover:underline"
+            href={openUrl}
+            rel="noreferrer"
+            target="_blank"
+          >
             Open full PDF
           </a>
         </p>
@@ -114,6 +142,7 @@ function DocumentPreview({
       <img
         alt={label}
         className="max-h-72 w-full rounded-lg bg-white object-contain"
+        onError={() => setFailed(true)}
         src={openUrl}
       />
     )
@@ -127,6 +156,7 @@ function DocumentPreview({
     >
       <iframe
         className="h-72 w-full rounded-lg border-0 bg-white"
+        onError={() => setFailed(true)}
         src={`${openUrl}#toolbar=1&navpanes=0`}
         title={label}
       />

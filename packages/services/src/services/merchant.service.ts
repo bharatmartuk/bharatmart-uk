@@ -4,6 +4,34 @@ import { merchantOnboardingSchema, type MerchantOnboardingInput } from '@bharatm
 import { prisma } from '@bharatmart/database'
 import { merchantRepository } from '../repositories/merchant.repository'
 import { ConflictError, NotFoundError, ValidationError } from '../errors'
+import { UploadService } from './upload.service'
+
+function isPlaceholderDocumentUrl(url: string | null | undefined) {
+  if (!url?.trim()) return true
+  return url.includes('picsum.photos')
+}
+
+/** Required verification uploads that must exist before an admin can approve. */
+export function getVerificationDocumentGaps(merchant: {
+  verificationDocumentUrls: string[]
+  hasPhysicalStore: boolean
+  physicalStorePhotoUrl: string | null
+}) {
+  const gaps: string[] = []
+  const [businessDocumentUrl, idProofUrl] = merchant.verificationDocumentUrls
+
+  if (isPlaceholderDocumentUrl(businessDocumentUrl)) {
+    gaps.push('Business document')
+  }
+  if (isPlaceholderDocumentUrl(idProofUrl)) {
+    gaps.push('Owner identity proof')
+  }
+  if (merchant.hasPhysicalStore && isPlaceholderDocumentUrl(merchant.physicalStorePhotoUrl)) {
+    gaps.push('Physical store photo')
+  }
+
+  return gaps
+}
 
 export interface FeaturedMerchant {
   id: string
@@ -167,6 +195,34 @@ export const MerchantService = {
 
     const merchant = await prisma.merchant.findUnique({ where: { id: merchantId } })
     if (!merchant) throw new NotFoundError('Merchant not found.')
+
+    if (status === 'APPROVED') {
+      const gaps = getVerificationDocumentGaps(merchant)
+      if (gaps.length > 0) {
+        throw new ValidationError(
+          `Cannot approve until these documents are uploaded: ${gaps.join(', ')}.`,
+        )
+      }
+
+      // Ensure every stored file is still readable from Cloudinary before approval.
+      const urls = [
+        merchant.verificationDocumentUrls[0],
+        merchant.verificationDocumentUrls[1],
+        merchant.hasPhysicalStore ? merchant.physicalStorePhotoUrl : null,
+        merchant.foodLicenseUrl,
+      ].filter((value): value is string => Boolean(value) && !isPlaceholderDocumentUrl(value))
+
+      for (const url of urls) {
+        try {
+          const isPdf = /\.pdf($|\?|#)/i.test(url) || url.includes('/raw/upload/')
+          await UploadService.fetchStoredFile(url, { preview: isPdf })
+        } catch {
+          throw new ValidationError(
+            'One or more verification documents cannot be opened from storage. Ask the merchant to re-upload, then try again.',
+          )
+        }
+      }
+    }
 
     const updated = await prisma.merchant.update({
       where: { id: merchantId },

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { notFound } from 'next/navigation'
 import { Badge, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
-import { MerchantService } from '@bharatmart/services'
+import { getVerificationDocumentGaps, MerchantService } from '@bharatmart/services'
 import { VerificationDecisionPanel } from '@/components/merchants/VerificationDecisionPanel'
 import {
   describeVerificationDocuments,
@@ -34,6 +34,7 @@ export default async function MerchantVerificationPage({
     physicalStorePhotoUrl: merchant.physicalStorePhotoUrl,
     foodLicenseUrl: merchant.foodLicenseUrl,
   })
+  const missingDocuments = getVerificationDocumentGaps(merchant)
 
   const submittedAt = new Intl.DateTimeFormat('en-GB', {
     dateStyle: 'medium',
@@ -131,7 +132,13 @@ export default async function MerchantVerificationPage({
         </Card>
       </section>
 
-      <VerificationDecisionPanel merchantId={merchant.id} />
+      <VerificationDecisionPanel
+        canApprove={missingDocuments.length === 0}
+        documentCount={documents.length}
+        merchantId={merchant.id}
+        missingDocuments={missingDocuments}
+        verificationStatus={merchant.verificationStatus}
+      />
     </main>
   )
 }

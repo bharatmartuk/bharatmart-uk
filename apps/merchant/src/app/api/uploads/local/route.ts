@@ -57,7 +57,10 @@ export async function POST(request: Request) {
     const uploaded = await UploadService.uploadBuffer(buffer, {
       folder: 'bharatmart/merchant-documents',
       fileName: file.name,
-      resourceType: 'auto',
+      resourceType: UploadService.resourceTypeForFile({
+        fileName: file.name,
+        mimeType: file.type,
+      }),
     })
     return NextResponse.json({ url: uploaded.url, publicId: uploaded.publicId })
   } catch (error) {

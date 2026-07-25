@@ -41,6 +41,13 @@ function missingCloudinaryError() {
   )
 }
 
+function uniqueResourceTypes(
+  preferred: 'image' | 'raw' | 'video',
+): Array<'image' | 'raw' | 'video'> {
+  const types: Array<'image' | 'raw' | 'video'> = [preferred, 'image', 'raw']
+  return types.filter((value, index, all) => all.indexOf(value) === index)
+}
+
 export const UploadService = {
   isConfigured() {
     return configureCloudinary()
@@ -126,46 +133,69 @@ export const UploadService = {
       url.includes('/raw/upload/')
 
     if (cloudinaryMeta && wantsPreview && isPdf) {
-      const previewUrl = cloudinary.url(cloudinaryMeta.publicId, {
-        resource_type: cloudinaryMeta.resourceType,
-        type: 'upload',
-        format: 'jpg',
-        page: 1,
-        secure: true,
-        sign_url: true,
-        ...(cloudinaryMeta.version
-          ? { version: Number(cloudinaryMeta.version) }
-          : {}),
-      })
-      const response = await fetch(previewUrl, { redirect: 'follow' })
-      if (!response.ok) {
-        throw new Error(`Failed to generate document preview (${response.status})`)
+      const resourceTypes = uniqueResourceTypes(cloudinaryMeta.resourceType)
+
+      let lastError: Error | null = null
+      for (const resourceType of resourceTypes) {
+        try {
+          const previewUrl = cloudinary.url(cloudinaryMeta.publicId, {
+            resource_type: resourceType,
+            type: 'upload',
+            format: 'jpg',
+            page: 1,
+            secure: true,
+            sign_url: true,
+            ...(cloudinaryMeta.version
+              ? { version: Number(cloudinaryMeta.version) }
+              : {}),
+          })
+          const response = await fetch(previewUrl, { redirect: 'follow' })
+          if (!response.ok) {
+            lastError = new Error(`Failed to generate document preview (${response.status})`)
+            continue
+          }
+          return {
+            buffer: Buffer.from(await response.arrayBuffer()),
+            contentType:
+              response.headers.get('content-type')?.split(';')[0]?.trim() || 'image/jpeg',
+          }
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Preview failed')
+        }
       }
-      return {
-        buffer: Buffer.from(await response.arrayBuffer()),
-        contentType: response.headers.get('content-type')?.split(';')[0]?.trim() || 'image/jpeg',
-      }
+      throw lastError ?? new Error('Failed to generate document preview')
     }
 
     if (cloudinaryMeta && isPdf) {
-      const downloadUrl = cloudinary.utils.private_download_url(
-        cloudinaryMeta.publicId,
-        cloudinaryMeta.format || 'pdf',
-        {
-          resource_type: cloudinaryMeta.resourceType,
-          type: 'upload',
-          expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
-        },
-      )
-      const response = await fetch(downloadUrl, { redirect: 'follow' })
-      if (!response.ok) {
-        throw new Error(`Failed to download document (${response.status})`)
+      const resourceTypes = uniqueResourceTypes(cloudinaryMeta.resourceType)
+
+      let lastError: Error | null = null
+      for (const resourceType of resourceTypes) {
+        try {
+          const downloadUrl = cloudinary.utils.private_download_url(
+            cloudinaryMeta.publicId,
+            cloudinaryMeta.format || 'pdf',
+            {
+              resource_type: resourceType,
+              type: 'upload',
+              expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
+            },
+          )
+          const response = await fetch(downloadUrl, { redirect: 'follow' })
+          if (!response.ok) {
+            lastError = new Error(`Failed to download document (${response.status})`)
+            continue
+          }
+          return {
+            buffer: Buffer.from(await response.arrayBuffer()),
+            contentType:
+              response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/pdf',
+          }
+        } catch (error) {
+          lastError = error instanceof Error ? error : new Error('Download failed')
+        }
       }
-      return {
-        buffer: Buffer.from(await response.arrayBuffer()),
-        contentType:
-          response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/pdf',
-      }
+      throw lastError ?? new Error('Failed to download document')
     }
 
     const response = await fetch(url, {
@@ -173,26 +203,29 @@ export const UploadService = {
       redirect: 'follow',
     })
     if (!response.ok) {
-      // Last resort for restricted Cloudinary assets: authenticated download without assuming PDF.
+      // Last resort for restricted Cloudinary assets: authenticated download.
       if (cloudinaryMeta) {
-        const downloadUrl = cloudinary.utils.private_download_url(
-          cloudinaryMeta.publicId,
-          cloudinaryMeta.format || 'bin',
-          {
-            resource_type: cloudinaryMeta.resourceType,
-            type: 'upload',
-            expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
-          },
-        )
-        const fallback = await fetch(downloadUrl, { redirect: 'follow' })
-        if (!fallback.ok) {
-          throw new Error(`Failed to load document from storage (${response.status})`)
-        }
-        return {
-          buffer: Buffer.from(await fallback.arrayBuffer()),
-          contentType:
-            fallback.headers.get('content-type')?.split(';')[0]?.trim() ||
-            'application/octet-stream',
+        const resourceTypes = uniqueResourceTypes(cloudinaryMeta.resourceType)
+
+        for (const resourceType of resourceTypes) {
+          const downloadUrl = cloudinary.utils.private_download_url(
+            cloudinaryMeta.publicId,
+            cloudinaryMeta.format || 'bin',
+            {
+              resource_type: resourceType,
+              type: 'upload',
+              expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
+            },
+          )
+          const fallback = await fetch(downloadUrl, { redirect: 'follow' })
+          if (fallback.ok) {
+            return {
+              buffer: Buffer.from(await fallback.arrayBuffer()),
+              contentType:
+                fallback.headers.get('content-type')?.split(';')[0]?.trim() ||
+                'application/octet-stream',
+            }
+          }
         }
       }
       throw new Error(`Failed to load document from storage (${response.status})`)
@@ -203,6 +236,18 @@ export const UploadService = {
       contentType:
         response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/octet-stream',
     }
+  },
+
+  /**
+   * Choose Cloudinary resource type so PDFs stay page-renderable and images stay images.
+   */
+  resourceTypeForFile(input: { fileName?: string; mimeType?: string }): 'image' | 'raw' | 'auto' {
+    const mime = (input.mimeType || '').toLowerCase()
+    const name = (input.fileName || '').toLowerCase()
+    if (mime.startsWith('image/')) return 'image'
+    if (mime === 'application/pdf' || name.endsWith('.pdf')) return 'image'
+    if (name.match(/\.(png|jpe?g|gif|webp|avif)$/)) return 'image'
+    return 'auto'
   },
 
   async uploadImage(fileName: string, folder: UploadFolder): Promise<UploadResult> {

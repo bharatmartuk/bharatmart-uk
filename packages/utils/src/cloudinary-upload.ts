@@ -75,7 +75,11 @@ export async function uploadFileToCloudinary(
     )
   }
 
-  const resourceType = file.type.startsWith('image/') ? 'image' : 'auto'
+  const resourceType = file.type.startsWith('image/')
+    ? 'image'
+    : file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+      ? 'image'
+      : 'auto'
   const formData = new FormData()
   formData.append('file', file)
   formData.append('api_key', signed.apiKey)
