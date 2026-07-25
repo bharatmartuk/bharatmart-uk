@@ -9,11 +9,11 @@ type MerchantLogoProps = {
   sizes?: string
 }
 
-const FILL_TRANSFORMS = 'e_trim:40/c_fill,g_center,w_800,h_800,q_auto,f_auto'
+const FIT_TRANSFORMS = 'e_trim:15/c_fit,w_600,h_600,q_auto,f_auto'
 
 /**
  * Rebuild Cloudinary URLs so illustrated logos (with lots of white canvas)
- * are trimmed and hard-cropped before we zoom them into the circle.
+ * are trimmed down to their artwork before being fitted inside the circle.
  */
 function filledMerchantLogoUrl(url: string) {
   const marker = '/image/upload/'
@@ -45,7 +45,7 @@ function filledMerchantLogoUrl(url: string) {
 
   const publicId = segments.slice(i).join('/')
   if (!publicId) return url
-  return `${prefix}${FILL_TRANSFORMS}/${publicId}`
+  return `${prefix}${FIT_TRANSFORMS}/${publicId}`
 }
 
 export function MerchantLogo({
@@ -65,18 +65,17 @@ export function MerchantLogo({
       )}
     >
       {src ? (
-        <Image
-          alt={`${storeName} logo`}
-          className={cn(
-            // Illustrations ship with large white margins; zoom until art hits the rim
-            'scale-[2.55] object-cover object-center',
-            imageClassName,
-          )}
-          fill
-          sizes={sizes}
-          src={src}
-          unoptimized
-        />
+        // Inset keeps every logo clear of the circular rim, whatever its aspect ratio.
+        <div className="absolute inset-[12%]">
+          <Image
+            alt={`${storeName} logo`}
+            className={cn('object-contain object-center', imageClassName)}
+            fill
+            sizes={sizes}
+            src={src}
+            unoptimized
+          />
+        </div>
       ) : (
         <div className="flex h-full w-full items-center justify-center bg-[#f4ede4] text-base font-semibold text-[#7f5700]">
           {storeName.slice(0, 1)}

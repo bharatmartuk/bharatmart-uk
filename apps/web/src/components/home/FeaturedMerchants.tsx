@@ -24,8 +24,8 @@ export function FeaturedMerchants({
             <Card className="border-0 bg-white text-center shadow-sm" key={merchant.id}>
               <CardHeader className="items-center pb-2">
                 <MerchantLogo
-                  className="h-28 w-28 md:h-32 md:w-32"
-                  sizes="(max-width: 768px) 112px, 128px"
+                  className="h-24 w-24 md:h-24 md:w-24"
+                  sizes="96px"
                   storeLogoUrl={merchant.storeLogoUrl}
                   storeName={merchant.storeName}
                 />
