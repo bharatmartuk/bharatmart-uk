@@ -378,7 +378,6 @@ export function MerchantOnboardingForm() {
                   />
                   {values.storeLogoUrl ? (
                     <div className="flex items-center gap-3">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         alt="Store logo preview"
                         className="h-14 w-14 rounded-xl border border-[#d6c4ad] object-cover"
