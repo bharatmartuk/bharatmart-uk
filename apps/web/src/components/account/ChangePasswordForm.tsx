@@ -8,8 +8,19 @@ import { changePasswordSchema, type ChangePasswordInput } from '@bharatmart/vali
 import { Button, Input, Label, toast } from '@bharatmart/ui'
 import { changePasswordAction } from '@/app/(shop)/account/actions'
 
-export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
-  const [open, setOpen] = useState(false)
+type ChangePasswordFormProps = {
+  hasPassword: boolean
+  /** When true, render the form immediately (parent controls expand/collapse). */
+  embedded?: boolean
+  onCancel?: () => void
+}
+
+export function ChangePasswordForm({
+  hasPassword,
+  embedded = false,
+  onCancel,
+}: ChangePasswordFormProps) {
+  const [open, setOpen] = useState(embedded)
   const [success, setSuccess] = useState(false)
   const {
     register,
@@ -27,7 +38,7 @@ export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
 
   if (!hasPassword) {
     return (
-      <p className="rounded-lg bg-[#f9f3ea] px-3 py-2 text-sm text-[#514534]">
+      <p className="rounded-xl bg-[#f9f3ea] px-3 py-2 text-sm text-[#514534]">
         You signed in with Google, so there is no password to change on this account.
       </p>
     )
@@ -43,12 +54,19 @@ export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
     reset()
     setSuccess(true)
     setOpen(false)
+    onCancel?.()
     toast.success('Password updated', {
       description: 'Use your new password the next time you sign in.',
     })
   }
 
-  if (!open) {
+  function closeForm() {
+    reset()
+    setOpen(false)
+    onCancel?.()
+  }
+
+  if (!open && !embedded) {
     return (
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-sm text-[#514534]">
@@ -119,15 +137,7 @@ export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
           <KeyRound className="mr-2 h-4 w-4" aria-hidden />
           {isSubmitting ? 'Updating…' : 'Update password'}
         </Button>
-        <Button
-          disabled={isSubmitting}
-          onClick={() => {
-            reset()
-            setOpen(false)
-          }}
-          type="button"
-          variant="outline"
-        >
+        <Button disabled={isSubmitting} onClick={closeForm} type="button" variant="outline">
           Cancel
         </Button>
       </div>
