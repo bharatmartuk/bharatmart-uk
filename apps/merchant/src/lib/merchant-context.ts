@@ -7,7 +7,7 @@ export async function requireMerchant() {
   if (!user) redirect('/login')
 
   const merchant = await MerchantService.getByUserId(user.id)
-  if (!merchant) redirect('/register-business')
+  if (!merchant) redirect('/register-business?intent=continue')
   if (merchant.verificationStatus === 'PENDING') redirect('/verification-pending')
   if (merchant.verificationStatus === 'REJECTED') redirect('/verification-pending')
 

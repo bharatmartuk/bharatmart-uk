@@ -34,7 +34,7 @@ export function SellerAccountForm() {
       email: values.email,
       password: values.password,
       redirect: false,
-      callbackUrl: '/register-business',
+      callbackUrl: '/register-business?intent=continue',
     })
 
     if (result?.error) {
@@ -42,13 +42,13 @@ export function SellerAccountForm() {
       return
     }
 
-    window.location.assign('/register-business')
+    window.location.assign('/register-business?intent=continue')
   }
 
   async function onGoogleSignUp() {
     setError(null)
     try {
-      await signIn('google', { callbackUrl: '/register-business' })
+      await signIn('google', { callbackUrl: '/register-business?intent=continue' })
     } catch {
       setError('Google sign-up could not be started. Please try again.')
     }
@@ -118,7 +118,7 @@ export function SellerAccountForm() {
         Already have an account?{' '}
         <Link
           className="font-medium text-primary underline-offset-4 hover:underline"
-          href="/login?callbackUrl=/register-business"
+          href="/login?callbackUrl=%2Fregister-business%3Fintent%3Dcontinue"
         >
           Sign in
         </Link>

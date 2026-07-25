@@ -14,7 +14,7 @@ export default function ForbiddenPage() {
       </p>
       <div className="flex flex-wrap gap-3">
         <Button asChild>
-          <Link href="/register-business">Become a seller</Link>
+          <Link href="/login">Become a seller</Link>
         </Button>
         <Button
           onClick={() => void signOut({ callbackUrl: '/login' })}

@@ -38,7 +38,7 @@ export function CredentialsLoginForm({
     }
 
     if (role === 'CUSTOMER') {
-      window.location.assign('/register-business')
+      window.location.assign('/register-business?intent=continue')
       return
     }
 
@@ -81,7 +81,7 @@ export function CredentialsLoginForm({
     try {
       // Existing merchants bounce from /register-business to the dashboard;
       // new Google sellers continue into business onboarding there.
-      await signIn('google', { callbackUrl: '/register-business' })
+      await signIn('google', { callbackUrl: '/register-business?intent=continue' })
     } catch {
       setPending(false)
       setError('Google sign-in could not be started. Please try again.')
@@ -103,7 +103,7 @@ export function CredentialsLoginForm({
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <Button asChild className="flex-1" type="button">
-              <Link href="/register-business">Continue registration</Link>
+              <Link href="/register-business?intent=continue">Continue registration</Link>
             </Button>
             <Button
               className="flex-1"
@@ -190,7 +190,7 @@ export function CredentialsLoginForm({
         New seller?{' '}
         <Link
           className="font-medium text-primary underline-offset-4 hover:underline"
-          href="/register-business"
+          href="/register-business?intent=register"
         >
           Register your business
         </Link>
