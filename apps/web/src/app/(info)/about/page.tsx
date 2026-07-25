@@ -4,6 +4,8 @@ import { Button } from '@bharatmart/ui'
 import { MerchantService } from '@bharatmart/services'
 import { merchantAppPath } from '@/lib/app-urls'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata = {
   title: 'About Us',
   description:
@@ -44,12 +46,22 @@ const values = [
   },
 ] as const
 
+async function loadAboutStats() {
+  try {
+    const [merchantCount, cityCount, customerCount] = await Promise.all([
+      MerchantService.getApprovedCount(),
+      MerchantService.getServedCityCount(),
+      MerchantService.getCustomerCount(),
+    ])
+    return { merchantCount, cityCount, customerCount }
+  } catch (error) {
+    console.error('[about] Failed to load marketplace stats', error)
+    return { merchantCount: 0, cityCount: 0, customerCount: 0 }
+  }
+}
+
 export default async function AboutPage() {
-  const [merchantCount, cityCount, customerCount] = await Promise.all([
-    MerchantService.getApprovedCount(),
-    MerchantService.getServedCityCount(),
-    MerchantService.getCustomerCount(),
-  ])
+  const { merchantCount, cityCount, customerCount } = await loadAboutStats()
 
   const stats = [
     {
