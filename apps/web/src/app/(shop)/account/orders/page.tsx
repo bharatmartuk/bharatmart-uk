@@ -4,6 +4,7 @@ import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@bharat
 import { OrderService } from '@bharatmart/services'
 import { UserRole } from '@bharatmart/types'
 import { getCurrentUser } from '@/auth'
+import { ORDER_STATUS_STYLES, orderStatusLabel } from '@/lib/order-status'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,13 +12,6 @@ const priceFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
   currency: 'GBP',
 })
-
-const statusStyles: Record<string, string> = {
-  PROCESSING: 'bg-[#ffdeae] text-[#5b3d00]',
-  SHIPPED: 'bg-[#b1f2b4] text-[#0e4e21]',
-  DELIVERED: 'bg-[#2e6a39] text-white',
-  CANCELLED: 'bg-[#ffdad6] text-[#93000a]',
-}
 
 export default async function OrdersPage() {
   const user = await getCurrentUser()
@@ -59,6 +53,14 @@ export default async function OrdersPage() {
                 </Button>
               </CardHeader>
               <CardContent className="space-y-3">
+                {order.merchantOrders.length === 0 ? (
+                  <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-[#f9f3ea] px-3 py-2">
+                    <p className="text-sm text-[#514534]">
+                      Awaiting payment confirmation — open the order to see the latest.
+                    </p>
+                    <Badge className={ORDER_STATUS_STYLES.PLACED}>Order placed</Badge>
+                  </div>
+                ) : null}
                 {order.merchantOrders.map((merchantOrder) => (
                   <div
                     className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-[#f9f3ea] px-3 py-2"
@@ -72,8 +74,8 @@ export default async function OrdersPage() {
                         {priceFormatter.format(merchantOrder.subtotalInPence / 100)}
                       </p>
                     </div>
-                    <Badge className={statusStyles[merchantOrder.status] ?? ''}>
-                      {merchantOrder.status.replaceAll('_', ' ')}
+                    <Badge className={ORDER_STATUS_STYLES[merchantOrder.status] ?? ''}>
+                      {orderStatusLabel(merchantOrder.status)}
                     </Badge>
                   </div>
                 ))}

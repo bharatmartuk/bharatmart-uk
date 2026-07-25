@@ -21,6 +21,8 @@ export const RATE_LIMITS = {
   login: { name: 'login', limit: 5, windowMs: 15 * 60 * 1000 },
   /** Account spam: 3 registrations / hour / IP. */
   register: { name: 'register', limit: 3, windowMs: 60 * 60 * 1000 },
+  /** Verification email resends: 5 / hour per email+IP. */
+  emailVerify: { name: 'email-verify', limit: 5, windowMs: 60 * 60 * 1000 },
   /** Contact form abuse: 3 messages / 10 min / IP. */
   contact: { name: 'contact', limit: 3, windowMs: 10 * 60 * 1000 },
   /** Checkout / payment intent churn: 8 orders / 10 min / user. */

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import { OrderService } from '@bharatmart/services'
+import { ORDER_STATUS_STYLES, orderStatusLabel } from '@/lib/order-status'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,7 +26,7 @@ export default async function GuestOrderConfirmationPage({
   const { orderNumber: raw } = await params
   const { placed } = await searchParams
   const orderNumber = decodeURIComponent(raw)
-  const order = await OrderService.getByOrderNumber(orderNumber)
+  const order = await OrderService.getByOrderNumberWithPaymentSync(orderNumber)
   if (!order) notFound()
 
   const guestName = [order.guestFirstName, order.guestLastName].filter(Boolean).join(' ')
@@ -74,7 +75,9 @@ export default async function GuestOrderConfirmationPage({
                 <li className="rounded-xl border border-[#d6c4ad] p-4" key={mo.id}>
                   <div className="mb-2 flex items-center justify-between gap-2">
                     <span className="font-semibold">{mo.merchant.storeName}</span>
-                    <Badge>{mo.status}</Badge>
+                    <Badge className={ORDER_STATUS_STYLES[mo.status] ?? ''}>
+                      {orderStatusLabel(mo.status)}
+                    </Badge>
                   </div>
                   {mo.orderItems.map((item) => (
                     <div className="flex justify-between gap-3" key={item.id}>

@@ -44,6 +44,8 @@ export function CredentialsLoginForm({
     if (result?.error) {
       if (result.code === 'rate_limited') {
         setError('Too many login attempts. Please wait a few minutes and try again.')
+      } else if (result.code === 'email_not_verified') {
+        setError('Please verify your email before signing in. Check your inbox for the confirmation link.')
       } else {
         setError('Invalid email or password, or this account is not allowed here.')
       }
@@ -71,12 +73,6 @@ export function CredentialsLoginForm({
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
-      </div>
-
-      <div className="rounded-lg border border-dashed bg-muted/40 p-3 text-xs text-muted-foreground">
-        Demo merchant:{' '}
-        <span className="font-medium text-foreground">merchant@bharatmart.test</span> /{' '}
-        <span className="font-medium text-foreground">Password123!</span>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">

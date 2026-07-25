@@ -41,6 +41,8 @@ export function CredentialsLoginForm({
     if (result?.error) {
       if (result.code === 'rate_limited') {
         setError('Too many login attempts. Please wait a few minutes and try again.')
+      } else if (result.code === 'email_not_verified') {
+        setError('Please verify your email before signing in.')
       } else {
         setError('Invalid email or password, or this account is not allowed here.')
       }

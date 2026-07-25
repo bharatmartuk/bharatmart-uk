@@ -20,6 +20,14 @@ const dateFormatter = new Intl.DateTimeFormat('en-GB', {
   timeStyle: 'short',
 })
 
+const statusLabels: Record<string, string> = {
+  PLACED: 'Order placed',
+  PROCESSING: 'Processing',
+  SHIPPED: 'Shipped',
+  DELIVERED: 'Delivered',
+  CANCELLED: 'Cancelled',
+}
+
 export default async function AdminOrdersPage({
   searchParams,
 }: {
@@ -29,6 +37,7 @@ export default async function AdminOrdersPage({
   const result = await AdminOrderService.searchAllOrders({
     q: first(params.q),
     status: first(params.status) as
+      | 'PLACED'
       | 'PROCESSING'
       | 'SHIPPED'
       | 'DELIVERED'
@@ -58,6 +67,7 @@ export default async function AdminOrdersPage({
           name="status"
         >
           <option value="">All statuses</option>
+          <option value="PLACED">Order placed</option>
           <option value="PROCESSING">Processing</option>
           <option value="SHIPPED">Shipped</option>
           <option value="DELIVERED">Delivered</option>
@@ -112,7 +122,7 @@ export default async function AdminOrdersPage({
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2">
-                    <Badge>{order.status}</Badge>
+                    <Badge>{statusLabels[order.status] ?? order.status}</Badge>
                     <Link
                       className="text-xs font-semibold text-[#7f5700] hover:underline"
                       href={`/orders/${order.id}`}

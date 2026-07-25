@@ -189,7 +189,6 @@ export const MerchantService = {
       storeName: string
       storeDescription: string
       storeLogoUrl?: string
-      storeBannerUrl?: string
     },
   ) {
     return prisma.merchant.update({
@@ -198,7 +197,6 @@ export const MerchantService = {
         storeName: input.storeName,
         storeDescription: input.storeDescription,
         storeLogoUrl: input.storeLogoUrl || null,
-        storeBannerUrl: input.storeBannerUrl || null,
       },
     })
   },

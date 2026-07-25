@@ -19,6 +19,14 @@ function renderEmail(subject: string, bodyHtml: string) {
   </body></html>`
 }
 
+const orderStatusLabels: Record<string, string> = {
+  PLACED: 'Order placed',
+  PROCESSING: 'Processing',
+  SHIPPED: 'Shipped',
+  DELIVERED: 'Delivered',
+  CANCELLED: 'Cancelled',
+}
+
 const templates = {
   ORDER_CONFIRMATION: (orderNumber: string, trackHint?: string) => ({
     title: `Order ${orderNumber} confirmed`,
@@ -36,10 +44,13 @@ const templates = {
     title: 'Store verification rejected',
     body: `<strong>${storeName}</strong> needs updates before it can go live. Please revise your documents and resubmit.`,
   }),
-  ORDER_STATUS_CHANGED: (orderNumber: string, storeName: string, status: string) => ({
-    title: `Order ${orderNumber} is now ${status}`,
-    body: `<strong>${storeName}</strong> updated your order to <strong>${status}</strong>.`,
-  }),
+  ORDER_STATUS_CHANGED: (orderNumber: string, storeName: string, status: string) => {
+    const label = orderStatusLabels[status] ?? status
+    return {
+      title: `Order ${orderNumber} is now ${label.toLowerCase()}`,
+      body: `<strong>${storeName}</strong> updated your order to <strong>${label}</strong>.`,
+    }
+  },
   SUPPORT_REPLY: (ticketSubject: string) => ({
     title: 'New support reply',
     body: `There is a new reply on your support ticket: <strong>${ticketSubject}</strong>.`,
@@ -47,6 +58,13 @@ const templates = {
   NEW_ORDER: (orderId: string) => ({
     title: 'New order received',
     body: `Order <strong>${orderId}</strong> needs fulfilment in your merchant dashboard.`,
+  }),
+  VERIFY_EMAIL: (verifyUrl: string, name?: string) => ({
+    title: 'Confirm your email address',
+    body: `${name ? `Hi ${name}, ` : ''}welcome to BharatMart UK. Please confirm this email address so we can keep you updated about your orders.
+      <p style="margin:20px 0"><a href="${verifyUrl}" style="display:inline-block;background:#7f5700;color:#ffffff;padding:12px 20px;border-radius:8px;text-decoration:none;font-weight:600">Verify my email</a></p>
+      <p style="margin:12px 0 0;font-size:13px;color:#837561">Or paste this link into your browser:<br /><a href="${verifyUrl}">${verifyUrl}</a></p>
+      <p style="margin:12px 0 0;font-size:13px;color:#837561">This link expires in 24 hours. If you did not create an account, you can ignore this email.</p>`,
   }),
 }
 
@@ -183,6 +201,15 @@ export const NotificationService = {
 
   async notifySupportReply(userId: string, ticketSubject: string): Promise<void> {
     await this.notify(userId, 'SUPPORT_REPLY', templates.SUPPORT_REPLY(ticketSubject))
+  },
+
+  async sendEmailVerification(
+    to: string,
+    verifyUrl: string,
+    name?: string,
+  ): Promise<void> {
+    const template = templates.VERIFY_EMAIL(verifyUrl, name)
+    await this.sendEmail(to, template.title, template.body)
   },
 
   async sendEmail(to: string, subject: string, body: string): Promise<void> {

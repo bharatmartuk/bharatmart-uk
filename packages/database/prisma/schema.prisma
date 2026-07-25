@@ -42,6 +42,7 @@ enum ProductStatus {
 }
 
 enum MerchantOrderStatus {
+  PLACED
   PROCESSING
   SHIPPED
   DELIVERED
@@ -296,7 +297,7 @@ model MerchantOrder {
   id              String              @id @default(cuid())
   orderId         String
   merchantId      String
-  status          MerchantOrderStatus @default(PROCESSING)
+  status          MerchantOrderStatus @default(PLACED)
   subtotalInPence Int
   trackingNumber  String?
   courierName     String?

@@ -24,10 +24,6 @@ export default function ForbiddenPage() {
           Use a different account
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground">
-        Demo merchant login: <strong>merchant@bharatmart.test</strong> /{' '}
-        <strong>Password123!</strong>
-      </p>
     </main>
   )
 }

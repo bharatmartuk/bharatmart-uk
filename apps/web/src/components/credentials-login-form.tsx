@@ -10,6 +10,7 @@ import { safeInternalPath } from '@bharatmart/utils'
 import { loginSchema, type LoginInput } from '@bharatmart/validation'
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, toast } from '@bharatmart/ui'
 import { useGoogleAuthAvailable } from '@/hooks/use-google-auth-available'
+import { resendVerificationAction } from '@/app/(auth)/actions'
 
 type CredentialsLoginFormProps = {
   title: string
@@ -26,9 +27,12 @@ export function CredentialsLoginForm({
   const callbackUrl = searchParams.get('callbackUrl') ?? defaultRedirect
   const googleAvailable = useGoogleAuthAvailable()
   const [error, setError] = useState<string | null>(null)
+  const [needsVerification, setNeedsVerification] = useState(false)
+  const [resending, setResending] = useState(false)
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -37,6 +41,7 @@ export function CredentialsLoginForm({
 
   async function onSubmit(values: LoginInput) {
     setError(null)
+    setNeedsVerification(false)
     const result = await signIn('credentials', {
       email: values.email,
       password: values.password,
@@ -45,6 +50,14 @@ export function CredentialsLoginForm({
     })
 
     if (result?.error) {
+      if (result.code === 'email_not_verified') {
+        setNeedsVerification(true)
+        const message =
+          'Please verify your email before signing in. Check your inbox for the confirmation link.'
+        setError(message)
+        toast.error(message)
+        return
+      }
       const message =
         result.code === 'rate_limited'
           ? 'Too many login attempts. Please wait a few minutes and try again.'
@@ -56,6 +69,25 @@ export function CredentialsLoginForm({
 
     toast.success('Signed in successfully')
     window.location.assign(safeInternalPath(callbackUrl, '/', result?.url))
+  }
+
+  async function onResendVerification() {
+    const email = getValues('email')
+    if (!email) {
+      setError('Enter your email address first.')
+      return
+    }
+    setResending(true)
+    const result = await resendVerificationAction(email)
+    setResending(false)
+    if (!result.ok) {
+      setError(result.error)
+      toast.error(result.error)
+      return
+    }
+    toast.success('Verification email sent', {
+      description: 'If this account still needs verifying, a fresh link is on its way.',
+    })
   }
 
   async function onGoogleSignIn() {
@@ -96,6 +128,17 @@ export function CredentialsLoginForm({
               ) : null}
             </div>
             {error ? <p className="text-sm text-[#a83635]">{error}</p> : null}
+            {needsVerification ? (
+              <Button
+                className="w-full"
+                disabled={resending}
+                onClick={() => void onResendVerification()}
+                type="button"
+                variant="outline"
+              >
+                {resending ? 'Sending…' : 'Resend verification email'}
+              </Button>
+            ) : null}
             <Button
               className="w-full bg-[#7f5700] text-white hover:bg-[#604100]"
               disabled={isSubmitting}

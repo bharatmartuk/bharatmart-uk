@@ -24,24 +24,21 @@ export function StoreSettingsTabs({
   storeName,
   storeDescription,
   storeLogoUrl,
-  storeBannerUrl,
   deliveryPostcodes,
 }: {
   storeName: string
   storeDescription: string
   storeLogoUrl: string | null
-  storeBannerUrl: string | null
   deliveryPostcodes: string[]
 }) {
   const [pending, startTransition] = useTransition()
-  const [uploading, setUploading] = useState<'logo' | 'banner' | null>(null)
+  const [uploading, setUploading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [profile, setProfile] = useState({
     storeName,
     storeDescription,
     storeLogoUrl: storeLogoUrl ?? '',
-    storeBannerUrl: storeBannerUrl ?? '',
   })
   const [postcodes, setPostcodes] = useState(deliveryPostcodes.join(', '))
   const [payout, setPayout] = useState({
@@ -55,24 +52,18 @@ export function StoreSettingsTabs({
     emailMarketing: false,
   })
 
-  async function handleImageUpload(kind: 'logo' | 'banner', file: File) {
+  async function handleLogoUpload(file: File) {
     setError(null)
     setMessage(null)
-    setUploading(kind)
+    setUploading(true)
     try {
       const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-logos')
-      setProfile((current) =>
-        kind === 'logo'
-          ? { ...current, storeLogoUrl: uploaded.url }
-          : { ...current, storeBannerUrl: uploaded.url },
-      )
-      setMessage(
-        `${kind === 'logo' ? 'Logo' : 'Banner'} uploaded to Cloudinary. Click Save profile to keep it.`,
-      )
+      setProfile((current) => ({ ...current, storeLogoUrl: uploaded.url }))
+      setMessage('Logo uploaded to Cloudinary. Click Save profile to keep it.')
     } catch (uploadError) {
       setError(uploadError instanceof Error ? uploadError.message : 'Image upload failed.')
     } finally {
-      setUploading(null)
+      setUploading(false)
     }
   }
 
@@ -102,56 +93,31 @@ export function StoreSettingsTabs({
             value={profile.storeDescription}
           />
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label>Store logo</Label>
-            {profile.storeLogoUrl ? (
-              <img
-                alt="Store logo preview"
-                className="h-20 w-20 rounded-full border border-[#d6c4ad] object-cover"
-                src={profile.storeLogoUrl}
-              />
-            ) : null}
-            <Input
-              accept="image/png,image/jpeg,image/webp"
-              disabled={uploading !== null || pending}
-              onChange={(event) => {
-                const file = event.target.files?.[0]
-                if (file) void handleImageUpload('logo', file)
-                event.target.value = ''
-              }}
-              type="file"
+        <div className="max-w-sm space-y-2">
+          <Label>Store logo</Label>
+          {profile.storeLogoUrl ? (
+            <img
+              alt="Store logo preview"
+              className="h-20 w-20 rounded-full border border-[#d6c4ad] object-cover"
+              src={profile.storeLogoUrl}
             />
-            <p className="text-xs text-[#514534]">
-              {uploading === 'logo' ? 'Uploading logo…' : 'PNG/JPG/WebP, stored on Cloudinary'}
-            </p>
-          </div>
-          <div className="space-y-2">
-            <Label>Store banner</Label>
-            {profile.storeBannerUrl ? (
-              <img
-                alt="Store banner preview"
-                className="h-20 w-full rounded-md border border-[#d6c4ad] object-cover"
-                src={profile.storeBannerUrl}
-              />
-            ) : null}
-            <Input
-              accept="image/png,image/jpeg,image/webp"
-              disabled={uploading !== null || pending}
-              onChange={(event) => {
-                const file = event.target.files?.[0]
-                if (file) void handleImageUpload('banner', file)
-                event.target.value = ''
-              }}
-              type="file"
-            />
-            <p className="text-xs text-[#514534]">
-              {uploading === 'banner' ? 'Uploading banner…' : 'PNG/JPG/WebP, stored on Cloudinary'}
-            </p>
-          </div>
+          ) : null}
+          <Input
+            accept="image/png,image/jpeg,image/webp"
+            disabled={uploading || pending}
+            onChange={(event) => {
+              const file = event.target.files?.[0]
+              if (file) void handleLogoUpload(file)
+              event.target.value = ''
+            }}
+            type="file"
+          />
+          <p className="text-xs text-[#514534]">
+            {uploading ? 'Uploading logo…' : 'PNG/JPG/WebP, stored on Cloudinary'}
+          </p>
         </div>
         <Button
-          disabled={pending || uploading !== null}
+          disabled={pending || uploading}
           onClick={() =>
             startTransition(async () => {
               setError(null)

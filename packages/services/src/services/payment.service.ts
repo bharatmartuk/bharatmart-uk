@@ -32,6 +32,11 @@ export const PaymentService = {
     })
   },
 
+  getPaymentIntent(paymentIntentId: string) {
+    const stripe = getStripe()
+    return stripe.paymentIntents.retrieve(paymentIntentId)
+  },
+
   constructWebhookEvent(rawBody: string, signature: string) {
     const stripe = getStripe()
     const secret = process.env.STRIPE_WEBHOOK_SECRET

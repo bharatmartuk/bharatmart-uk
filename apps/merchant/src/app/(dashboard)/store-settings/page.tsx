@@ -14,7 +14,6 @@ export default async function StoreSettingsPage() {
       </div>
       <StoreSettingsTabs
         deliveryPostcodes={merchant.deliveryPostcodes}
-        storeBannerUrl={merchant.storeBannerUrl}
         storeDescription={merchant.storeDescription ?? ''}
         storeLogoUrl={merchant.storeLogoUrl}
         storeName={merchant.storeName}

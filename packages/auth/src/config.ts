@@ -20,6 +20,10 @@ class LoginRateLimitedError extends CredentialsSignin {
   override code = 'rate_limited'
 }
 
+class EmailNotVerifiedError extends CredentialsSignin {
+  override code = 'email_not_verified'
+}
+
 function isUserRole(value: unknown): value is UserRoleType {
   return (
     value === UserRole.CUSTOMER || value === UserRole.MERCHANT || value === UserRole.ADMIN
@@ -107,6 +111,12 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
         const passwordMatches = await bcrypt.compare(password, user.passwordHash)
         if (!passwordMatches) {
           return null
+        }
+
+        // Password accounts must confirm their email before signing in.
+        // Google OAuth sets emailVerified itself, so those users are fine.
+        if (!user.emailVerified) {
+          throw new EmailNotVerifiedError('Please verify your email before signing in.')
         }
 
         if (!isUserRole(user.role) || !allowedRoles.includes(user.role)) {

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Badge, Card, CardContent } from '@bharatmart/ui'
 import { MerchantOrderService } from '@bharatmart/services'
 import { requireMerchant } from '@/lib/merchant-context'
+import { orderStatusLabel, type MerchantOrderStatus } from '@/lib/order-status'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,12 +19,7 @@ export default async function MerchantOrdersPage({
 }) {
   const params = await searchParams
   const { merchant } = await requireMerchant()
-  const status = first(params.status) as
-    | 'PROCESSING'
-    | 'SHIPPED'
-    | 'DELIVERED'
-    | 'CANCELLED'
-    | undefined
+  const status = first(params.status) as MerchantOrderStatus | undefined
 
   const orders = await MerchantOrderService.getForMerchant(
     merchant.id,
@@ -44,6 +40,7 @@ export default async function MerchantOrdersPage({
           name="status"
         >
           <option value="">All statuses</option>
+          <option value="PLACED">Order placed</option>
           <option value="PROCESSING">Processing</option>
           <option value="SHIPPED">Shipped</option>
           <option value="DELIVERED">Delivered</option>
@@ -73,7 +70,7 @@ export default async function MerchantOrdersPage({
                   · {order.orderItems.length} items · £{(order.subtotalInPence / 100).toFixed(2)}
                 </p>
               </div>
-              <Badge>{order.status}</Badge>
+              <Badge>{orderStatusLabel(order.status)}</Badge>
             </CardContent>
           </Card>
         ))}

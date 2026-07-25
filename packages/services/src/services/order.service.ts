@@ -28,6 +28,30 @@ async function notifyOrderParties(order: {
   }
 }
 
+/**
+ * Card orders are normally finalized by the Stripe webhook. When that never
+ * lands (no endpoint configured, local dev, delivery failure) the order stays
+ * PENDING with no MerchantOrders and is untrackable, so we ask Stripe directly
+ * and finalize here. Safe to call repeatedly — finalizeOrder is idempotent.
+ */
+async function finalizeIfStripePaid(order: {
+  stripePaymentIntentId: string | null
+  merchantOrders: unknown[]
+}) {
+  if (order.merchantOrders.length > 0) return false
+  if (!order.stripePaymentIntentId) return false
+
+  try {
+    const intent = await PaymentService.getPaymentIntent(order.stripePaymentIntentId)
+    if (intent.status !== 'succeeded') return false
+    await OrderService.finalizeFromPaymentIntent(order.stripePaymentIntentId)
+    return true
+  } catch (error) {
+    console.error('[orders] Card payment sync failed', error)
+    return false
+  }
+}
+
 async function placePendingAndPay(
   pendingInput: PlaceOrderInput | PlaceGuestOrderInput,
   paymentMeta: {
@@ -41,7 +65,9 @@ async function placePendingAndPay(
     paymentMethod,
   })
 
-  if (paymentMethod === 'CASH_ON_DELIVERY') {
+  // Cash on delivery is collected later, and without Stripe keys a card cannot
+  // be charged online at all. Both finalize now so the order is trackable.
+  if (paymentMethod === 'CASH_ON_DELIVERY' || !process.env.STRIPE_SECRET_KEY) {
     const finalized = await orderRepository.finalizeOrder(pending.id, {
       paymentStatus: 'PENDING',
     })
@@ -50,14 +76,6 @@ async function placePendingAndPay(
       ...finalized,
       clientSecret: null as string | null,
       finalized: true as const,
-    }
-  }
-
-  if (!process.env.STRIPE_SECRET_KEY) {
-    return {
-      ...pending,
-      clientSecret: null as string | null,
-      finalized: false as const,
     }
   }
 
@@ -90,8 +108,36 @@ export const OrderService = {
     return orderRepository.findByOrderNumber(orderNumber)
   },
 
-  trackByOrderNumberAndEmail(orderNumber: string, email: string) {
-    return orderRepository.findGuestOrderForTrack(orderNumber, email)
+  async trackByOrderNumberAndEmail(orderNumber: string, email: string) {
+    const order = await orderRepository.findGuestOrderForTrack(orderNumber, email)
+    if (!order) return null
+    const finalized = await finalizeIfStripePaid(order)
+    return finalized
+      ? orderRepository.findGuestOrderForTrack(orderNumber, email)
+      : order
+  },
+
+  /** Loads an order, finalizing it first if Stripe already took the payment. */
+  async getByIdWithPaymentSync(orderId: string) {
+    const order = await orderRepository.findById(orderId)
+    if (!order) return null
+    const finalized = await finalizeIfStripePaid(order)
+    return finalized ? orderRepository.findById(orderId) : order
+  },
+
+  /** Same as getByIdWithPaymentSync but keyed on the public order number. */
+  async getByOrderNumberWithPaymentSync(orderNumber: string) {
+    const order = await orderRepository.findByOrderNumber(orderNumber)
+    if (!order) return null
+    const finalized = await finalizeIfStripePaid(order)
+    return finalized ? orderRepository.findByOrderNumber(orderNumber) : order
+  },
+
+  /** Called right after a client-side Stripe confirmation succeeds. */
+  async syncCardPayment(orderId: string) {
+    const order = await orderRepository.findById(orderId)
+    if (!order) return false
+    return finalizeIfStripePaid(order)
   },
 
   attachGuestOrdersToUser(userId: string, email: string) {

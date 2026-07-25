@@ -9,7 +9,7 @@ import { prisma } from '@bharatmart/database'
 export const AdminOrderService = {
   searchAllOrders(filters?: {
     q?: string | undefined
-    status?: 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | undefined
+    status?: 'PLACED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED' | undefined
     page?: number | undefined
     pageSize?: number | undefined
   }) {

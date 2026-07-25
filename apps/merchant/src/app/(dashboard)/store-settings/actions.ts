@@ -8,10 +8,13 @@ export async function saveStoreProfileAction(input: {
   storeName: string
   storeDescription: string
   storeLogoUrl?: string
-  storeBannerUrl?: string
 }) {
   const { merchant } = await requireMerchant()
-  await MerchantService.updateStoreProfile(merchant.id, input)
+  await MerchantService.updateStoreProfile(merchant.id, {
+    storeName: input.storeName,
+    storeDescription: input.storeDescription,
+    ...(input.storeLogoUrl !== undefined ? { storeLogoUrl: input.storeLogoUrl } : {}),
+  })
   revalidatePath('/store-settings')
   return { ok: true as const }
 }

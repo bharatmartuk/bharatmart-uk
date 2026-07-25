@@ -263,7 +263,7 @@ export const orderRepository = {
             data: {
               orderId: existing.id,
               merchantId,
-              status: 'PROCESSING',
+              status: 'PLACED',
               subtotalInPence: orderItems.reduce(
                 (sum, line) => sum + line.priceInPenceSnapshot * line.quantity,
                 0,

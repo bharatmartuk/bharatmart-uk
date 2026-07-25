@@ -8,7 +8,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
 import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, toast } from '@bharatmart/ui'
-import { registerCustomerAction } from '@/app/(auth)/actions'
+import { registerCustomerAction, resendVerificationAction } from '@/app/(auth)/actions'
 
 export function RegisterForm({
   defaultEmail = '',
@@ -19,6 +19,8 @@ export function RegisterForm({
 }) {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null)
+  const [resending, setResending] = useState(false)
   const {
     register,
     handleSubmit,
@@ -37,26 +39,26 @@ export function RegisterForm({
       return
     }
 
-    const result = await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-      callbackUrl,
+    toast.success('Check your inbox', {
+      description: 'We sent a verification link to confirm your email.',
     })
+    setPendingEmail(created.email)
+  }
 
-    if (result?.error) {
-      const message = 'Account created, but sign-in failed. Please log in.'
-      setError(message)
-      toast.message('Account created', { description: 'Please sign in to continue.' })
-      router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`)
+  async function onResend() {
+    if (!pendingEmail) return
+    setResending(true)
+    setError(null)
+    const result = await resendVerificationAction(pendingEmail)
+    setResending(false)
+    if (!result.ok) {
+      setError(result.error)
+      toast.error(result.error)
       return
     }
-
-    toast.success('Welcome to BharatMart', {
-      description: 'Your account is ready — happy shopping.',
+    toast.success('Verification email sent', {
+      description: 'If an account needs verifying, a fresh link is on its way.',
     })
-    router.push(callbackUrl || '/')
-    router.refresh()
   }
 
   async function onGoogleSignUp() {
@@ -70,13 +72,57 @@ export function RegisterForm({
     }
   }
 
+  if (pendingEmail) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-16">
+        <Card className="border-[#d6c4ad] bg-[#fff8f0] shadow-sm">
+          <CardHeader>
+            <CardTitle className="font-heading text-2xl text-[#7f5700]">
+              Verify your email
+            </CardTitle>
+            <p className="text-sm text-[#514534]">
+              We sent a confirmation link to <strong>{pendingEmail}</strong>. Open it to activate
+              your account, then sign in.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="rounded-lg bg-[#f9f3ea] px-3 py-2 text-sm text-[#514534]">
+              Didn&apos;t get it? Check spam, or request a new link below. Links expire after 24
+              hours.
+            </p>
+            {error ? <p className="text-sm text-[#a83635]">{error}</p> : null}
+            <Button
+              className="w-full bg-[#7f5700] text-white hover:bg-[#604100]"
+              disabled={resending}
+              onClick={() => void onResend()}
+              type="button"
+            >
+              {resending ? 'Sending…' : 'Resend verification email'}
+            </Button>
+            <Button
+              className="w-full"
+              onClick={() =>
+                router.push(`/login?callbackUrl=${encodeURIComponent(callbackUrl || '/')}`)
+              }
+              type="button"
+              variant="outline"
+            >
+              Go to sign in
+            </Button>
+          </CardContent>
+        </Card>
+      </main>
+    )
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-16">
       <Card className="border-[#d6c4ad] bg-[#fff8f0] shadow-sm">
         <CardHeader>
           <CardTitle className="font-heading text-2xl text-[#7f5700]">Create your account</CardTitle>
           <p className="text-sm text-[#514534]">
-            Join BharatMart UK to save addresses, track orders, and checkout faster.
+            Join BharatMart UK to save addresses, track orders, and checkout faster. We&apos;ll ask
+            you to confirm your email so order updates reach the right inbox.
           </p>
         </CardHeader>
         <CardContent>

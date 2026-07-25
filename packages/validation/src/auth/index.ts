@@ -14,3 +14,15 @@ export const loginSchema = z.object({
 })
 
 export type LoginInput = z.infer<typeof loginSchema>
+
+export const resendVerificationSchema = z.object({
+  email: z.string().email(),
+})
+
+export type ResendVerificationInput = z.infer<typeof resendVerificationSchema>
+
+export const verifyEmailSchema = z.object({
+  token: z.string().min(10),
+})
+
+export type VerifyEmailInput = z.infer<typeof verifyEmailSchema>

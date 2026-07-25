@@ -4,14 +4,19 @@ import { prisma } from '@bharatmart/database'
 import { NotFoundError, ValidationError } from '../errors'
 import { NotificationService } from './notification.service'
 
-type MerchantOrderStatus = 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
+type MerchantOrderStatus = 'PLACED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
 
+/** New orders start at PLACED; merchants move them forward from there. */
 const transitions: Record<MerchantOrderStatus, MerchantOrderStatus[]> = {
+  PLACED: ['PROCESSING', 'CANCELLED'],
   PROCESSING: ['SHIPPED', 'CANCELLED'],
   SHIPPED: ['DELIVERED', 'CANCELLED'],
   DELIVERED: [],
   CANCELLED: [],
 }
+
+/** Orders still needing merchant action. */
+const OPEN_STATUSES = ['PLACED', 'PROCESSING'] as const
 
 export const MerchantOrderService = {
   async getTodayStats(merchantId: string) {
@@ -31,7 +36,7 @@ export const MerchantOrderService = {
         _sum: { subtotalInPence: true },
       }),
       prisma.merchantOrder.count({
-        where: { merchantId, status: 'PROCESSING' },
+        where: { merchantId, status: { in: [...OPEN_STATUSES] } },
       }),
     ])
 
@@ -76,7 +81,7 @@ export const MerchantOrderService = {
 
   getPendingOrders(merchantId: string) {
     return prisma.merchantOrder.findMany({
-      where: { merchantId, status: 'PROCESSING' },
+      where: { merchantId, status: { in: [...OPEN_STATUSES] } },
       include: {
         order: {
           select: {

@@ -6,7 +6,7 @@ import { requireMerchant } from '@/lib/merchant-context'
 
 export async function updateOrderStatusAction(
   merchantOrderId: string,
-  newStatus: 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED',
+  newStatus: 'PLACED' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED',
   trackingInfo?: { trackingNumber?: string; courierName?: string },
 ) {
   const { merchant } = await requireMerchant()

@@ -7,6 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { guestOrderTrackSchema, type GuestOrderTrackInput } from '@bharatmart/validation'
 import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@bharatmart/ui'
 import { trackGuestOrderAction, type TrackOrderState } from '@/app/(shop)/orders/actions'
+import { ORDER_STATUS_STYLES, orderStatusLabel } from '@/lib/order-status'
 
 const priceFormatter = new Intl.NumberFormat('en-GB', {
   style: 'currency',
@@ -109,7 +110,9 @@ export function TrackOrderClient() {
                 <div className="rounded-xl border border-[#d6c4ad] p-4" key={mo.id}>
                   <div className="mb-3 flex items-center justify-between gap-2">
                     <p className="font-semibold">{mo.storeName}</p>
-                    <Badge>{mo.status}</Badge>
+                    <Badge className={ORDER_STATUS_STYLES[mo.status] ?? ''}>
+                      {orderStatusLabel(mo.status)}
+                    </Badge>
                   </div>
                   {mo.trackingNumber ? (
                     <p className="mb-2 text-[#514534]">

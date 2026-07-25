@@ -3,6 +3,11 @@
 import { useState, useTransition } from 'react'
 import { Button, Input, Label } from '@bharatmart/ui'
 import { updateOrderStatusAction } from '@/app/(dashboard)/orders/actions'
+import {
+  NEXT_ORDER_STATUSES,
+  orderStatusLabel,
+  type MerchantOrderStatus,
+} from '@/lib/order-status'
 
 export function OrderStatusForm({
   merchantOrderId,
@@ -11,7 +16,12 @@ export function OrderStatusForm({
   merchantOrderId: string
   currentStatus: string
 }) {
-  const [status, setStatus] = useState(currentStatus)
+  const options = NEXT_ORDER_STATUSES[currentStatus as MerchantOrderStatus] ?? []
+  const [status, setStatus] = useState(options[0] ?? currentStatus)
+  // Keep the selection valid after the order advances and the page revalidates.
+  const selected = options.includes(status as MerchantOrderStatus)
+    ? (status as MerchantOrderStatus)
+    : (options[0] ?? (currentStatus as MerchantOrderStatus))
   const [trackingNumber, setTrackingNumber] = useState('')
   const [courierName, setCourierName] = useState('')
   const [message, setMessage] = useState<string | null>(null)
@@ -21,16 +31,22 @@ export function OrderStatusForm({
     <div className="space-y-3 rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4">
       <div className="space-y-2">
         <Label>Update status</Label>
-        <select
-          className="flex h-9 w-full rounded-md border border-input bg-white px-3 text-sm"
-          onChange={(event) => setStatus(event.target.value)}
-          value={status}
-        >
-          <option value="PROCESSING">Processing</option>
-          <option value="SHIPPED">Shipped</option>
-          <option value="DELIVERED">Delivered</option>
-          <option value="CANCELLED">Cancelled</option>
-        </select>
+        <p className="text-xs text-[#837561]">Current: {orderStatusLabel(currentStatus)}</p>
+        {options.length === 0 ? (
+          <p className="text-sm text-[#514534]">This order is closed and cannot be updated.</p>
+        ) : (
+          <select
+            className="flex h-9 w-full rounded-md border border-input bg-white px-3 text-sm"
+            onChange={(event) => setStatus(event.target.value as MerchantOrderStatus)}
+            value={selected}
+          >
+            {options.map((option) => (
+              <option key={option} value={option}>
+                {orderStatusLabel(option)}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
       <div className="grid gap-3 md:grid-cols-2">
         <div className="space-y-2">
@@ -44,12 +60,12 @@ export function OrderStatusForm({
       </div>
       <Button
         className="bg-[#7f5700] text-white hover:bg-[#604100]"
-        disabled={pending}
+        disabled={pending || options.length === 0}
         onClick={() =>
           startTransition(async () => {
             const result = await updateOrderStatusAction(
               merchantOrderId,
-              status as 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED',
+              selected,
               {
                 ...(trackingNumber ? { trackingNumber } : {}),
                 ...(courierName ? { courierName } : {}),

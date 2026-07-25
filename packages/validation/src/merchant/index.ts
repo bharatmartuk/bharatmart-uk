@@ -106,7 +106,6 @@ export const merchantStoreProfileSchema = z.object({
   storeName: z.string().min(2),
   storeDescription: z.string().min(10),
   storeLogoUrl: z.string().url().optional().or(z.literal('')),
-  storeBannerUrl: z.string().url().optional().or(z.literal('')),
 })
 
 export const merchantDeliveryAreasSchema = z.object({

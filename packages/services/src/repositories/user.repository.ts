@@ -17,6 +17,7 @@ export const userRepository = {
     email: string
     passwordHash: string
     role: UserRole
+    emailVerified?: Date | null
   }) {
     return prisma.user.create({
       data: {
@@ -24,7 +25,15 @@ export const userRepository = {
         email: data.email.toLowerCase(),
         passwordHash: data.passwordHash,
         role: data.role,
+        emailVerified: data.emailVerified ?? null,
       },
+    })
+  },
+
+  markEmailVerified(userId: string) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: { emailVerified: new Date() },
     })
   },
 }

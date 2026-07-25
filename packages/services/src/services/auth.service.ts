@@ -1,18 +1,78 @@
 import 'server-only'
 
+import { createHash, randomBytes } from 'node:crypto'
 import { hash } from 'bcryptjs'
+import { prisma } from '@bharatmart/database'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
 import { UserRole } from '@bharatmart/types'
 import { userRepository } from '../repositories/user.repository'
 import { orderRepository } from '../repositories/order.repository'
 import { ConflictError, ValidationError } from '../errors'
+import { NotificationService } from './notification.service'
+
+const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
+
+function hashToken(token: string) {
+  return createHash('sha256').update(token).digest('hex')
+}
+
+function appBaseUrl() {
+  return (
+    process.env.NEXT_PUBLIC_WEB_APP_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXTAUTH_URL ||
+    process.env.AUTH_URL ||
+    'http://localhost:3000'
+  ).replace(/\/$/, '')
+}
+
+async function createEmailVerificationToken(email: string) {
+  const normalized = email.toLowerCase()
+  const rawToken = randomBytes(32).toString('hex')
+  const tokenHash = hashToken(rawToken)
+  const expires = new Date(Date.now() + VERIFICATION_TOKEN_TTL_MS)
+
+  // Drop any outstanding tokens for this address so only the latest link works.
+  await prisma.verificationToken.deleteMany({ where: { identifier: normalized } })
+  await prisma.verificationToken.create({
+    data: {
+      identifier: normalized,
+      token: tokenHash,
+      expires,
+    },
+  })
+
+  return rawToken
+}
+
+async function sendVerificationEmail(user: {
+  email: string | null
+  name: string | null
+}) {
+  if (!user.email) return
+  const rawToken = await createEmailVerificationToken(user.email)
+  const verifyUrl = `${appBaseUrl()}/verify-email?token=${encodeURIComponent(rawToken)}`
+  await NotificationService.sendEmailVerification(
+    user.email,
+    verifyUrl,
+    user.name ?? undefined,
+  )
+}
 
 export const AuthService = {
   getProfile(userId: string) {
     return userRepository.findById(userId)
   },
 
-  async registerCustomer(input: RegisterInput) {
+  /**
+   * Register a customer. Email stays unverified until they click the link,
+   * unless `autoVerify` is set (used for seller onboarding where they need to
+   * continue into business registration immediately).
+   */
+  async registerCustomer(
+    input: RegisterInput,
+    options?: { autoVerify?: boolean },
+  ) {
     const parsed = registerSchema.safeParse({
       ...input,
       name: input.name?.trim() ? input.name.trim() : undefined,
@@ -33,10 +93,81 @@ export const AuthService = {
       email: parsed.data.email,
       passwordHash,
       role: UserRole.CUSTOMER,
+      emailVerified: options?.autoVerify ? new Date() : null,
     })
 
     await orderRepository.attachGuestOrdersToUser(user.id, parsed.data.email)
+
+    if (!options?.autoVerify) {
+      try {
+        await sendVerificationEmail(user)
+      } catch (error) {
+        console.error('[auth] Failed to send verification email', error)
+        // Account is still created — user can request a resend from the check-email page.
+      }
+    }
+
     return user
+  },
+
+  async verifyEmail(rawToken: string) {
+    const token = rawToken.trim()
+    if (!token) {
+      throw new ValidationError('Verification link is missing or incomplete.')
+    }
+
+    const tokenHash = hashToken(token)
+    const record = await prisma.verificationToken.findFirst({
+      where: { token: tokenHash },
+    })
+
+    if (!record) {
+      throw new ValidationError('This verification link is invalid or has already been used.')
+    }
+
+    if (record.expires.getTime() < Date.now()) {
+      await prisma.verificationToken.deleteMany({
+        where: { identifier: record.identifier, token: tokenHash },
+      })
+      throw new ValidationError('This verification link has expired. Please request a new one.')
+    }
+
+    const user = await userRepository.findByEmail(record.identifier)
+    if (!user) {
+      await prisma.verificationToken.deleteMany({
+        where: { identifier: record.identifier },
+      })
+      throw new ValidationError('No account was found for this verification link.')
+    }
+
+    if (!user.emailVerified) {
+      await userRepository.markEmailVerified(user.id)
+    }
+
+    await prisma.verificationToken.deleteMany({
+      where: { identifier: record.identifier },
+    })
+
+    return { email: user.email!, alreadyVerified: Boolean(user.emailVerified) }
+  },
+
+  /**
+   * Always returns success-shaped messaging to the caller so we do not leak
+   * whether an email is registered. Emails are only sent for real unverified accounts.
+   */
+  async resendVerificationEmail(email: string) {
+    const normalized = email.trim().toLowerCase()
+    if (!normalized) {
+      throw new ValidationError('Enter a valid email address.')
+    }
+
+    const user = await userRepository.findByEmail(normalized)
+    if (!user || user.emailVerified || !user.passwordHash) {
+      return { sent: false as const }
+    }
+
+    await sendVerificationEmail(user)
+    return { sent: true as const }
   },
 }
 

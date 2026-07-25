@@ -22,6 +22,7 @@ import {
 } from '@bharatmart/ui'
 import { useCartStore, type CartItem } from '@/lib/store/cart-store'
 import {
+  confirmCardOrder,
   placeGuestOrder,
   placeOrder,
   type CheckoutPaymentMethod,
@@ -222,12 +223,16 @@ function StripePayButton({
       },
       redirect: 'if_required',
     })
-    setConfirming(false)
 
     if (result.error) {
+      setConfirming(false)
       onError(result.error.message ?? 'Payment failed. Please try another card.')
       return
     }
+
+    // Don't rely on the Stripe webhook alone — finalize before showing tracking.
+    await confirmCardOrder(orderId)
+    setConfirming(false)
 
     onSuccess()
   }

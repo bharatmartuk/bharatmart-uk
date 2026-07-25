@@ -80,6 +80,20 @@ export async function placeOrder(
   }
 }
 
+/**
+ * Called after a client-side Stripe confirmation succeeds. Finalizes the order
+ * immediately instead of waiting on the webhook, so tracking is available as
+ * soon as the shopper lands on the confirmation page.
+ */
+export async function confirmCardOrder(orderId: string): Promise<void> {
+  if (!orderId) return
+  try {
+    await OrderService.syncCardPayment(orderId)
+  } catch (error) {
+    console.error('[checkout] confirmCardOrder failed', error)
+  }
+}
+
 export type PlaceGuestOrderInput = {
   firstName: string
   lastName: string

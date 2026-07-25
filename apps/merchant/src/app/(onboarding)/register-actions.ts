@@ -9,7 +9,7 @@ export async function registerSellerAccountAction(
   input: RegisterInput,
 ): Promise<RegisterActionState> {
   try {
-    await AuthService.registerCustomer(input)
+    await AuthService.registerCustomer(input, { autoVerify: true })
     return { ok: true }
   } catch (error) {
     if (error instanceof ConflictError || error instanceof ValidationError) {
