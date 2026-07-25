@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
 import {
   CheckCircle2,
@@ -14,12 +15,15 @@ import { updateOrderStatusAction } from '@/app/(dashboard)/orders/actions'
 import {
   COURIER_OPTIONS,
   NEXT_ORDER_STATUSES,
+  ORDER_STATUS_LABELS,
   orderStatusHint,
   orderStatusLabel,
   type MerchantOrderStatus,
 } from '@/lib/order-status'
 
 const OTHER_COURIER = '__other__'
+
+const FLOW: MerchantOrderStatus[] = ['PLACED', 'PROCESSING', 'SHIPPED', 'DELIVERED']
 
 function StatusIcon({ status }: { status: MerchantOrderStatus }) {
   const className = 'h-5 w-5'
@@ -50,6 +54,18 @@ function panelTone(status: MerchantOrderStatus) {
   }
 }
 
+function flowStepState(
+  step: MerchantOrderStatus,
+  current: MerchantOrderStatus,
+): 'done' | 'current' | 'upcoming' {
+  if (current === 'CANCELLED') return step === 'PLACED' ? 'done' : 'upcoming'
+  const currentIndex = FLOW.indexOf(current)
+  const stepIndex = FLOW.indexOf(step)
+  if (stepIndex < currentIndex) return 'done'
+  if (stepIndex === currentIndex) return 'current'
+  return 'upcoming'
+}
+
 export function OrderStatusForm({
   merchantOrderId,
   currentStatus,
@@ -61,6 +77,7 @@ export function OrderStatusForm({
   initialTrackingNumber?: string
   initialCourierName?: string
 }) {
+  const router = useRouter()
   const options = NEXT_ORDER_STATUSES[currentStatus as MerchantOrderStatus] ?? []
   const [status, setStatus] = useState(options[0] ?? currentStatus)
   // Keep the selection valid after the order advances and the page revalidates.
@@ -81,6 +98,7 @@ export function OrderStatusForm({
 
   const courierName = courierChoice === OTHER_COURIER ? customCourier : courierChoice
   const closed = options.length === 0
+  const current = currentStatus as MerchantOrderStatus
 
   function handleSave() {
     startTransition(async () => {
@@ -93,14 +111,50 @@ export function OrderStatusForm({
           ? { ok: true, text: 'Status updated successfully.' }
           : { ok: false, text: result.error },
       )
+      if (result.ok) router.refresh()
     })
   }
 
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
       <div className="space-y-4">
+        <div className="rounded-xl border border-[#ecd9b6] bg-[#fdfaf6] px-4 py-3">
+          <p className="text-xs font-semibold uppercase tracking-wide text-[#837561]">
+            Status flow
+          </p>
+          <ol className="mt-3 flex flex-wrap items-center gap-2 text-sm">
+            {FLOW.map((step, index) => {
+              const state = flowStepState(step, current)
+              return (
+                <li className="flex items-center gap-2" key={step}>
+                  {index > 0 ? <span className="text-[#d6c4ad]">→</span> : null}
+                  <span
+                    className={
+                      state === 'done'
+                        ? 'rounded-full bg-[#e8f5eb] px-2.5 py-1 font-medium text-[#2e6a39]'
+                        : state === 'current'
+                          ? 'rounded-full bg-[#7f5700] px-2.5 py-1 font-medium text-white'
+                          : 'rounded-full bg-[#eee7de] px-2.5 py-1 text-[#837561]'
+                    }
+                  >
+                    {ORDER_STATUS_LABELS[step]}
+                  </span>
+                </li>
+              )
+            })}
+          </ol>
+          <p className="mt-2 text-xs text-[#514534]">
+            Statuses unlock one step at a time. From{' '}
+            <strong>{orderStatusLabel(currentStatus)}</strong> you can move to{' '}
+            {options.length > 0
+              ? options.map((option) => orderStatusLabel(option)).join(' or ')
+              : 'no further statuses'}
+            .
+          </p>
+        </div>
+
         <div className="space-y-2">
-          <Label htmlFor="order-status">Order status</Label>
+          <Label htmlFor="order-status">Next status</Label>
           {closed ? (
             <p className="rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] px-4 py-3 text-sm text-[#514534]">
               This order is {orderStatusLabel(currentStatus).toLowerCase()} and can no longer be
