@@ -146,11 +146,14 @@ export function MerchantOnboardingForm() {
   }
 
   function addDeliveryPostcode() {
-    const code = postcodeInput.trim().toUpperCase()
-    if (!code) return
+    const codes = postcodeInput
+      .split(/[,;]+/)
+      .map((entry) => entry.trim().toUpperCase())
+      .filter(Boolean)
+    if (codes.length === 0) return
     form.setValue(
       'deliveryPostcodes',
-      [...new Set([...(values.deliveryPostcodes ?? []), code])],
+      [...new Set([...(values.deliveryPostcodes ?? []), ...codes])],
       { shouldValidate: true },
     )
     setPostcodeInput('')
