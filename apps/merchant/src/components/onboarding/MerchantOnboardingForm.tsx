@@ -123,7 +123,7 @@ export function MerchantOnboardingForm() {
     setError(null)
     try {
       const folder =
-        field === 'storeLogoUrl' ? 'bharatmart/merchant-logos' : 'bharatmart/merchant-documents'
+        field === 'storeLogoUrl' ? 'bharatmart/products' : 'bharatmart/merchant-documents'
       const uploaded = await uploadFileToCloudinary(file, folder)
       form.setValue(field, uploaded.url, { shouldValidate: true })
     } catch (uploadError) {

@@ -57,7 +57,7 @@ export function StoreSettingsTabs({
     setMessage(null)
     setUploading(true)
     try {
-      const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-logos')
+      const uploaded = await uploadFileToCloudinary(file, 'bharatmart/products')
       setProfile((current) => ({ ...current, storeLogoUrl: uploaded.url }))
       setMessage('Logo uploaded to Cloudinary. Click Save profile to keep it.')
     } catch (uploadError) {

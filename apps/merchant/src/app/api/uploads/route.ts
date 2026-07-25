@@ -16,7 +16,6 @@ const MAX_BYTES = 4 * 1024 * 1024
 const allowedFolders: UploadFolder[] = [
   'bharatmart/products',
   'bharatmart/merchant-documents',
-  'bharatmart/merchant-logos',
 ]
 
 /**

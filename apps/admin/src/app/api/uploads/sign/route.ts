@@ -8,7 +8,7 @@ import {
 } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 
-const allowedFolders: UploadFolder[] = ['bharatmart/banners', 'bharatmart/merchant-logos']
+const allowedFolders: UploadFolder[] = ['bharatmart/banners', 'bharatmart/products']
 
 export async function POST(request: Request) {
   const user = await getCurrentUser()

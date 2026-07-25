@@ -9,7 +9,7 @@ const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..
 loadEnv({ path: path.join(REPO_ROOT, '.env') })
 loadEnv({ path: path.join(REPO_ROOT, '.env.local'), override: true })
 
-const LOGO_FOLDER = 'bharatmart/merchant-logos'
+const LOGO_FOLDER = 'bharatmart/products'
 
 const MERCHANT_LOGO_FILES: Record<string, string> = {
   'ammas-andhra-pickle-house': "Amma's Andhra Pickle House.png",

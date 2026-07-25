@@ -14,13 +14,14 @@ All files here are **mock / sample only** - not real Companies House, DVLA, or f
 | Owner ID proof | `id-proof-driving-licence.pdf` or `.png` | PDF / PNG / JPG / WEBP |
 | Food hygiene / licence | `food-hygiene-licence.pdf` or `.png` | **Required** for Grocery / Restaurant / Sweets & Snacks |
 | Physical store photo | `physical-store-photo.jpg` | **Required only if** you tick “I have a physical store” |
-| Store logo (optional later) | `store-logo.png` | Not required during signup |
+| Store logo | `store-logo.png` | Required during store setup |
 
 **Upload limit:** max **4 MB** per file (Cloudinary via the merchant API).
 
 ### Cloudinary (required on Vercel)
 
-Merchant docs, store photos/logos, and product images are stored on **Cloudinary**.
+Merchant documents and store photos are stored in `bharatmart/merchant-documents`.
+Store logos and product images are stored in `bharatmart/products`.
 
 On each Vercel project (**merchant**, **admin**, and **web**), set:
 
@@ -51,6 +52,7 @@ Use a **new email** each time (seed emails like `lakshmi.reddy@bharatmart.uk` ar
 | Field | Value |
 | --- | --- |
 | Business name | `Priya Pickle Kitchen Ltd` |
+| Company number | `14958201` |
 | Business type | `Grocery` |
 | Registered address | `42 Brick Lane, London E1 6RF` |
 | Contact phone | `07700 900301` |
@@ -70,6 +72,7 @@ Use a **new email** each time (seed emails like `lakshmi.reddy@bharatmart.uk` ar
 | Store slug | `priyas-pickle-kitchen` |
 | Store description | `Small-batch Andhra pickles made from family recipes - mango avakaya, gongura, lemon and garlic, packed fresh for UK homes.` |
 | Delivery postcodes | `E1` `E2` `E3` `E14` `IG1` `RM8` |
+| Store logo | `store-logo.png` |
 
 ### Step 4 - Review & submit
 
