@@ -215,11 +215,15 @@ export const NotificationService = {
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
     const resend = getResend()
     if (!resend) {
-      console.warn('[email] RESEND_API_KEY is not set — skipping email to', to)
-      return
+      const message =
+        'Email is not configured (RESEND_API_KEY is missing). Unable to send email.'
+      console.error('[email]', message, 'to=', to)
+      throw new Error(message)
     }
+    const from =
+      process.env.RESEND_FROM_EMAIL?.trim() || 'BharatMart UK <onboarding@resend.dev>'
     const result = await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL ?? 'BharatMart UK <onboarding@resend.dev>',
+      from,
       to,
       subject,
       html: renderEmail(subject, body),
@@ -228,6 +232,7 @@ export const NotificationService = {
       console.error('[email] Resend failed for', to, result.error)
       throw new Error(result.error.message || 'Failed to send email.')
     }
+    console.info('[email] Sent', subject, 'to', to, 'id=', result.data?.id)
   },
 }
 

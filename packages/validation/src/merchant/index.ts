@@ -35,18 +35,18 @@ export function isFoodBusinessType(type: z.infer<typeof businessTypeSchema>) {
 
 export const merchantOnboardingSchema = z
   .object({
-    businessName: z.string().min(2, 'Business name is required'),
+    businessName: z.string().min(2, 'Company / business name is required'),
     businessType: businessTypeSchema,
-    // Optional in the UI; empty string must not block submit.
-    registrationNumber: z.union([z.literal(''), z.string().min(2)]).optional(),
-    contactPhone: z.string().min(7, 'Phone number is required'),
-    registeredAddress: z.string().min(8, 'Registered address is required'),
+    registrationNumber: z.string().min(2, 'Company number is required'),
+    contactPhone: z.string().min(7, 'Contact number is required'),
+    registeredAddress: z.string().min(8, 'Registered office address is required'),
     storeName: z.string().min(2, 'Store name is required'),
     storeSlug: z
       .string()
       .min(2)
       .regex(/^[a-z0-9-]+$/, 'Use lowercase letters, numbers, and hyphens only'),
     storeDescription: z.string().min(20, 'Tell shoppers a bit about your store (20+ characters)'),
+    storeLogoUrl: documentUrlSchema,
     deliveryPostcodes: z.array(z.string().min(2)).min(1, 'Add at least one delivery postcode'),
     businessDocumentUrl: documentUrlSchema,
     /** Owner identity document (passport / driving licence / national ID). */

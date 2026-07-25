@@ -1,8 +1,18 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { AddressService, NotFoundError, ValidationError } from '@bharatmart/services'
-import { addressSchema, type AddressInput } from '@bharatmart/validation'
+import {
+  AddressService,
+  AuthService,
+  NotFoundError,
+  ValidationError,
+} from '@bharatmart/services'
+import {
+  addressSchema,
+  changePasswordSchema,
+  type AddressInput,
+  type ChangePasswordInput,
+} from '@bharatmart/validation'
 import { getCurrentUser } from '@/auth'
 
 export type AddressActionState =
@@ -20,6 +30,8 @@ export type AddressActionState =
     }
   | { ok: true }
   | { ok: false; error: string }
+
+export type ChangePasswordActionState = { ok: true } | { ok: false; error: string }
 
 function mapAddress(address: {
   id: string
@@ -44,6 +56,28 @@ function mapAddress(address: {
 function revalidateAddressPaths() {
   revalidatePath('/account')
   revalidatePath('/checkout')
+}
+
+export async function changePasswordAction(
+  input: ChangePasswordInput,
+): Promise<ChangePasswordActionState> {
+  const user = await getCurrentUser()
+  if (!user) return { ok: false, error: 'Please sign in to change your password.' }
+
+  const parsed = changePasswordSchema.safeParse(input)
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid password details.' }
+  }
+
+  try {
+    await AuthService.changePassword(user.id, parsed.data)
+    return { ok: true }
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      return { ok: false, error: error.message }
+    }
+    return { ok: false, error: 'Unable to change password. Please try again.' }
+  }
 }
 
 export async function createAddressAction(input: AddressInput): Promise<AddressActionState> {

@@ -95,7 +95,10 @@ export const MerchantService = {
     return prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { id: userId },
-        data: { role: 'MERCHANT' },
+        data: {
+          role: 'MERCHANT',
+          phone: parsed.data.contactPhone,
+        },
       })
 
       return tx.merchant.create({
@@ -103,9 +106,8 @@ export const MerchantService = {
           userId,
           businessName: parsed.data.businessName,
           businessType: parsed.data.businessType,
-          ...(parsed.data.registrationNumber
-            ? { registrationNumber: parsed.data.registrationNumber }
-            : {}),
+          registrationNumber: parsed.data.registrationNumber,
+          registeredAddress: parsed.data.registeredAddress,
           verificationStatus: 'PENDING',
           verificationDocumentUrls: [parsed.data.businessDocumentUrl, parsed.data.idProofUrl],
           hasPhysicalStore: parsed.data.hasPhysicalStore,
@@ -115,6 +117,7 @@ export const MerchantService = {
           foodLicenseUrl: parsed.data.foodLicenseUrl || null,
           storeName: parsed.data.storeName,
           storeSlug: parsed.data.storeSlug,
+          storeLogoUrl: parsed.data.storeLogoUrl,
           storeDescription: parsed.data.storeDescription,
           deliveryPostcodes: parsed.data.deliveryPostcodes,
         },

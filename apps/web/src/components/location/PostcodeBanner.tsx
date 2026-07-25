@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import Link from 'next/link'
 import { MapPin } from 'lucide-react'
 import { Button, Input, toast } from '@bharatmart/ui'
 import {
@@ -45,7 +46,15 @@ export function PostcodeBanner({ location }: { location: CustomerLocation }) {
           </p>
         </div>
 
-        {editing ? (
+        {location.source === 'account' ? (
+          <Button
+            asChild
+            className="shrink-0 bg-[#a83635] text-white hover:bg-[#8f2e2d]"
+            size="sm"
+          >
+            <Link href="/account">Add delivery address</Link>
+          </Button>
+        ) : editing ? (
           <div className="flex w-full flex-col gap-2 sm:max-w-md sm:flex-row sm:items-center">
             <Input
               className="uppercase sm:max-w-[11rem]"

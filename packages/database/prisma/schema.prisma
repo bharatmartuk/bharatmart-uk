@@ -157,6 +157,8 @@ model Merchant {
   businessName             String
   businessType             BusinessType
   registrationNumber       String?
+  /// Registered office address collected during onboarding.
+  registeredAddress        String?
   verificationStatus       MerchantVerificationStatus @default(PENDING)
   verificationDocumentUrls String[]
   /// Whether the merchant operates a physical high-street / market store.

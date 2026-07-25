@@ -17,7 +17,7 @@ import {
 } from '@bharatmart/validation'
 
 export type RegisterActionState =
-  | { ok: true; needsVerification: true; email: string }
+  | { ok: true; needsVerification: true; email: string; emailSent: boolean }
   | { ok: false; error: string }
 
 export async function registerCustomerAction(input: RegisterInput): Promise<RegisterActionState> {
@@ -30,6 +30,7 @@ export async function registerCustomerAction(input: RegisterInput): Promise<Regi
       ok: true,
       needsVerification: true,
       email: user.email ?? input.email,
+      emailSent: true,
     }
   } catch (error) {
     if (
@@ -38,6 +39,17 @@ export async function registerCustomerAction(input: RegisterInput): Promise<Regi
       error instanceof RateLimitError
     ) {
       return { ok: false, error: error.message }
+    }
+    if (
+      error instanceof Error &&
+      /RESEND_API_KEY|Failed to send email|not configured|Unable to send/i.test(error.message)
+    ) {
+      return {
+        ok: true,
+        needsVerification: true,
+        email: input.email,
+        emailSent: false,
+      }
     }
     return { ok: false, error: 'Unable to create your account.' }
   }
@@ -65,7 +77,7 @@ export async function verifyEmailAction(token: string): Promise<VerifyEmailActio
 }
 
 export type ResendVerificationActionState =
-  | { ok: true }
+  | { ok: true; sent: boolean }
   | { ok: false; error: string }
 
 export async function resendVerificationAction(
@@ -81,12 +93,17 @@ export async function resendVerificationAction(
     const ip = clientIpFromHeaders(headerStore)
     const key = `${ip}:${parsed.data.email.toLowerCase()}`
     await enforceRateLimit(key, RATE_LIMITS.emailVerify, 'request another verification email')
-    await AuthService.resendVerificationEmail(parsed.data.email)
-    // Always succeed outwardly so we do not reveal whether the email exists.
-    return { ok: true }
+    const result = await AuthService.resendVerificationEmail(parsed.data.email)
+    return { ok: true, sent: result.sent }
   } catch (error) {
     if (error instanceof RateLimitError || error instanceof ValidationError) {
       return { ok: false, error: error.message }
+    }
+    if (error instanceof Error && /RESEND_API_KEY|not configured/i.test(error.message)) {
+      return {
+        ok: false,
+        error: 'Email delivery is temporarily unavailable. Please try again shortly.',
+      }
     }
     return { ok: false, error: 'Unable to send a verification email right now.' }
   }

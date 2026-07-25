@@ -30,7 +30,7 @@ import { submitMerchantOnboarding } from '@/app/(onboarding)/actions'
 const steps = ['Business Details', 'Documents', 'Store Setup', 'Review'] as const
 
 const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
-  ['businessName', 'businessType', 'registeredAddress', 'contactPhone'],
+  ['businessName', 'businessType', 'registrationNumber', 'registeredAddress', 'contactPhone'],
   [
     'businessDocumentUrl',
     'idProofUrl',
@@ -38,10 +38,11 @@ const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
     'physicalStorePhotoUrl',
     'foodLicenseUrl',
   ],
-  ['storeName', 'storeSlug', 'storeDescription', 'deliveryPostcodes'],
+  ['storeName', 'storeSlug', 'storeDescription', 'storeLogoUrl', 'deliveryPostcodes'],
   [
     'businessName',
     'businessType',
+    'registrationNumber',
     'registeredAddress',
     'contactPhone',
     'businessDocumentUrl',
@@ -52,6 +53,7 @@ const stepFields: Array<Array<keyof MerchantOnboardingInput>> = [
     'storeName',
     'storeSlug',
     'storeDescription',
+    'storeLogoUrl',
     'deliveryPostcodes',
   ],
 ]
@@ -94,6 +96,7 @@ export function MerchantOnboardingForm() {
       storeName: '',
       storeSlug: '',
       storeDescription: '',
+      storeLogoUrl: '',
       deliveryPostcodes: [],
       businessDocumentUrl: '',
       idProofUrl: '',
@@ -113,12 +116,15 @@ export function MerchantOnboardingForm() {
       | 'businessDocumentUrl'
       | 'idProofUrl'
       | 'physicalStorePhotoUrl'
-      | 'foodLicenseUrl',
+      | 'foodLicenseUrl'
+      | 'storeLogoUrl',
     file: File,
   ) {
     setError(null)
     try {
-      const uploaded = await uploadFileToCloudinary(file, 'bharatmart/merchant-documents')
+      const folder =
+        field === 'storeLogoUrl' ? 'bharatmart/merchant-logos' : 'bharatmart/merchant-documents'
+      const uploaded = await uploadFileToCloudinary(file, folder)
       form.setValue(field, uploaded.url, { shouldValidate: true })
     } catch (uploadError) {
       setError(
@@ -183,10 +189,20 @@ export function MerchantOnboardingForm() {
             {step === 0 ? (
               <>
                 <div className="space-y-2">
-                  <Label>Business name</Label>
-                  <Input {...form.register('businessName')} placeholder="e.g. Royal Spice Traders" />
+                  <Label>Company / business name</Label>
+                  <Input {...form.register('businessName')} placeholder="e.g. Royal Spice Traders Ltd" />
                   {fieldErrors.businessName ? (
                     <p className="text-xs text-[#a83635]">{fieldErrors.businessName.message}</p>
+                  ) : null}
+                </div>
+                <div className="space-y-2">
+                  <Label>Company number</Label>
+                  <Input
+                    {...form.register('registrationNumber')}
+                    placeholder="e.g. 12345678"
+                  />
+                  {fieldErrors.registrationNumber ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.registrationNumber.message}</p>
                   ) : null}
                 </div>
                 <div className="space-y-2">
@@ -212,14 +228,17 @@ export function MerchantOnboardingForm() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Registered address</Label>
-                  <Input {...form.register('registeredAddress')} />
+                  <Label>Registered office address</Label>
+                  <Input
+                    {...form.register('registeredAddress')}
+                    placeholder="Full registered office address"
+                  />
                   {fieldErrors.registeredAddress ? (
                     <p className="text-xs text-[#a83635]">{fieldErrors.registeredAddress.message}</p>
                   ) : null}
                 </div>
                 <div className="space-y-2">
-                  <Label>Contact phone</Label>
+                  <Label>Contact number</Label>
                   <Input {...form.register('contactPhone')} placeholder="7700 900000" />
                   {fieldErrors.contactPhone ? (
                     <p className="text-xs text-[#a83635]">{fieldErrors.contactPhone.message}</p>
@@ -348,6 +367,31 @@ export function MerchantOnboardingForm() {
                   ) : null}
                 </div>
                 <div className="space-y-2">
+                  <Label>Store logo</Label>
+                  <Input
+                    accept=".png,.jpg,.jpeg,.webp"
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      if (file) void handleUpload('storeLogoUrl', file)
+                    }}
+                    type="file"
+                  />
+                  {values.storeLogoUrl ? (
+                    <div className="flex items-center gap-3">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        alt="Store logo preview"
+                        className="h-14 w-14 rounded-xl border border-[#d6c4ad] object-cover"
+                        src={values.storeLogoUrl}
+                      />
+                      <p className="text-xs text-[#2e6a39]">Logo uploaded</p>
+                    </div>
+                  ) : null}
+                  {fieldErrors.storeLogoUrl ? (
+                    <p className="text-xs text-[#a83635]">{fieldErrors.storeLogoUrl.message}</p>
+                  ) : null}
+                </div>
+                <div className="space-y-2">
                   <Label>Store description</Label>
                   <Input
                     {...form.register('storeDescription')}
@@ -394,10 +438,23 @@ export function MerchantOnboardingForm() {
             {step === 3 ? (
               <div className="space-y-2 text-sm text-[#514534]">
                 <p>
-                  <strong>Business:</strong> {values.businessName} ({values.businessType})
+                  <strong>Company / business:</strong> {values.businessName} ({values.businessType})
+                </p>
+                <p>
+                  <strong>Company number:</strong> {values.registrationNumber || '—'}
+                </p>
+                <p>
+                  <strong>Registered office:</strong> {values.registeredAddress}
+                </p>
+                <p>
+                  <strong>Contact number:</strong> {values.contactPhone}
                 </p>
                 <p>
                   <strong>Store:</strong> {values.storeName} / {values.storeSlug}
+                </p>
+                <p>
+                  <strong>Store logo:</strong>{' '}
+                  {values.storeLogoUrl ? 'Uploaded' : 'Missing'}
                 </p>
                 <p>
                   <strong>Delivery:</strong>{' '}

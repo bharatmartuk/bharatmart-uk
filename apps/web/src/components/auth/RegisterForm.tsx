@@ -20,6 +20,7 @@ export function RegisterForm({
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [pendingEmail, setPendingEmail] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState(true)
   const [resending, setResending] = useState(false)
   const {
     register,
@@ -39,9 +40,12 @@ export function RegisterForm({
       return
     }
 
-    toast.success('Check your inbox', {
-      description: 'We sent a verification link to confirm your email.',
+    toast.success(created.emailSent ? 'Check your inbox' : 'Account created', {
+      description: created.emailSent
+        ? 'We sent a verification link to confirm your email.'
+        : 'We could not send the email automatically. Use Resend below.',
     })
+    setEmailSent(created.emailSent)
     setPendingEmail(created.email)
   }
 
@@ -81,8 +85,17 @@ export function RegisterForm({
               Verify your email
             </CardTitle>
             <p className="text-sm text-[#514534]">
-              We sent a confirmation link to <strong>{pendingEmail}</strong>. Open it to activate
-              your account, then sign in.
+              {emailSent ? (
+                <>
+                  We sent a confirmation link to <strong>{pendingEmail}</strong>. Open it to
+                  activate your account, then sign in.
+                </>
+              ) : (
+                <>
+                  Your account for <strong>{pendingEmail}</strong> was created, but the
+                  confirmation email could not be sent yet. Tap below to try again.
+                </>
+              )}
             </p>
           </CardHeader>
           <CardContent className="space-y-4">

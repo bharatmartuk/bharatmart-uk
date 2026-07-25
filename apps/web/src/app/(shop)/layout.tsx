@@ -12,9 +12,10 @@ export default async function ShopLayout({ children }: { children: React.ReactNo
   const user = await getCurrentUser()
   const location = await getCustomerLocation(user?.id)
 
-  // Postcode gate is for guests only - logged-in shoppers set postcode via address book / checkout
+  // The modal gate is for first-time guests only. The informational banner
+  // remains visible for any shopper who has not provided a delivery postcode.
   const showGate = !user && location.status === 'unknown'
-  const showBanner = !user && location.status !== 'set'
+  const showBanner = location.status !== 'set'
 
   return (
     <div className="min-h-screen bg-[#fff8f0] text-[#1e1b16]">

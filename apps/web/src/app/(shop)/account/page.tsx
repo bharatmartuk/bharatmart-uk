@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { MapPin, Package, UserCircle } from 'lucide-react'
+import { KeyRound, MapPin, Package, UserCircle } from 'lucide-react'
 import { AddressService, AuthService } from '@bharatmart/services'
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@bharatmart/ui'
 import { AccountSignOutButton } from '@/components/account/AccountSignOutButton'
 import { AddressBook } from '@/components/account/AddressBook'
+import { ChangePasswordForm } from '@/components/account/ChangePasswordForm'
 import { getCurrentUser } from '@/auth'
 
 export const dynamic = 'force-dynamic'
@@ -77,6 +78,18 @@ export default async function AccountPage() {
             <Button asChild className="bg-[#7f5700] text-white hover:bg-[#604100]">
               <Link href="/account/orders">View order history</Link>
             </Button>
+          </CardContent>
+        </Card>
+
+        <Card className="border-[#d6c4ad] md:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <KeyRound className="h-5 w-5 text-[#7f5700]" />
+              Change password
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ChangePasswordForm hasPassword={Boolean(profile.passwordHash)} />
           </CardContent>
         </Card>
 

@@ -1,13 +1,18 @@
 import 'server-only'
 
 import { createHash, randomBytes } from 'node:crypto'
-import { hash } from 'bcryptjs'
+import { compare, hash } from 'bcryptjs'
 import { prisma } from '@bharatmart/database'
-import { registerSchema, type RegisterInput } from '@bharatmart/validation'
+import {
+  changePasswordSchema,
+  registerSchema,
+  type ChangePasswordInput,
+  type RegisterInput,
+} from '@bharatmart/validation'
 import { UserRole } from '@bharatmart/types'
 import { userRepository } from '../repositories/user.repository'
 import { orderRepository } from '../repositories/order.repository'
-import { ConflictError, ValidationError } from '../errors'
+import { ConflictError, NotFoundError, ValidationError } from '../errors'
 import { NotificationService } from './notification.service'
 
 const VERIFICATION_TOKEN_TTL_MS = 24 * 60 * 60 * 1000
@@ -99,12 +104,7 @@ export const AuthService = {
     await orderRepository.attachGuestOrdersToUser(user.id, parsed.data.email)
 
     if (!options?.autoVerify) {
-      try {
-        await sendVerificationEmail(user)
-      } catch (error) {
-        console.error('[auth] Failed to send verification email', error)
-        // Account is still created — user can request a resend from the check-email page.
-      }
+      await sendVerificationEmail(user)
     }
 
     return user
@@ -168,6 +168,31 @@ export const AuthService = {
 
     await sendVerificationEmail(user)
     return { sent: true as const }
+  },
+
+  async changePassword(userId: string, input: ChangePasswordInput) {
+    const parsed = changePasswordSchema.safeParse(input)
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.issues[0]?.message ?? 'Invalid password details.')
+    }
+
+    const user = await userRepository.findById(userId)
+    if (!user) throw new NotFoundError('Account not found.')
+
+    if (!user.passwordHash) {
+      throw new ValidationError(
+        'This account uses Google sign-in and does not have a password to change.',
+      )
+    }
+
+    const matches = await compare(parsed.data.currentPassword, user.passwordHash)
+    if (!matches) {
+      throw new ValidationError('Current password is incorrect.')
+    }
+
+    const passwordHash = await hash(parsed.data.newPassword, 12)
+    await userRepository.updatePasswordHash(userId, passwordHash)
+    return { ok: true as const }
   },
 }
 
