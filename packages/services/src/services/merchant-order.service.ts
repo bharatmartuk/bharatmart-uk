@@ -135,7 +135,17 @@ export const MerchantOrderService = {
             customer: { select: { name: true, email: true, phone: true } },
           },
         },
-        orderItems: true,
+        orderItems: {
+          include: {
+            product: {
+              select: {
+                sku: true,
+                slug: true,
+                images: { orderBy: { sortOrder: 'asc' }, take: 1 },
+              },
+            },
+          },
+        },
       },
     })
   },
