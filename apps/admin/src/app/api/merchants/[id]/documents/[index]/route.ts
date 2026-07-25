@@ -14,6 +14,82 @@ function parseDataUrl(dataUrl: string) {
   }
 }
 
+function guessContentType(url: string) {
+  if (/\.pdf($|\?|#)/i.test(url) || url.includes('/raw/upload/')) return 'application/pdf'
+  if (/\.png($|\?|#)/i.test(url)) return 'image/png'
+  if (/\.jpe?g($|\?|#)/i.test(url)) return 'image/jpeg'
+  if (/\.webp($|\?|#)/i.test(url)) return 'image/webp'
+  if (/\.gif($|\?|#)/i.test(url)) return 'image/gif'
+  if (/\.avif($|\?|#)/i.test(url)) return 'image/avif'
+  return 'application/octet-stream'
+}
+
+function documentUrlsForMerchant(merchant: {
+  verificationDocumentUrls: string[]
+  hasPhysicalStore: boolean
+  physicalStorePhotoUrl: string | null
+  foodLicenseUrl: string | null
+}) {
+  return [
+    merchant.verificationDocumentUrls[0],
+    merchant.verificationDocumentUrls[1],
+    merchant.hasPhysicalStore ? merchant.physicalStorePhotoUrl : null,
+    merchant.foodLicenseUrl,
+  ].filter((value): value is string => Boolean(value))
+}
+
+async function proxyRemoteDocument(url: string, requestUrl: string) {
+  try {
+    const target = new URL(url, requestUrl)
+    if (target.pathname.startsWith('/api/uploads/files/')) {
+      const response = await fetch(target, {
+        headers: { Accept: '*/*' },
+        redirect: 'follow',
+      })
+      if (!response.ok) {
+        return NextResponse.json({ error: 'Failed to load document' }, { status: 502 })
+      }
+      const buffer = Buffer.from(await response.arrayBuffer())
+      const contentType =
+        response.headers.get('content-type')?.split(';')[0]?.trim() || guessContentType(url)
+      return new NextResponse(new Uint8Array(buffer), {
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'private, no-store',
+          'Content-Disposition': 'inline',
+          'X-Content-Type-Options': 'nosniff',
+        },
+      })
+    }
+  } catch {
+    // fall through to absolute remote fetch
+  }
+
+  const response = await fetch(url, {
+    headers: { Accept: '*/*' },
+    redirect: 'follow',
+  })
+  if (!response.ok) {
+    return NextResponse.json(
+      { error: 'Failed to load document from storage' },
+      { status: 502 },
+    )
+  }
+
+  const buffer = Buffer.from(await response.arrayBuffer())
+  const contentType =
+    response.headers.get('content-type')?.split(';')[0]?.trim() || guessContentType(url)
+
+  return new NextResponse(new Uint8Array(buffer), {
+    headers: {
+      'Content-Type': contentType,
+      'Cache-Control': 'private, no-store',
+      'Content-Disposition': 'inline',
+      'X-Content-Type-Options': 'nosniff',
+    },
+  })
+}
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ id: string; index: string }> },
@@ -34,13 +110,7 @@ export async function GET(
     return NextResponse.json({ error: 'Merchant not found' }, { status: 404 })
   }
 
-  const urls = [
-    merchant.verificationDocumentUrls[0],
-    merchant.verificationDocumentUrls[1],
-    merchant.hasPhysicalStore ? merchant.physicalStorePhotoUrl : null,
-    merchant.foodLicenseUrl,
-  ].filter((value): value is string => Boolean(value))
-
+  const urls = documentUrlsForMerchant(merchant)
   const url = urls[index]
   if (!url) {
     return NextResponse.json({ error: 'Document not found' }, { status: 404 })
@@ -56,19 +126,14 @@ export async function GET(
         'Content-Type': parsed.contentType,
         'Cache-Control': 'private, no-store',
         'Content-Disposition': 'inline',
+        'X-Content-Type-Options': 'nosniff',
       },
     })
   }
 
-  // Same-origin relative uploads (or absolute merchant upload URLs).
   try {
-    const target = new URL(url, request.url)
-    if (target.pathname.startsWith('/api/uploads/files/')) {
-      return NextResponse.redirect(target)
-    }
+    return await proxyRemoteDocument(url, request.url)
   } catch {
-    // fall through
+    return NextResponse.json({ error: 'Failed to load document' }, { status: 502 })
   }
-
-  return NextResponse.redirect(url)
 }

@@ -10,6 +10,8 @@ import {
 import {
   addressSchema,
   changePasswordSchema,
+  parseUpdateProfileInput,
+  updateProfileSchema,
   type AddressInput,
   type ChangePasswordInput,
 } from '@bharatmart/validation'
@@ -32,6 +34,8 @@ export type AddressActionState =
   | { ok: false; error: string }
 
 export type ChangePasswordActionState = { ok: true } | { ok: false; error: string }
+
+export type UpdateProfileActionState = { ok: true } | { ok: false; error: string }
 
 function mapAddress(address: {
   id: string
@@ -77,6 +81,33 @@ export async function changePasswordAction(
       return { ok: false, error: error.message }
     }
     return { ok: false, error: 'Unable to change password. Please try again.' }
+  }
+}
+
+export async function updateProfileAction(input: {
+  name: string
+  phone?: string | null
+}): Promise<UpdateProfileActionState> {
+  const user = await getCurrentUser()
+  if (!user) return { ok: false, error: 'Please sign in to update your profile.' }
+
+  const parsed = updateProfileSchema.safeParse({
+    name: input.name,
+    phone: input.phone ?? '',
+  })
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'Invalid profile details.' }
+  }
+
+  try {
+    await AuthService.updateProfile(user.id, parseUpdateProfileInput(parsed.data))
+    revalidatePath('/account')
+    return { ok: true }
+  } catch (error) {
+    if (error instanceof ValidationError || error instanceof NotFoundError) {
+      return { ok: false, error: error.message }
+    }
+    return { ok: false, error: 'Unable to update profile. Please try again.' }
   }
 }
 

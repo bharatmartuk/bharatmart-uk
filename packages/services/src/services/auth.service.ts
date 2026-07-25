@@ -6,8 +6,11 @@ import { prisma } from '@bharatmart/database'
 import {
   changePasswordSchema,
   registerSchema,
+  updateProfileSchema,
+  parseUpdateProfileInput,
   type ChangePasswordInput,
   type RegisterInput,
+  type UpdateProfileInput,
 } from '@bharatmart/validation'
 import { UserRole } from '@bharatmart/types'
 import { userRepository } from '../repositories/user.repository'
@@ -193,6 +196,22 @@ export const AuthService = {
     const passwordHash = await hash(parsed.data.newPassword, 12)
     await userRepository.updatePasswordHash(userId, passwordHash)
     return { ok: true as const }
+  },
+
+  async updateProfile(userId: string, input: UpdateProfileInput) {
+    const parsed = updateProfileSchema.safeParse({
+      name: input.name,
+      phone: input.phone ?? '',
+    })
+    if (!parsed.success) {
+      throw new ValidationError(parsed.error.issues[0]?.message ?? 'Invalid profile details.')
+    }
+
+    const user = await userRepository.findById(userId)
+    if (!user) throw new NotFoundError('Account not found.')
+
+    const data = parseUpdateProfileInput(parsed.data)
+    return userRepository.updateProfile(userId, data)
   },
 }
 

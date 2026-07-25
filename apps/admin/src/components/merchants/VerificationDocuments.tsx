@@ -8,20 +8,30 @@ export type VerificationDocumentMeta = {
 
 function classifyUrl(url: string): VerificationDocumentMeta['kind'] {
   if (url.includes('picsum.photos')) return 'stub'
+
   if (
     url.startsWith('data:application/pdf') ||
     url.includes('application/pdf') ||
-    /\.pdf($|\?|#)/i.test(url)
+    /\.pdf($|\?|#)/i.test(url) ||
+    url.includes('/raw/upload/') ||
+    /\/upload\/.*\.pdf/i.test(url)
   ) {
     return 'pdf'
   }
+
   if (
     url.startsWith('data:image/') ||
     /\.(png|jpe?g|gif|webp|avif)($|\?|#)/i.test(url) ||
-    url.includes('res.cloudinary.com')
+    url.includes('/image/upload/')
   ) {
     return 'image'
   }
+
+  // Cloudinary auto/raw without a clear extension — open via iframe/object.
+  if (url.includes('res.cloudinary.com')) {
+    return 'other'
+  }
+
   return 'other'
 }
 
@@ -56,6 +66,52 @@ export function describeVerificationDocuments(input: {
   }
 
   return docs
+}
+
+function DocumentPreview({
+  kind,
+  label,
+  previewUrl,
+}: {
+  kind: VerificationDocumentMeta['kind']
+  label: string
+  previewUrl: string
+}) {
+  if (kind === 'stub') {
+    return (
+      <div className="flex min-h-40 flex-col items-center justify-center gap-2 rounded-lg bg-[#f4ede4] px-4 text-center">
+        <FileText className="h-8 w-8 text-[#837561]" />
+        <p className="text-sm text-[#514534]">
+          Placeholder upload - ask the merchant to re-upload so you can review the real file.
+        </p>
+      </div>
+    )
+  }
+
+  if (kind === 'image') {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        alt={label}
+        className="max-h-72 w-full rounded-lg bg-white object-contain"
+        src={previewUrl}
+      />
+    )
+  }
+
+  return (
+    <object
+      className="h-72 w-full rounded-lg border border-[#d6c4ad] bg-white"
+      data={`${previewUrl}#toolbar=1&navpanes=0`}
+      type="application/pdf"
+    >
+      <iframe
+        className="h-72 w-full rounded-lg border-0 bg-white"
+        src={`${previewUrl}#toolbar=1&navpanes=0`}
+        title={label}
+      />
+    </object>
+  )
 }
 
 export function VerificationDocuments({
@@ -95,26 +151,11 @@ export function VerificationDocuments({
             </div>
 
             <div className="p-3">
-              {document.kind === 'stub' ? (
-                <div className="flex min-h-40 flex-col items-center justify-center gap-2 rounded-lg bg-[#f4ede4] px-4 text-center">
-                  <FileText className="h-8 w-8 text-[#837561]" />
-                  <p className="text-sm text-[#514534]">
-                    Placeholder upload - ask the merchant to re-upload so you can review the real file.
-                  </p>
-                </div>
-              ) : document.kind === 'pdf' || document.kind === 'other' ? (
-                <iframe
-                  className="h-64 w-full rounded-lg border border-[#d6c4ad] bg-white"
-                  src={previewUrl}
-                  title={document.label}
-                />
-              ) : (
-                <img
-                  alt={document.label}
-                  className="max-h-72 w-full rounded-lg bg-white object-contain"
-                  src={previewUrl}
-                />
-              )}
+              <DocumentPreview
+                kind={document.kind}
+                label={document.label}
+                previewUrl={previewUrl}
+              />
             </div>
           </article>
         )

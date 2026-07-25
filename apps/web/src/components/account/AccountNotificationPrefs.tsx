@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Bell, Mail, MessageCircle, Package } from 'lucide-react'
+import { Mail, Package } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, Label, Switch } from '@bharatmart/ui'
 
 const STORAGE_KEY = 'bharatmart-account-notification-prefs'
@@ -9,15 +9,11 @@ const STORAGE_KEY = 'bharatmart-account-notification-prefs'
 type NotificationPrefs = {
   emailNotifications: boolean
   orderUpdates: boolean
-  promotionalEmails: boolean
-  whatsappUpdates: boolean
 }
 
 const DEFAULT_PREFS: NotificationPrefs = {
   emailNotifications: true,
   orderUpdates: true,
-  promotionalEmails: false,
-  whatsappUpdates: false,
 }
 
 const rows = [
@@ -33,18 +29,6 @@ const rows = [
     description: 'Shipping and delivery progress for your orders.',
     icon: Package,
   },
-  {
-    key: 'promotionalEmails' as const,
-    title: 'Promotional Emails',
-    description: 'Offers, festivals and curated product picks.',
-    icon: Bell,
-  },
-  {
-    key: 'whatsappUpdates' as const,
-    title: 'WhatsApp Updates',
-    description: 'Optional delivery alerts on WhatsApp.',
-    icon: MessageCircle,
-  },
 ]
 
 export function AccountNotificationPrefs() {
@@ -56,7 +40,10 @@ export function AccountNotificationPrefs() {
       const raw = window.localStorage.getItem(STORAGE_KEY)
       if (raw) {
         const parsed = JSON.parse(raw) as Partial<NotificationPrefs>
-        setPrefs({ ...DEFAULT_PREFS, ...parsed })
+        setPrefs({
+          emailNotifications: parsed.emailNotifications ?? DEFAULT_PREFS.emailNotifications,
+          orderUpdates: parsed.orderUpdates ?? DEFAULT_PREFS.orderUpdates,
+        })
       }
     } catch {
       // Ignore invalid local preference data.

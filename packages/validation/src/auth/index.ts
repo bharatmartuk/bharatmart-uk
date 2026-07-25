@@ -43,3 +43,30 @@ export const changePasswordSchema = z
   })
 
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>
+
+export const updateProfileSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, 'Name must be at least 2 characters')
+    .max(80, 'Name must be under 80 characters'),
+  phone: z
+    .string()
+    .trim()
+    .max(20, 'Enter a valid phone number')
+    .refine((value) => value === '' || /^[+0-9()\s-]{10,20}$/.test(value), {
+      message: 'Enter a valid phone number',
+    }),
+})
+
+export type UpdateProfileInput = {
+  name: string
+  phone: string | null
+}
+
+export function parseUpdateProfileInput(input: z.infer<typeof updateProfileSchema>): UpdateProfileInput {
+  return {
+    name: input.name,
+    phone: input.phone.length > 0 ? input.phone : null,
+  }
+}

@@ -43,4 +43,14 @@ export const userRepository = {
       data: { passwordHash },
     })
   },
+
+  updateProfile(userId: string, data: { name: string; phone: string | null }) {
+    return prisma.user.update({
+      where: { id: userId },
+      data: {
+        name: data.name,
+        phone: data.phone,
+      },
+    })
+  },
 }

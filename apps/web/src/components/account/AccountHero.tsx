@@ -59,7 +59,18 @@ export function AccountHero({ name, imageUrl, emailVerified }: AccountHeroProps)
             asChild
             className="w-full bg-[#7f5700] text-white hover:bg-[#604100] sm:w-auto"
           >
-            <Link aria-label="Edit profile details" href="#personal-information">
+            <Link
+              aria-label="Edit profile details"
+              href="#personal-information"
+              onClick={() => {
+                window.setTimeout(() => {
+                  document
+                    .getElementById('personal-information')
+                    ?.querySelector<HTMLButtonElement>('button[aria-label="Edit personal information"]')
+                    ?.click()
+                }, 100)
+              }}
+            >
               <Pencil className="mr-2 h-4 w-4" aria-hidden />
               Edit Profile
             </Link>
