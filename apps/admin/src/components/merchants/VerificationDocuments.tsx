@@ -27,7 +27,6 @@ function classifyUrl(url: string): VerificationDocumentMeta['kind'] {
     return 'image'
   }
 
-  // Cloudinary auto/raw without a clear extension — open via iframe/object.
   if (url.includes('res.cloudinary.com')) {
     return 'other'
   }
@@ -71,10 +70,12 @@ export function describeVerificationDocuments(input: {
 function DocumentPreview({
   kind,
   label,
+  openUrl,
   previewUrl,
 }: {
   kind: VerificationDocumentMeta['kind']
   label: string
+  openUrl: string
   previewUrl: string
 }) {
   if (kind === 'stub') {
@@ -88,12 +89,32 @@ function DocumentPreview({
     )
   }
 
+  // PDFs: show first-page image preview (Cloudinary blocks public PDF URLs).
+  // Images / other: show the proxied file directly.
+  if (kind === 'pdf') {
+    return (
+      <div className="space-y-2">
+        <img
+          alt={`${label} preview`}
+          className="max-h-72 w-full rounded-lg border border-[#d6c4ad] bg-white object-contain"
+          src={previewUrl}
+        />
+        <p className="text-xs text-[#837561]">
+          Preview of page 1.{' '}
+          <a className="font-medium text-[#7f5700] hover:underline" href={openUrl} target="_blank" rel="noreferrer">
+            Open full PDF
+          </a>
+        </p>
+      </div>
+    )
+  }
+
   if (kind === 'image') {
     return (
       <img
         alt={label}
         className="max-h-72 w-full rounded-lg bg-white object-contain"
-        src={previewUrl}
+        src={openUrl}
       />
     )
   }
@@ -101,12 +122,12 @@ function DocumentPreview({
   return (
     <object
       className="h-72 w-full rounded-lg border border-[#d6c4ad] bg-white"
-      data={`${previewUrl}#toolbar=1&navpanes=0`}
+      data={`${openUrl}#toolbar=1&navpanes=0`}
       type="application/pdf"
     >
       <iframe
         className="h-72 w-full rounded-lg border-0 bg-white"
-        src={`${previewUrl}#toolbar=1&navpanes=0`}
+        src={`${openUrl}#toolbar=1&navpanes=0`}
         title={label}
       />
     </object>
@@ -127,7 +148,8 @@ export function VerificationDocuments({
   return (
     <div className="grid gap-4 sm:grid-cols-2">
       {documents.map((document, index) => {
-        const previewUrl = `/api/merchants/${merchantId}/documents/${index}`
+        const openUrl = `/api/merchants/${merchantId}/documents/${index}`
+        const previewUrl = `${openUrl}?preview=1`
 
         return (
           <article
@@ -139,7 +161,7 @@ export function VerificationDocuments({
               {document.kind !== 'stub' ? (
                 <a
                   className="inline-flex items-center gap-1 text-xs font-medium text-[#7f5700] hover:underline"
-                  href={previewUrl}
+                  href={openUrl}
                   rel="noreferrer"
                   target="_blank"
                 >
@@ -153,6 +175,7 @@ export function VerificationDocuments({
               <DocumentPreview
                 kind={document.kind}
                 label={document.label}
+                openUrl={openUrl}
                 previewUrl={previewUrl}
               />
             </div>

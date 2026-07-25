@@ -46,6 +46,165 @@ export const UploadService = {
     return configureCloudinary()
   },
 
+  /**
+   * Parse a Cloudinary delivery URL into public_id / resource_type / format.
+   * Used by admin document proxy when public PDF delivery is blocked (401).
+   */
+  parseCloudinaryUrl(url: string): {
+    cloudName: string
+    resourceType: 'image' | 'raw' | 'video'
+    publicId: string
+    format: string | null
+    version: string | null
+  } | null {
+    try {
+      const parsed = new URL(url)
+      if (!parsed.hostname.includes('res.cloudinary.com')) return null
+
+      const parts = parsed.pathname.split('/').filter(Boolean)
+      // [cloudName, resourceType, 'upload', ...rest]
+      if (parts.length < 4) return null
+      const [cloudName, resourceType, uploadToken, ...rest] = parts
+      if (!cloudName || uploadToken !== 'upload') return null
+      if (resourceType !== 'image' && resourceType !== 'raw' && resourceType !== 'video') {
+        return null
+      }
+
+      let version: string | null = null
+      let pathParts = rest
+      if (pathParts[0] && /^v\d+$/i.test(pathParts[0])) {
+        version = pathParts[0].slice(1)
+        pathParts = pathParts.slice(1)
+      }
+
+      // Skip common transformation segments (e.g. s--sig--, w_100,c_fill)
+      while (
+        pathParts[0] &&
+        (/^s--.+--$/i.test(pathParts[0]) ||
+          /[_=,]/.test(pathParts[0]) ||
+          pathParts[0].includes(','))
+      ) {
+        pathParts = pathParts.slice(1)
+      }
+
+      if (pathParts.length === 0) return null
+      const filePath = decodeURIComponent(pathParts.join('/'))
+      const extensionMatch = filePath.match(/\.([a-z0-9]+)$/i)
+      const format = extensionMatch?.[1]?.toLowerCase() ?? null
+      const publicId = format ? filePath.replace(/\.[a-z0-9]+$/i, '') : filePath
+
+      return {
+        cloudName,
+        resourceType,
+        publicId,
+        format,
+        version,
+      }
+    } catch {
+      return null
+    }
+  },
+
+  /**
+   * Fetch a stored upload for admin review.
+   * PDFs on many Cloudinary accounts return 401 on public URLs — use authenticated download.
+   * `preview: true` returns the first page as JPEG for PDF overview cards.
+   */
+  async fetchStoredFile(
+    url: string,
+    options?: { preview?: boolean },
+  ): Promise<{ buffer: Buffer; contentType: string }> {
+    if (!configureCloudinary()) {
+      throw missingCloudinaryError()
+    }
+
+    const cloudinaryMeta = this.parseCloudinaryUrl(url)
+    const wantsPreview = Boolean(options?.preview)
+    const isPdf =
+      cloudinaryMeta?.format === 'pdf' ||
+      /\.pdf($|\?|#)/i.test(url) ||
+      url.includes('/raw/upload/')
+
+    if (cloudinaryMeta && wantsPreview && isPdf) {
+      const previewUrl = cloudinary.url(cloudinaryMeta.publicId, {
+        resource_type: cloudinaryMeta.resourceType,
+        type: 'upload',
+        format: 'jpg',
+        page: 1,
+        secure: true,
+        sign_url: true,
+        ...(cloudinaryMeta.version
+          ? { version: Number(cloudinaryMeta.version) }
+          : {}),
+      })
+      const response = await fetch(previewUrl, { redirect: 'follow' })
+      if (!response.ok) {
+        throw new Error(`Failed to generate document preview (${response.status})`)
+      }
+      return {
+        buffer: Buffer.from(await response.arrayBuffer()),
+        contentType: response.headers.get('content-type')?.split(';')[0]?.trim() || 'image/jpeg',
+      }
+    }
+
+    if (cloudinaryMeta && isPdf) {
+      const downloadUrl = cloudinary.utils.private_download_url(
+        cloudinaryMeta.publicId,
+        cloudinaryMeta.format || 'pdf',
+        {
+          resource_type: cloudinaryMeta.resourceType,
+          type: 'upload',
+          expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
+        },
+      )
+      const response = await fetch(downloadUrl, { redirect: 'follow' })
+      if (!response.ok) {
+        throw new Error(`Failed to download document (${response.status})`)
+      }
+      return {
+        buffer: Buffer.from(await response.arrayBuffer()),
+        contentType:
+          response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/pdf',
+      }
+    }
+
+    const response = await fetch(url, {
+      headers: { Accept: '*/*' },
+      redirect: 'follow',
+    })
+    if (!response.ok) {
+      // Last resort for restricted Cloudinary assets: authenticated download without assuming PDF.
+      if (cloudinaryMeta) {
+        const downloadUrl = cloudinary.utils.private_download_url(
+          cloudinaryMeta.publicId,
+          cloudinaryMeta.format || 'bin',
+          {
+            resource_type: cloudinaryMeta.resourceType,
+            type: 'upload',
+            expires_at: Math.floor(Date.now() / 1000) + 10 * 60,
+          },
+        )
+        const fallback = await fetch(downloadUrl, { redirect: 'follow' })
+        if (!fallback.ok) {
+          throw new Error(`Failed to load document from storage (${response.status})`)
+        }
+        return {
+          buffer: Buffer.from(await fallback.arrayBuffer()),
+          contentType:
+            fallback.headers.get('content-type')?.split(';')[0]?.trim() ||
+            'application/octet-stream',
+        }
+      }
+      throw new Error(`Failed to load document from storage (${response.status})`)
+    }
+
+    return {
+      buffer: Buffer.from(await response.arrayBuffer()),
+      contentType:
+        response.headers.get('content-type')?.split(';')[0]?.trim() || 'application/octet-stream',
+    }
+  },
+
   async uploadImage(fileName: string, folder: UploadFolder): Promise<UploadResult> {
     const safeName = fileName.replace(/[^a-zA-Z0-9._-]/g, '-').toLowerCase() || 'upload'
     const publicId = `${folder}/${Date.now()}-${safeName}`

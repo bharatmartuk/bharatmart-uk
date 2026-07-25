@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { MerchantService } from '@bharatmart/services'
+import { MerchantService, UploadService } from '@bharatmart/services'
 import { getCurrentUser } from '@/auth'
 
 export const runtime = 'nodejs'
@@ -14,16 +14,6 @@ function parseDataUrl(dataUrl: string) {
   }
 }
 
-function guessContentType(url: string) {
-  if (/\.pdf($|\?|#)/i.test(url) || url.includes('/raw/upload/')) return 'application/pdf'
-  if (/\.png($|\?|#)/i.test(url)) return 'image/png'
-  if (/\.jpe?g($|\?|#)/i.test(url)) return 'image/jpeg'
-  if (/\.webp($|\?|#)/i.test(url)) return 'image/webp'
-  if (/\.gif($|\?|#)/i.test(url)) return 'image/gif'
-  if (/\.avif($|\?|#)/i.test(url)) return 'image/avif'
-  return 'application/octet-stream'
-}
-
 function documentUrlsForMerchant(merchant: {
   verificationDocumentUrls: string[]
   hasPhysicalStore: boolean
@@ -36,58 +26,6 @@ function documentUrlsForMerchant(merchant: {
     merchant.hasPhysicalStore ? merchant.physicalStorePhotoUrl : null,
     merchant.foodLicenseUrl,
   ].filter((value): value is string => Boolean(value))
-}
-
-async function proxyRemoteDocument(url: string, requestUrl: string) {
-  try {
-    const target = new URL(url, requestUrl)
-    if (target.pathname.startsWith('/api/uploads/files/')) {
-      const response = await fetch(target, {
-        headers: { Accept: '*/*' },
-        redirect: 'follow',
-      })
-      if (!response.ok) {
-        return NextResponse.json({ error: 'Failed to load document' }, { status: 502 })
-      }
-      const buffer = Buffer.from(await response.arrayBuffer())
-      const contentType =
-        response.headers.get('content-type')?.split(';')[0]?.trim() || guessContentType(url)
-      return new NextResponse(new Uint8Array(buffer), {
-        headers: {
-          'Content-Type': contentType,
-          'Cache-Control': 'private, no-store',
-          'Content-Disposition': 'inline',
-          'X-Content-Type-Options': 'nosniff',
-        },
-      })
-    }
-  } catch {
-    // fall through to absolute remote fetch
-  }
-
-  const response = await fetch(url, {
-    headers: { Accept: '*/*' },
-    redirect: 'follow',
-  })
-  if (!response.ok) {
-    return NextResponse.json(
-      { error: 'Failed to load document from storage' },
-      { status: 502 },
-    )
-  }
-
-  const buffer = Buffer.from(await response.arrayBuffer())
-  const contentType =
-    response.headers.get('content-type')?.split(';')[0]?.trim() || guessContentType(url)
-
-  return new NextResponse(new Uint8Array(buffer), {
-    headers: {
-      'Content-Type': contentType,
-      'Cache-Control': 'private, no-store',
-      'Content-Disposition': 'inline',
-      'X-Content-Type-Options': 'nosniff',
-    },
-  })
 }
 
 export async function GET(
@@ -131,9 +69,50 @@ export async function GET(
     })
   }
 
+  const preview = new URL(request.url).searchParams.get('preview') === '1'
+
   try {
-    return await proxyRemoteDocument(url, request.url)
-  } catch {
-    return NextResponse.json({ error: 'Failed to load document' }, { status: 502 })
+    // Same-origin relative uploads on the merchant app (legacy).
+    try {
+      const target = new URL(url, request.url)
+      if (target.pathname.startsWith('/api/uploads/files/')) {
+        const response = await fetch(target, {
+          headers: { Accept: '*/*' },
+          redirect: 'follow',
+        })
+        if (!response.ok) {
+          return NextResponse.json({ error: 'Failed to load document' }, { status: 502 })
+        }
+        const buffer = Buffer.from(await response.arrayBuffer())
+        return new NextResponse(new Uint8Array(buffer), {
+          headers: {
+            'Content-Type':
+              response.headers.get('content-type')?.split(';')[0]?.trim() ||
+              'application/octet-stream',
+            'Cache-Control': 'private, no-store',
+            'Content-Disposition': 'inline',
+            'X-Content-Type-Options': 'nosniff',
+          },
+        })
+      }
+    } catch {
+      // fall through to Cloudinary / remote fetch
+    }
+
+    const { buffer, contentType } = await UploadService.fetchStoredFile(url, { preview })
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: {
+        'Content-Type': contentType,
+        'Cache-Control': 'private, no-store',
+        'Content-Disposition': 'inline',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    })
+  } catch (error) {
+    console.error('[merchant-documents]', error instanceof Error ? error.message : error)
+    return NextResponse.json(
+      { error: 'Failed to load document from storage' },
+      { status: 502 },
+    )
   }
 }
