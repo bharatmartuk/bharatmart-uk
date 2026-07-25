@@ -45,7 +45,6 @@ export default async function MerchantVerificationPage({
       <section className="space-y-4">
         <div className="flex flex-wrap items-start gap-4">
           {merchant.storeLogoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
             <img
               alt={`${merchant.storeName} logo`}
               className="h-16 w-16 rounded-xl border border-[#d6c4ad] bg-white object-contain p-1"

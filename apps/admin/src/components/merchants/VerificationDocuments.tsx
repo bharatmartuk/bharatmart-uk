@@ -90,7 +90,6 @@ function DocumentPreview({
 
   if (kind === 'image') {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
       <img
         alt={label}
         className="max-h-72 w-full rounded-lg bg-white object-contain"
