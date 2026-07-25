@@ -13,7 +13,7 @@ import { AddressForm, type AddressRecord } from '@/components/account/AddressFor
 export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
   const router = useRouter()
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [showCreateForm, setShowCreateForm] = useState(addresses.length === 0)
+  const [showCreateForm, setShowCreateForm] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -58,7 +58,7 @@ export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
     <div className="space-y-6">
       {addresses.length === 0 ? (
         <p className="text-sm text-[#514534]">
-          No saved addresses yet. Add one below to use it at checkout.
+          No saved addresses yet. Add one when you are ready to use it at checkout.
         </p>
       ) : (
         <div className="grid gap-3 sm:grid-cols-2">
@@ -154,7 +154,7 @@ export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
         <div className="rounded-xl border border-dashed border-[#d6c4ad] bg-white p-4">
           <h3 className="mb-4 font-semibold text-[#1e1b16]">Add a delivery address</h3>
           <AddressForm
-            onCancel={addresses.length > 0 ? () => setShowCreateForm(false) : undefined}
+            onCancel={() => setShowCreateForm(false)}
             onCreated={() => {
               setShowCreateForm(false)
               refresh()
@@ -170,7 +170,7 @@ export function AddressBook({ addresses }: { addresses: AddressRecord[] }) {
           }}
           type="button"
         >
-          Add a delivery address
+          Add address
         </Button>
       )}
     </div>

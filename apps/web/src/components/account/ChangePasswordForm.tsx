@@ -9,6 +9,7 @@ import { Button, Input, Label, toast } from '@bharatmart/ui'
 import { changePasswordAction } from '@/app/(shop)/account/actions'
 
 export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
+  const [open, setOpen] = useState(false)
   const [success, setSuccess] = useState(false)
   const {
     register,
@@ -41,9 +42,31 @@ export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
     }
     reset()
     setSuccess(true)
+    setOpen(false)
     toast.success('Password updated', {
       description: 'Use your new password the next time you sign in.',
     })
+  }
+
+  if (!open) {
+    return (
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <p className="text-sm text-[#514534]">
+          Update the password you use to sign in to BharatMart.
+        </p>
+        <Button
+          className="bg-[#7f5700] text-white hover:bg-[#604100]"
+          onClick={() => {
+            setSuccess(false)
+            setOpen(true)
+          }}
+          type="button"
+        >
+          <KeyRound className="mr-2 h-4 w-4" aria-hidden />
+          Change password
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -87,14 +110,27 @@ export function ChangePasswordForm({ hasPassword }: { hasPassword: boolean }) {
       {success ? (
         <p className="text-sm text-[#2e6a39]">Your password has been changed successfully.</p>
       ) : null}
-      <Button
-        className="bg-[#7f5700] text-white hover:bg-[#604100]"
-        disabled={isSubmitting}
-        type="submit"
-      >
-        <KeyRound className="mr-2 h-4 w-4" aria-hidden />
-        {isSubmitting ? 'Updating…' : 'Update password'}
-      </Button>
+      <div className="flex flex-wrap gap-3">
+        <Button
+          className="bg-[#7f5700] text-white hover:bg-[#604100]"
+          disabled={isSubmitting}
+          type="submit"
+        >
+          <KeyRound className="mr-2 h-4 w-4" aria-hidden />
+          {isSubmitting ? 'Updating…' : 'Update password'}
+        </Button>
+        <Button
+          disabled={isSubmitting}
+          onClick={() => {
+            reset()
+            setOpen(false)
+          }}
+          type="button"
+          variant="outline"
+        >
+          Cancel
+        </Button>
+      </div>
     </form>
   )
 }
