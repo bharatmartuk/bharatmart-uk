@@ -28,67 +28,41 @@ export default async function HomePage() {
   ])
 
   const areaLabel = location.status === 'set' && location.postcode ? location.postcode : null
-  const hasPostcode = Boolean(areaLabel)
-
-  const newArrivalsSection = (
-    <ProductSection
-      id="new-arrivals-heading"
-      products={newArrivals}
-      subtitle={
-        areaLabel
-          ? `Fresh listings that deliver to ${areaLabel}`
-          : 'Fresh listings from merchants across the UK'
-      }
-      title="New Arrivals"
-      viewAllHref={
-        area && location.postcode
-          ? `/products?sort=newest&postcode=${encodeURIComponent(location.postcode)}`
-          : '/products?sort=newest'
-      }
-    />
-  )
-
-  const featuredSection = (
-    <ProductSection
-      id="featured-products-heading"
-      products={featuredProducts}
-      subtitle={
-        areaLabel
-          ? `Curated picks available near ${areaLabel}`
-          : 'Curated picks our community loves'
-      }
-      title="Featured Products"
-    />
-  )
 
   return (
     <main>
-      {/* Without a postcode, lead with products so shoppers can browse immediately. */}
-      {!hasPostcode ? (
-        <>
-          {newArrivalsSection}
-          {featuredSection}
-          <HeroCarousel banners={banners} />
-          <CategoryGrid categories={categories} />
-          <FeaturedMerchants
-            merchants={merchants}
-            title="Top Rated Merchants"
-          />
-          <TrustStrip />
-        </>
-      ) : (
-        <>
-          <HeroCarousel banners={banners} />
-          <CategoryGrid categories={categories} />
-          {newArrivalsSection}
-          {featuredSection}
-          <FeaturedMerchants
-            merchants={merchants}
-            title={`Merchants near ${areaLabel}`}
-          />
-          <TrustStrip />
-        </>
-      )}
+      <HeroCarousel banners={banners} />
+      <CategoryGrid categories={categories} />
+      <ProductSection
+        id="new-arrivals-heading"
+        products={newArrivals}
+        subtitle={
+          areaLabel
+            ? `Fresh listings that deliver to ${areaLabel}`
+            : 'Fresh listings from merchants across the UK'
+        }
+        title="New Arrivals"
+        viewAllHref={
+          area && location.postcode
+            ? `/products?sort=newest&postcode=${encodeURIComponent(location.postcode)}`
+            : '/products?sort=newest'
+        }
+      />
+      <ProductSection
+        id="featured-products-heading"
+        products={featuredProducts}
+        subtitle={
+          areaLabel
+            ? `Curated picks available near ${areaLabel}`
+            : 'Curated picks our community loves'
+        }
+        title="Featured Products"
+      />
+      <FeaturedMerchants
+        merchants={merchants}
+        title={areaLabel ? `Merchants near ${areaLabel}` : 'Top Rated Merchants'}
+      />
+      <TrustStrip />
     </main>
   )
 }
