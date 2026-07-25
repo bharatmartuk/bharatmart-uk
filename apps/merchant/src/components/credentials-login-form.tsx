@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import { safeInternalPath } from '@bharatmart/utils'
 import { Button, Input, Label } from '@bharatmart/ui'
 import { useGoogleAuthAvailable } from '@/hooks/use-google-auth-available'
+import { resendSellerVerificationAction } from '@/app/(onboarding)/register-actions'
 
 type CredentialsLoginFormProps = {
   title: string
@@ -30,6 +31,8 @@ export function CredentialsLoginForm({
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
+  const [needsVerification, setNeedsVerification] = useState(false)
+  const [resending, setResending] = useState(false)
   const [pending, setPending] = useState(false)
 
   async function routeAfterSignIn() {
@@ -41,7 +44,6 @@ export function CredentialsLoginForm({
       return
     }
 
-    // Prospective sellers stay on login until they choose Continue registration.
     if (role === 'CUSTOMER') {
       window.location.assign('/login?continueRegistration=1')
       return
@@ -53,6 +55,7 @@ export function CredentialsLoginForm({
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError(null)
+    setNeedsVerification(false)
     setPending(true)
 
     const result = await signIn('credentials', {
@@ -67,6 +70,7 @@ export function CredentialsLoginForm({
       if (result.code === 'rate_limited') {
         setError('Too many login attempts. Please wait a few minutes and try again.')
       } else if (result.code === 'email_not_verified') {
+        setNeedsVerification(true)
         setError(
           'Please verify your email before signing in. Check your inbox for the confirmation link.',
         )
@@ -76,16 +80,29 @@ export function CredentialsLoginForm({
       return
     }
 
-    // Hard navigation so middleware sees the new session cookie immediately.
     await routeAfterSignIn()
+  }
+
+  async function onResendVerification() {
+    if (!email.trim()) {
+      setError('Enter your email address first.')
+      return
+    }
+    setResending(true)
+    const result = await resendSellerVerificationAction(email)
+    setResending(false)
+    if (!result.ok) {
+      setError(result.error)
+      return
+    }
+    setError(null)
+    setNeedsVerification(true)
   }
 
   async function onGoogleSignIn() {
     setError(null)
     setPending(true)
     try {
-      // Always return to login first. Merchants are sent to the dashboard from there;
-      // customers can choose Continue registration explicitly.
       await signIn('google', { callbackUrl: '/login?continueRegistration=1' })
     } catch {
       setPending(false)
@@ -127,30 +144,42 @@ export function CredentialsLoginForm({
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
-              id="email"
-              type="email"
               autoComplete="email"
-              required
-              value={email}
+              id="email"
               onChange={(event) => setEmail(event.target.value)}
+              required
+              type="email"
+              value={email}
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
-              id="password"
-              type="password"
               autoComplete="current-password"
-              required
-              value={password}
+              id="password"
               onChange={(event) => setPassword(event.target.value)}
+              required
+              type="password"
+              value={password}
             />
           </div>
 
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-          <Button type="submit" className="w-full" disabled={pending}>
+          {needsVerification ? (
+            <Button
+              className="w-full"
+              disabled={resending}
+              onClick={() => void onResendVerification()}
+              type="button"
+              variant="outline"
+            >
+              {resending ? 'Sending…' : 'Resend verification email'}
+            </Button>
+          ) : null}
+
+          <Button className="w-full" disabled={pending} type="submit">
             {pending ? 'Signing in…' : 'Sign in'}
           </Button>
         </form>
@@ -158,7 +187,7 @@ export function CredentialsLoginForm({
 
       {!isCustomerSession && googleAvailable ? (
         <>
-          <div className="flex items-center gap-3" aria-hidden="true">
+          <div aria-hidden="true" className="flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
             <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               or
@@ -172,24 +201,6 @@ export function CredentialsLoginForm({
             type="button"
             variant="outline"
           >
-            <svg aria-hidden="true" className="mr-2 h-4 w-4" viewBox="0 0 24 24">
-              <path
-                d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.55h3.24c1.9-1.75 2.98-4.32 2.98-7.42Z"
-                fill="#4285F4"
-              />
-              <path
-                d="M12 22c2.7 0 4.98-.9 6.63-2.35l-3.24-2.55c-.9.6-2.05.96-3.39.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.63A10 10 0 0 0 12 22Z"
-                fill="#34A853"
-              />
-              <path
-                d="M6.39 13.93A6 6 0 0 1 6.08 12c0-.67.12-1.32.31-1.93V7.44H3.04A10 10 0 0 0 2 12c0 1.64.39 3.19 1.04 4.56l3.35-2.63Z"
-                fill="#FBBC05"
-              />
-              <path
-                d="M12 5.94c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.96 5.44l3.35 2.63C7.18 7.7 9.39 5.94 12 5.94Z"
-                fill="#EA4335"
-              />
-            </svg>
             Continue with Google
           </Button>
         </>

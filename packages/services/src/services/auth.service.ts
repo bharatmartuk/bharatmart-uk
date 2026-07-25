@@ -53,13 +53,18 @@ async function createEmailVerificationToken(email: string) {
   return rawToken
 }
 
-async function sendVerificationEmail(user: {
-  email: string | null
-  name: string | null
-}) {
+async function sendVerificationEmail(
+  user: {
+    email: string | null
+    name: string | null
+  },
+  options?: { audience?: 'customer' | 'seller' },
+) {
   if (!user.email) return
   const rawToken = await createEmailVerificationToken(user.email)
-  const verifyUrl = `${appBaseUrl()}/verify-email?token=${encodeURIComponent(rawToken)}`
+  const audience =
+    options?.audience === 'seller' ? '&audience=seller' : ''
+  const verifyUrl = `${appBaseUrl()}/verify-email?token=${encodeURIComponent(rawToken)}${audience}`
   await NotificationService.sendEmailVerification(
     user.email,
     verifyUrl,
@@ -73,13 +78,12 @@ export const AuthService = {
   },
 
   /**
-   * Register a customer. Email stays unverified until they click the link,
-   * unless `autoVerify` is set (used for seller onboarding where they need to
-   * continue into business registration immediately).
+   * Register a customer / prospective seller.
+   * Email stays unverified until they click the link, unless `autoVerify` is set.
    */
   async registerCustomer(
     input: RegisterInput,
-    options?: { autoVerify?: boolean },
+    options?: { autoVerify?: boolean; verificationAudience?: 'customer' | 'seller' },
   ) {
     const parsed = registerSchema.safeParse({
       ...input,
@@ -107,7 +111,9 @@ export const AuthService = {
     await orderRepository.attachGuestOrdersToUser(user.id, parsed.data.email)
 
     if (!options?.autoVerify) {
-      await sendVerificationEmail(user)
+      await sendVerificationEmail(user, {
+        audience: options?.verificationAudience ?? 'customer',
+      })
     }
 
     return user
@@ -158,7 +164,10 @@ export const AuthService = {
    * Always returns success-shaped messaging to the caller so we do not leak
    * whether an email is registered. Emails are only sent for real unverified accounts.
    */
-  async resendVerificationEmail(email: string) {
+  async resendVerificationEmail(
+    email: string,
+    options?: { audience?: 'customer' | 'seller' },
+  ) {
     const normalized = email.trim().toLowerCase()
     if (!normalized) {
       throw new ValidationError('Enter a valid email address.')
@@ -169,7 +178,7 @@ export const AuthService = {
       return { sent: false as const }
     }
 
-    await sendVerificationEmail(user)
+    await sendVerificationEmail(user, { audience: options?.audience ?? 'customer' })
     return { sent: true as const }
   },
 

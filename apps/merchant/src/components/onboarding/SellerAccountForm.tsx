@@ -7,12 +7,18 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import { registerSchema, type RegisterInput } from '@bharatmart/validation'
 import { Button, Input, Label } from '@bharatmart/ui'
-import { registerSellerAccountAction } from '@/app/(onboarding)/register-actions'
+import {
+  registerSellerAccountAction,
+  resendSellerVerificationAction,
+} from '@/app/(onboarding)/register-actions'
 import { useGoogleAuthAvailable } from '@/hooks/use-google-auth-available'
 
 export function SellerAccountForm() {
   const googleAvailable = useGoogleAuthAvailable()
   const [error, setError] = useState<string | null>(null)
+  const [pendingEmail, setPendingEmail] = useState<string | null>(null)
+  const [emailSent, setEmailSent] = useState(true)
+  const [resending, setResending] = useState(false)
   const {
     register,
     handleSubmit,
@@ -30,19 +36,21 @@ export function SellerAccountForm() {
       return
     }
 
-    const result = await signIn('credentials', {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-      callbackUrl: '/register-business?intent=continue',
-    })
+    setEmailSent(created.emailSent)
+    setPendingEmail(created.email)
+  }
 
-    if (result?.error) {
-      setError('Account created, but sign-in failed. Please log in.')
+  async function onResend() {
+    if (!pendingEmail) return
+    setResending(true)
+    setError(null)
+    const result = await resendSellerVerificationAction(pendingEmail)
+    setResending(false)
+    if (!result.ok) {
+      setError(result.error)
       return
     }
-
-    window.location.assign('/register-business?intent=continue')
+    setEmailSent(true)
   }
 
   async function onGoogleSignUp() {
@@ -54,13 +62,49 @@ export function SellerAccountForm() {
     }
   }
 
+  if (pendingEmail) {
+    return (
+      <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 px-6 py-16">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold tracking-tight">Verify your email</h1>
+          <p className="text-sm text-muted-foreground">
+            {emailSent ? (
+              <>
+                We sent a confirmation link to <strong>{pendingEmail}</strong>. Open it to activate
+                your seller account, then sign in to continue registration.
+              </>
+            ) : (
+              <>
+                Your account for <strong>{pendingEmail}</strong> was created, but the confirmation
+                email could not be sent yet. Tap below to try again.
+              </>
+            )}
+          </p>
+        </div>
+
+        <div className="space-y-3 rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4 text-sm text-[#514534]">
+          <p>
+            Didn&apos;t get it? Check spam, or request a new link. Links expire after 24 hours.
+          </p>
+          {error ? <p className="text-[#a83635]">{error}</p> : null}
+          <Button className="w-full" disabled={resending} onClick={() => void onResend()} type="button">
+            {resending ? 'Sending…' : 'Resend verification email'}
+          </Button>
+          <Button asChild className="w-full" variant="outline">
+            <Link href="/login">Back to sign in</Link>
+          </Button>
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="mx-auto flex min-h-screen max-w-md flex-col justify-center gap-6 px-6 py-16">
       <div className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight">Register your business</h1>
         <p className="text-sm text-muted-foreground">
-          Create a seller account first, then we&apos;ll collect your business details for
-          verification.
+          Create a seller account and verify your email, then we&apos;ll collect your business
+          details for admin approval.
         </p>
       </div>
 
