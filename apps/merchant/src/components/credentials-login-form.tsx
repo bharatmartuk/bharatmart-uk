@@ -2,7 +2,7 @@
 
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
-import { signIn } from 'next-auth/react'
+import { getSession, signIn, signOut } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { safeInternalPath } from '@bharatmart/utils'
 import { Button, Input, Label } from '@bharatmart/ui'
@@ -21,11 +21,29 @@ export function CredentialsLoginForm({
 }: CredentialsLoginFormProps) {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? defaultRedirect
+  const continueRegistration = searchParams.get('continueRegistration') === '1'
   const googleAvailable = useGoogleAuthAvailable()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+
+  async function routeAfterSignIn() {
+    const session = await getSession()
+    const role = session?.user?.role
+
+    if (role === 'MERCHANT') {
+      window.location.assign('/')
+      return
+    }
+
+    if (role === 'CUSTOMER') {
+      window.location.assign('/register-business')
+      return
+    }
+
+    window.location.assign(safeInternalPath(callbackUrl, '/', null))
+  }
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -39,13 +57,14 @@ export function CredentialsLoginForm({
       callbackUrl,
     })
 
-    setPending(false)
-
     if (result?.error) {
+      setPending(false)
       if (result.code === 'rate_limited') {
         setError('Too many login attempts. Please wait a few minutes and try again.')
       } else if (result.code === 'email_not_verified') {
-        setError('Please verify your email before signing in. Check your inbox for the confirmation link.')
+        setError(
+          'Please verify your email before signing in. Check your inbox for the confirmation link.',
+        )
       } else {
         setError('Invalid email or password, or this account is not allowed here.')
       }
@@ -53,14 +72,15 @@ export function CredentialsLoginForm({
     }
 
     // Hard navigation so middleware sees the new session cookie immediately.
-    window.location.assign(safeInternalPath(callbackUrl, '/', result?.url))
+    await routeAfterSignIn()
   }
 
   async function onGoogleSignIn() {
     setError(null)
     setPending(true)
     try {
-      // New sellers land on onboarding; existing merchants go to the dashboard.
+      // Existing merchants bounce from /register-business to the dashboard;
+      // new Google sellers continue into business onboarding there.
       await signIn('google', { callbackUrl: '/register-business' })
     } catch {
       setPending(false)
@@ -74,6 +94,28 @@ export function CredentialsLoginForm({
         <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
         <p className="text-sm text-muted-foreground">{subtitle}</p>
       </div>
+
+      {continueRegistration ? (
+        <div className="space-y-3 rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4 text-sm text-[#514534]">
+          <p>
+            You&apos;re signed in, but your seller profile is not finished yet. Continue registration
+            or sign out and use a different account.
+          </p>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button asChild className="flex-1" type="button">
+              <Link href="/register-business">Continue registration</Link>
+            </Button>
+            <Button
+              className="flex-1"
+              onClick={() => void signOut({ callbackUrl: '/login' })}
+              type="button"
+              variant="outline"
+            >
+              Sign out
+            </Button>
+          </div>
+        </div>
+      ) : null}
 
       <form onSubmit={onSubmit} className="space-y-4">
         <div className="space-y-2">
@@ -146,7 +188,10 @@ export function CredentialsLoginForm({
       ) : null}
       <p className="text-center text-sm text-muted-foreground">
         New seller?{' '}
-        <Link className="font-medium text-primary underline-offset-4 hover:underline" href="/register-business">
+        <Link
+          className="font-medium text-primary underline-offset-4 hover:underline"
+          href="/register-business"
+        >
           Register your business
         </Link>
       </p>

@@ -72,17 +72,28 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
 
 /**
  * Merchant portal middleware:
+ * - Unauthenticated users always land on /login
  * - MERCHANT can access the full dashboard
- * - CUSTOMER can only access onboarding / verification-pending (Become a Seller flow)
+ * - CUSTOMER may access onboarding / verification-pending only
+ *   (they are not auto-dumped into registration from the homepage)
  */
 export function createMerchantPortalMiddleware() {
   const onboardingPaths = ['/register-business', '/verification-pending']
-  const publicPaths = ['/login', '/forbidden', '/api/auth', '/register-business']
+  const publicPaths = ['/login', '/forbidden', '/api/auth']
 
   return async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl
 
     if (publicPaths.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+      return NextResponse.next()
+    }
+
+    // Registration is reachable without a session so new sellers can sign up
+    // from the login page link — but it is not the default landing page.
+    if (
+      pathname === '/register-business' ||
+      pathname.startsWith('/register-business/')
+    ) {
       return NextResponse.next()
     }
 
@@ -98,7 +109,7 @@ export function createMerchantPortalMiddleware() {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       }
       const loginUrl = new URL('/login', req.url)
-      loginUrl.searchParams.set('callbackUrl', pathname)
+      loginUrl.searchParams.set('callbackUrl', pathname === '/' ? '/' : pathname)
       return NextResponse.redirect(loginUrl)
     }
 
@@ -116,7 +127,8 @@ export function createMerchantPortalMiddleware() {
       return NextResponse.next()
     }
 
-    // Prospective sellers (CUSTOMER) may only onboard.
+    // Prospective sellers (CUSTOMER) may only continue onboarding when they
+    // explicitly open those routes — never auto-redirect the homepage there.
     if (role === UserRole.CUSTOMER) {
       const isOnboarding = onboardingPaths.some(
         (path) => pathname === path || pathname.startsWith(`${path}/`),
@@ -124,7 +136,9 @@ export function createMerchantPortalMiddleware() {
       if (isOnboarding) {
         return NextResponse.next()
       }
-      return NextResponse.redirect(new URL('/register-business', req.url))
+      const loginUrl = new URL('/login', req.url)
+      loginUrl.searchParams.set('continueRegistration', '1')
+      return NextResponse.redirect(loginUrl)
     }
 
     return NextResponse.redirect(new URL('/forbidden', req.url))
