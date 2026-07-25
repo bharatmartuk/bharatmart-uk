@@ -145,7 +145,32 @@ export function MerchantOnboardingForm() {
     setStep((current) => Math.min(steps.length - 1, current + 1))
   }
 
+  function addDeliveryPostcode() {
+    const code = postcodeInput.trim().toUpperCase()
+    if (!code) return
+    form.setValue(
+      'deliveryPostcodes',
+      [...new Set([...(values.deliveryPostcodes ?? []), code])],
+      { shouldValidate: true },
+    )
+    setPostcodeInput('')
+  }
+
+  function removeDeliveryPostcode(code: string) {
+    form.setValue(
+      'deliveryPostcodes',
+      (values.deliveryPostcodes ?? []).filter((entry) => entry !== code),
+      { shouldValidate: true },
+    )
+  }
+
   async function onSubmit(data: MerchantOnboardingInput) {
+    // Only the Review step may submit — never skip the preview.
+    if (step !== steps.length - 1) {
+      await goNext()
+      return
+    }
+
     setError(null)
     const result = await submitMerchantOnboarding(data)
     if (!result.ok) {
@@ -158,6 +183,9 @@ export function MerchantOnboardingForm() {
     router.push('/verification-pending')
     router.refresh()
   }
+
+  const businessTypeLabel =
+    businessTypes.find(([value]) => value === values.businessType)?.[1] ?? values.businessType
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -178,13 +206,25 @@ export function MerchantOnboardingForm() {
       <Card className="mt-8 border-[#d6c4ad]">
         <CardHeader>
           <CardTitle>{steps[step]}</CardTitle>
+          {step === 3 ? (
+            <p className="text-sm font-normal text-[#514534]">
+              Check every detail below. Nothing is submitted until you confirm.
+            </p>
+          ) : null}
         </CardHeader>
         <CardContent>
           <form
             className="space-y-4"
-            onSubmit={form.handleSubmit(onSubmit, (errors) => {
-              setError(firstErrorMessage(errors))
-            })}
+            onSubmit={(event) => {
+              // Block accidental Enter-key submits on steps 1-3; only Review may submit.
+              if (step < steps.length - 1) {
+                event.preventDefault()
+                return
+              }
+              void form.handleSubmit(onSubmit, (errors) => {
+                setError(firstErrorMessage(errors))
+              })(event)
+            }}
           >
             {step === 0 ? (
               <>
@@ -405,28 +445,36 @@ export function MerchantOnboardingForm() {
                   <div className="flex gap-2">
                     <Input
                       onChange={(event) => setPostcodeInput(event.target.value.toUpperCase())}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter') {
+                          event.preventDefault()
+                          addDeliveryPostcode()
+                        }
+                      }}
                       placeholder="E1"
                       value={postcodeInput}
                     />
-                    <Button
-                      onClick={() => {
-                        if (!postcodeInput.trim()) return
-                        form.setValue(
-                          'deliveryPostcodes',
-                          [...new Set([...(values.deliveryPostcodes ?? []), postcodeInput.trim()])],
-                          { shouldValidate: true },
-                        )
-                        setPostcodeInput('')
-                      }}
-                      type="button"
-                      variant="outline"
-                    >
+                    <Button onClick={addDeliveryPostcode} type="button" variant="outline">
                       Add
                     </Button>
                   </div>
-                  <p className="text-xs text-[#514534]">
-                    {(values.deliveryPostcodes ?? []).join(', ') || 'None added yet - add at least one'}
-                  </p>
+                  {(values.deliveryPostcodes ?? []).length > 0 ? (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {(values.deliveryPostcodes ?? []).map((code) => (
+                        <button
+                          className="inline-flex items-center gap-1 rounded-full border border-[#d6c4ad] bg-[#f9f3ea] px-2.5 py-1 text-xs font-medium text-[#514534] hover:border-[#a83635] hover:text-[#a83635]"
+                          key={code}
+                          onClick={() => removeDeliveryPostcode(code)}
+                          type="button"
+                        >
+                          {code}
+                          <span aria-hidden>×</span>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-[#514534]">None added yet - add at least one</p>
+                  )}
                   {fieldErrors.deliveryPostcodes ? (
                     <p className="text-xs text-[#a83635]">{fieldErrors.deliveryPostcodes.message}</p>
                   ) : null}
@@ -435,37 +483,126 @@ export function MerchantOnboardingForm() {
             ) : null}
 
             {step === 3 ? (
-              <div className="space-y-2 text-sm text-[#514534]">
-                <p>
-                  <strong>Company / business:</strong> {values.businessName} ({values.businessType})
-                </p>
-                <p>
-                  <strong>Company number:</strong> {values.registrationNumber || '—'}
-                </p>
-                <p>
-                  <strong>Registered office:</strong> {values.registeredAddress}
-                </p>
-                <p>
-                  <strong>Contact number:</strong> {values.contactPhone}
-                </p>
-                <p>
-                  <strong>Store:</strong> {values.storeName} / {values.storeSlug}
-                </p>
-                <p>
-                  <strong>Store logo:</strong>{' '}
-                  {values.storeLogoUrl ? 'Uploaded' : 'Missing'}
-                </p>
-                <p>
-                  <strong>Delivery:</strong>{' '}
-                  {(values.deliveryPostcodes ?? []).join(', ') || 'None'}
-                </p>
-                <p>
-                  <strong>Documents:</strong>{' '}
-                  {values.businessDocumentUrl && values.idProofUrl
-                    ? 'Business + owner ID uploaded'
-                    : 'Missing uploads'}
-                  {values.hasPhysicalStore ? ' · Store photo' : ''}
-                  {needsFoodLicense ? ' · Food licence' : ''}
+              <div className="space-y-4">
+                <div className="rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="font-semibold text-[#1e1b16]">Business details</h3>
+                    <Button onClick={() => setStep(0)} size="sm" type="button" variant="outline">
+                      Edit
+                    </Button>
+                  </div>
+                  <dl className="space-y-2 text-sm text-[#514534]">
+                    <div className="flex justify-between gap-4">
+                      <dt>Company / business</dt>
+                      <dd className="text-right font-medium text-[#1e1b16]">{values.businessName}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Company number</dt>
+                      <dd className="text-right font-medium text-[#1e1b16]">
+                        {values.registrationNumber || '—'}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Business type</dt>
+                      <dd className="text-right font-medium text-[#1e1b16]">{businessTypeLabel}</dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Registered office</dt>
+                      <dd className="max-w-[60%] text-right font-medium text-[#1e1b16]">
+                        {values.registeredAddress}
+                      </dd>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <dt>Contact number</dt>
+                      <dd className="text-right font-medium text-[#1e1b16]">{values.contactPhone}</dd>
+                    </div>
+                  </dl>
+                </div>
+
+                <div className="rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="font-semibold text-[#1e1b16]">Documents</h3>
+                    <Button onClick={() => setStep(1)} size="sm" type="button" variant="outline">
+                      Edit
+                    </Button>
+                  </div>
+                  <ul className="space-y-1.5 text-sm text-[#514534]">
+                    <li>
+                      Business document:{' '}
+                      <strong className="text-[#1e1b16]">
+                        {values.businessDocumentUrl ? 'Uploaded' : 'Missing'}
+                      </strong>
+                    </li>
+                    <li>
+                      Owner ID proof:{' '}
+                      <strong className="text-[#1e1b16]">
+                        {values.idProofUrl ? 'Uploaded' : 'Missing'}
+                      </strong>
+                    </li>
+                    <li>
+                      Physical store:{' '}
+                      <strong className="text-[#1e1b16]">
+                        {values.hasPhysicalStore
+                          ? values.physicalStorePhotoUrl
+                            ? 'Yes · photo uploaded'
+                            : 'Yes · photo missing'
+                          : 'No'}
+                      </strong>
+                    </li>
+                    {needsFoodLicense ? (
+                      <li>
+                        Food licence:{' '}
+                        <strong className="text-[#1e1b16]">
+                          {values.foodLicenseUrl ? 'Uploaded' : 'Missing'}
+                        </strong>
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
+
+                <div className="rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <h3 className="font-semibold text-[#1e1b16]">Store setup</h3>
+                    <Button onClick={() => setStep(2)} size="sm" type="button" variant="outline">
+                      Edit
+                    </Button>
+                  </div>
+                  <div className="flex gap-4">
+                    {values.storeLogoUrl ? (
+                      <img
+                        alt="Store logo preview"
+                        className="h-16 w-16 shrink-0 rounded-xl border border-[#d6c4ad] object-cover"
+                        src={values.storeLogoUrl}
+                      />
+                    ) : null}
+                    <dl className="min-w-0 flex-1 space-y-2 text-sm text-[#514534]">
+                      <div className="flex justify-between gap-4">
+                        <dt>Store name</dt>
+                        <dd className="text-right font-medium text-[#1e1b16]">{values.storeName}</dd>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <dt>Store slug</dt>
+                        <dd className="text-right font-medium text-[#1e1b16]">{values.storeSlug}</dd>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <dt>Description</dt>
+                        <dd className="max-w-[65%] text-right font-medium text-[#1e1b16]">
+                          {values.storeDescription}
+                        </dd>
+                      </div>
+                      <div className="flex justify-between gap-4">
+                        <dt>Delivery postcodes</dt>
+                        <dd className="max-w-[65%] text-right font-medium text-[#1e1b16]">
+                          {(values.deliveryPostcodes ?? []).join(', ') || 'None'}
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
+
+                <p className="rounded-lg border border-[#d6c4ad] bg-white px-3 py-2 text-sm text-[#514534]">
+                  After you submit, your application goes to <strong>PENDING</strong> verification.
+                  An admin must approve it before you can sell.
                 </p>
               </div>
             ) : null}
@@ -474,7 +611,7 @@ export function MerchantOnboardingForm() {
 
             <div className="flex justify-between gap-3 pt-2">
               <Button
-                disabled={step === 0}
+                disabled={step === 0 || form.formState.isSubmitting}
                 onClick={() => setStep((current) => Math.max(0, current - 1))}
                 type="button"
                 variant="outline"
@@ -495,7 +632,7 @@ export function MerchantOnboardingForm() {
                   disabled={form.formState.isSubmitting}
                   type="submit"
                 >
-                  {form.formState.isSubmitting ? 'Submitting…' : 'Submit for verification'}
+                  {form.formState.isSubmitting ? 'Submitting…' : 'Confirm & submit for verification'}
                 </Button>
               )}
             </div>
