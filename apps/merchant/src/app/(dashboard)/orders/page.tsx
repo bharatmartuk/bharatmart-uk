@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Eye } from 'lucide-react'
 import { Badge, Card, CardContent } from '@bharatmart/ui'
 import { MerchantOrderService } from '@bharatmart/services'
 import { requireMerchant } from '@/lib/merchant-context'
@@ -70,7 +71,17 @@ export default async function MerchantOrdersPage({
                   · {order.orderItems.length} items · £{(order.subtotalInPence / 100).toFixed(2)}
                 </p>
               </div>
-              <Badge>{orderStatusLabel(order.status)}</Badge>
+              <div className="flex items-center gap-2">
+                <Badge>{orderStatusLabel(order.status)}</Badge>
+                <Link
+                  aria-label={`View order ${order.order.orderNumber}`}
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[#d6c4ad] bg-white text-[#514534] transition hover:border-[#7f5700] hover:bg-[#f4ede4] hover:text-[#7f5700]"
+                  href={`/orders/${order.id}`}
+                  title="View order details"
+                >
+                  <Eye aria-hidden className="h-4 w-4" />
+                </Link>
+              </div>
             </CardContent>
           </Card>
         ))}

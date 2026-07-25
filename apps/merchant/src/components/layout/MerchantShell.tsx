@@ -30,7 +30,7 @@ export function MerchantShell({
   return (
     <div className="flex min-h-screen flex-col bg-[#fff8f0] text-[#1e1b16]">
       <header className="sticky top-0 z-40 border-b border-[#d6c4ad] bg-[#fff8f0]">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
+        <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center justify-between gap-4 px-4 md:px-6 lg:px-8">
           <Link className="flex h-full items-center gap-2 font-semibold text-[#7f5700]" href="/">
             <img
               alt="BharatMart"
@@ -56,7 +56,7 @@ export function MerchantShell({
           </div>
         </div>
       </header>
-      <div className="mx-auto grid w-full max-w-7xl flex-1 gap-6 px-4 py-6 md:grid-cols-[220px_minmax(0,1fr)] md:items-start md:px-8">
+      <div className="mx-auto grid w-full max-w-[1600px] flex-1 gap-6 px-4 py-6 md:grid-cols-[220px_minmax(0,1fr)] md:items-start md:px-6 lg:px-8">
         <aside className="md:sticky md:top-20 md:self-start">
           <nav aria-label="Merchant" className="space-y-1">
             {nav.map(([label, href, Icon]) => {

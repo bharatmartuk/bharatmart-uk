@@ -1,8 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import {
-  Eye,
-  Heart,
   Plus,
   RotateCcw,
   Search,
@@ -277,22 +275,20 @@ export default async function MerchantProductsPage({
       ) : (
         <>
           <div className="hidden overflow-hidden rounded-2xl border border-[#d6c4ad] bg-white shadow-sm md:block">
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[960px] text-left text-sm">
-                <thead className="bg-[#f9f3ea] text-xs font-semibold uppercase tracking-wide text-[#514534]">
-                  <tr>
-                    <th className="px-4 py-3.5">
-                      <span className="sr-only">Select</span>
-                    </th>
-                    <th className="px-4 py-3.5">Product</th>
-                    <th className="px-4 py-3.5">Status</th>
-                    <th className="px-4 py-3.5">Stock</th>
-                    <th className="px-4 py-3.5">Price</th>
-                    <th className="px-4 py-3.5">Performance</th>
-                    <th className="px-4 py-3.5 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <table className="w-full table-fixed text-left text-sm">
+              <thead className="bg-[#f9f3ea] text-xs font-semibold uppercase tracking-wide text-[#514534]">
+                <tr>
+                  <th className="w-12 px-3 py-3.5">
+                    <span className="sr-only">Select</span>
+                  </th>
+                  <th className="px-3 py-3.5">Product</th>
+                  <th className="w-[9rem] px-3 py-3.5">Status</th>
+                  <th className="w-[13.5rem] px-3 py-3.5">Stock</th>
+                  <th className="w-[6.5rem] px-3 py-3.5">Price</th>
+                  <th className="w-[8.75rem] px-3 py-3.5 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
                   {pageProducts.map((product) => {
                     const imageUrl = product.images[0]?.url
                       ? (resolveMarketplaceAssetUrl(product.images[0].url) ??
@@ -303,21 +299,21 @@ export default async function MerchantProductsPage({
                         className="border-t border-[#eee7de] transition-colors hover:bg-[#fffdf9]"
                         key={product.id}
                       >
-                        <td className="px-4 py-4 align-middle">
+                        <td className="px-3 py-4 align-middle">
                           <Checkbox
                             aria-label={`Select ${product.name}`}
                             className="border-[#d6c4ad]"
                           />
                         </td>
-                        <td className="px-4 py-4">
-                          <div className="flex items-center gap-3">
-                            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-[#f4ede4] ring-1 ring-[#eee7de]">
+                        <td className="px-3 py-4">
+                          <div className="flex min-w-0 items-center gap-3">
+                            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-[#f4ede4] ring-1 ring-[#eee7de]">
                               {imageUrl ? (
                                 <Image
                                   alt=""
                                   className="object-cover"
                                   fill
-                                  sizes="64px"
+                                  sizes="56px"
                                   src={imageUrl}
                                   unoptimized
                                 />
@@ -327,55 +323,37 @@ export default async function MerchantProductsPage({
                                 </div>
                               )}
                             </div>
-                            <div className="min-w-0">
-                              <p className="truncate font-semibold text-[#1e1b16]">
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate font-semibold text-[#1e1b16]" title={product.name}>
                                 {product.name}
                               </p>
                               <p className="truncate text-xs text-[#837561]">
                                 {product.category.name}
                               </p>
-                              <p className="mt-0.5 text-xs text-[#837561]">
+                              <p className="mt-0.5 truncate text-xs text-[#837561]">
                                 SKU: {product.sku?.trim() ? product.sku : '—'}
                               </p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-4 py-4 align-middle">
+                        <td className="px-3 py-4 align-middle">
                           <ProductStatusBadge
                             status={product.status}
                             stockQuantity={product.stockQuantity}
                           />
                         </td>
-                        <td className="px-4 py-4 align-middle">
+                        <td className="px-3 py-4 align-middle">
                           <StockAdjuster
                             productId={product.id}
                             stockQuantity={product.stockQuantity}
                           />
                         </td>
-                        <td className="px-4 py-4 align-middle">
+                        <td className="px-3 py-4 align-middle">
                           <p className="text-base font-semibold text-[#1e1b16]">
                             {priceFormatter.format(product.priceInPence / 100)}
                           </p>
-                          <p className="text-xs text-[#837561]">Cost: —</p>
                         </td>
-                        <td className="px-4 py-4 align-middle">
-                          <div
-                            aria-label="Performance metrics unavailable"
-                            className="flex flex-col gap-1 text-xs text-[#837561]"
-                            title="Performance metrics coming soon"
-                          >
-                            <span className="inline-flex items-center gap-1.5">
-                              <Eye className="h-3.5 w-3.5" aria-hidden /> —
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                              <ShoppingCart className="h-3.5 w-3.5" aria-hidden /> — Sold
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                              <Heart className="h-3.5 w-3.5" aria-hidden /> —
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 align-middle">
+                        <td className="px-3 py-4 align-middle">
                           <ProductRowActions
                             productId={product.id}
                             slug={product.slug}
@@ -386,8 +364,7 @@ export default async function MerchantProductsPage({
                     )
                   })}
                 </tbody>
-              </table>
-            </div>
+            </table>
           </div>
 
           <div className="space-y-3 md:hidden">
@@ -433,7 +410,7 @@ export default async function MerchantProductsPage({
                         {priceFormatter.format(product.priceInPence / 100)}
                       </p>
                       <p className="text-xs text-[#837561]">
-                        Cost: — · {low ? 'Low stock' : `${product.stockQuantity} units`}
+                        {low ? 'Low stock' : `${product.stockQuantity} units`}
                       </p>
                     </div>
                   </div>

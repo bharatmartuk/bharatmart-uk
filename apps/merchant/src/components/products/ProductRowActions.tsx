@@ -39,27 +39,27 @@ export function ProductRowActions({
   const isActive = status === 'ACTIVE'
 
   return (
-    <div className="flex items-center justify-end gap-2">
+    <div className="flex items-center justify-end gap-1.5">
       <Button
         asChild
-        className="border-[#d6c4ad] bg-white text-[#1e1b16] hover:bg-[#f9f3ea]"
+        className="h-9 w-9 border-[#d6c4ad] bg-white p-0 text-[#1e1b16] hover:bg-[#f9f3ea]"
         size="sm"
+        title="Preview"
         variant="outline"
       >
         <Link aria-label="Preview product" href={`/products/${productId}/preview`}>
-          <Eye className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-          Preview
+          <Eye className="h-4 w-4" aria-hidden />
         </Link>
       </Button>
       <Button
         asChild
-        className="border-[#d6c4ad] bg-white text-[#1e1b16] hover:bg-[#f9f3ea]"
+        className="h-9 w-9 border-[#d6c4ad] bg-white p-0 text-[#1e1b16] hover:bg-[#f9f3ea]"
         size="sm"
+        title="Edit"
         variant="outline"
       >
         <Link aria-label="Edit product" href={`/products/${productId}/edit`}>
-          <Pencil className="mr-1.5 h-3.5 w-3.5" aria-hidden />
-          Edit
+          <Pencil className="h-4 w-4" aria-hidden />
         </Link>
       </Button>
 
@@ -67,9 +67,10 @@ export function ProductRowActions({
         <DropdownMenuTrigger asChild>
           <Button
             aria-label="More product actions"
-            className="border-[#d6c4ad] bg-white px-2 text-[#1e1b16] hover:bg-[#f9f3ea]"
+            className="h-9 w-9 border-[#d6c4ad] bg-white p-0 text-[#1e1b16] hover:bg-[#f9f3ea]"
             disabled={pending}
             size="sm"
+            title="More actions"
             type="button"
             variant="outline"
           >
