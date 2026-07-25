@@ -30,7 +30,7 @@ const footerGroups = [
 
 export function SiteFooter() {
   const sellLinks = [
-    ['Become a seller', merchantAppPath('/login')],
+    ['Become a seller', merchantAppPath('/login?intent=register')],
     ['Merchant login', merchantAppPath('/login')],
   ] as const
 

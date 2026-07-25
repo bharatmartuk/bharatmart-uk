@@ -118,7 +118,7 @@ export function SellerAccountForm() {
         Already have an account?{' '}
         <Link
           className="font-medium text-primary underline-offset-4 hover:underline"
-          href="/login?callbackUrl=%2Fregister-business%3Fintent%3Dcontinue"
+          href="/login"
         >
           Sign in
         </Link>

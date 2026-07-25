@@ -12,16 +12,20 @@ type CredentialsLoginFormProps = {
   title: string
   subtitle: string
   defaultRedirect?: string
+  /** Existing CUSTOMER session — stay on login; never auto-open registration. */
+  isCustomerSession?: boolean
 }
 
 export function CredentialsLoginForm({
   title,
   subtitle,
   defaultRedirect = '/',
+  isCustomerSession = false,
 }: CredentialsLoginFormProps) {
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? defaultRedirect
-  const continueRegistration = searchParams.get('continueRegistration') === '1'
+  const continueRegistration =
+    isCustomerSession || searchParams.get('continueRegistration') === '1'
   const googleAvailable = useGoogleAuthAvailable()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -37,8 +41,9 @@ export function CredentialsLoginForm({
       return
     }
 
+    // Prospective sellers stay on login until they choose Continue registration.
     if (role === 'CUSTOMER') {
-      window.location.assign('/register-business?intent=continue')
+      window.location.assign('/login?continueRegistration=1')
       return
     }
 
@@ -79,9 +84,9 @@ export function CredentialsLoginForm({
     setError(null)
     setPending(true)
     try {
-      // Existing merchants bounce from /register-business to the dashboard;
-      // new Google sellers continue into business onboarding there.
-      await signIn('google', { callbackUrl: '/register-business?intent=continue' })
+      // Always return to login first. Merchants are sent to the dashboard from there;
+      // customers can choose Continue registration explicitly.
+      await signIn('google', { callbackUrl: '/login?continueRegistration=1' })
     } catch {
       setPending(false)
       setError('Google sign-in could not be started. Please try again.')
@@ -99,7 +104,7 @@ export function CredentialsLoginForm({
         <div className="space-y-3 rounded-xl border border-[#d6c4ad] bg-[#f9f3ea] p-4 text-sm text-[#514534]">
           <p>
             You&apos;re signed in, but your seller profile is not finished yet. Continue registration
-            or sign out and use a different account.
+            or sign out and use a merchant account.
           </p>
           <div className="flex flex-col gap-2 sm:flex-row">
             <Button asChild className="flex-1" type="button">
@@ -117,38 +122,41 @@ export function CredentialsLoginForm({
         </div>
       ) : null}
 
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-          />
-        </div>
+      {!isCustomerSession ? (
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              required
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+          </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-          />
-        </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+            />
+          </div>
 
-        {error ? <p className="text-sm text-destructive">{error}</p> : null}
+          {error ? <p className="text-sm text-destructive">{error}</p> : null}
 
-        <Button type="submit" className="w-full" disabled={pending}>
-          {pending ? 'Signing in…' : 'Sign in'}
-        </Button>
-      </form>
-      {googleAvailable ? (
+          <Button type="submit" className="w-full" disabled={pending}>
+            {pending ? 'Signing in…' : 'Sign in'}
+          </Button>
+        </form>
+      ) : null}
+
+      {!isCustomerSession && googleAvailable ? (
         <>
           <div className="flex items-center gap-3" aria-hidden="true">
             <div className="h-px flex-1 bg-border" />
@@ -186,15 +194,18 @@ export function CredentialsLoginForm({
           </Button>
         </>
       ) : null}
-      <p className="text-center text-sm text-muted-foreground">
-        New seller?{' '}
-        <Link
-          className="font-medium text-primary underline-offset-4 hover:underline"
-          href="/register-business?intent=register"
-        >
-          Register your business
-        </Link>
-      </p>
+
+      {!isCustomerSession ? (
+        <p className="text-center text-sm text-muted-foreground">
+          New seller?{' '}
+          <Link
+            className="font-medium text-primary underline-offset-4 hover:underline"
+            href="/register-business?intent=register"
+          >
+            Register your business
+          </Link>
+        </p>
+      ) : null}
     </main>
   )
 }
