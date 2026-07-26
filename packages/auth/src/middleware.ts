@@ -25,6 +25,16 @@ async function readSessionToken(req: NextRequest, secret: string) {
   return getToken({ req, secret, secureCookie: !preferSecure })
 }
 
+function redirectToLogin(req: NextRequest, params?: Record<string, string>) {
+  const loginUrl = new URL('/login', req.url)
+  if (params) {
+    for (const [key, value] of Object.entries(params)) {
+      loginUrl.searchParams.set(key, value)
+    }
+  }
+  return NextResponse.redirect(loginUrl)
+}
+
 /**
  * Edge-safe middleware factory for merchant/admin apps.
  * Uses JWT cookies only (no Prisma) so it can run on the Edge runtime.
@@ -48,7 +58,7 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
 
     const token = await readSessionToken(req, secret)
 
-    if (!token) {
+    if (!token?.sub || token.invalid) {
       // Let API routes return JSON 401 instead of an HTML login redirect.
       if (pathname.startsWith('/api/')) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -71,11 +81,17 @@ export function createRoleGuardMiddleware(allowedRoles: UserRoleType[]) {
 }
 
 /**
- * Merchant portal middleware:
- * - Unauthenticated users always land on /login
- * - MERCHANT can access the full dashboard
- * - CUSTOMER may access onboarding / verification-pending only
- *   (they are not auto-dumped into registration from the homepage)
+ * Merchant portal routing invariant (do not break this again):
+ *
+ * | Who                         | Visiting `/`              | Registration form              |
+ * |-----------------------------|---------------------------|--------------------------------|
+ * | Logged out                  | → `/login`                | Only via explicit Register link |
+ * | CUSTOMER (no store yet)     | → `/login?continueRegistration=1` | Only via Continue button |
+ * | MERCHANT without store row  | → `/login?continueRegistration=1` | Only via Continue button |
+ * | MERCHANT pending/rejected   | → `/verification-pending` | Blocked                        |
+ * | MERCHANT approved           | → dashboard               | Blocked                        |
+ *
+ * Never auto-redirect the homepage (or requireMerchant) into `/register-business`.
  */
 export function createMerchantPortalMiddleware() {
   const onboardingPaths = ['/register-business', '/verification-pending']
@@ -99,18 +115,19 @@ export function createMerchantPortalMiddleware() {
 
     const secret = process.env.AUTH_SECRET
     if (!secret) {
-      return NextResponse.redirect(new URL('/login', req.url))
+      return redirectToLogin(req)
     }
 
     const token = await readSessionToken(req, secret)
 
-    if (!token) {
+    // Missing / deleted accounts must look logged-out (never dump into registration).
+    if (!token?.sub || token.invalid) {
       if (pathname.startsWith('/api/')) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
       }
-      const loginUrl = new URL('/login', req.url)
-      loginUrl.searchParams.set('callbackUrl', pathname === '/' ? '/' : pathname)
-      return NextResponse.redirect(loginUrl)
+      return redirectToLogin(req, {
+        callbackUrl: pathname === '/' ? '/' : pathname,
+      })
     }
 
     const role = token.role
@@ -123,22 +140,24 @@ export function createMerchantPortalMiddleware() {
       return NextResponse.next()
     }
 
-    if (role === UserRole.MERCHANT) {
-      return NextResponse.next()
-    }
+    const isOnboarding = onboardingPaths.some(
+      (path) => pathname === path || pathname.startsWith(`${path}/`),
+    )
 
-    // Prospective sellers (CUSTOMER) may only continue onboarding when they
-    // explicitly open those routes — never auto-redirect the homepage there.
-    if (role === UserRole.CUSTOMER) {
-      const isOnboarding = onboardingPaths.some(
-        (path) => pathname === path || pathname.startsWith(`${path}/`),
-      )
+    // Incomplete sellers (customer account, or merchant role with no store yet).
+    // They may open onboarding routes explicitly — never via homepage auto-redirect.
+    const incompleteSeller =
+      role === UserRole.CUSTOMER || (role === UserRole.MERCHANT && !token.merchantId)
+
+    if (incompleteSeller) {
       if (isOnboarding) {
         return NextResponse.next()
       }
-      const loginUrl = new URL('/login', req.url)
-      loginUrl.searchParams.set('continueRegistration', '1')
-      return NextResponse.redirect(loginUrl)
+      return redirectToLogin(req, { continueRegistration: '1' })
+    }
+
+    if (role === UserRole.MERCHANT) {
+      return NextResponse.next()
     }
 
     return NextResponse.redirect(new URL('/forbidden', req.url))

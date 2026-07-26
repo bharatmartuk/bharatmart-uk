@@ -12,7 +12,7 @@ export default async function VerificationPendingPage() {
   if (!user) redirect('/login')
 
   const merchant = await MerchantService.getByUserId(user.id)
-  if (!merchant) redirect('/register-business?intent=continue')
+  if (!merchant) redirect('/login?continueRegistration=1')
   if (merchant.verificationStatus === 'APPROVED') redirect('/')
 
   const hasPlaceholderDocs = merchant.verificationDocumentUrls.some((url) =>

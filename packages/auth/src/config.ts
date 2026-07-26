@@ -191,6 +191,7 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
             token.role = user.role
           }
           token.merchantId = user.merchantId ?? null
+          token.invalid = false
         }
 
         // Keep role/merchantId in sync (e.g. CUSTOMER → MERCHANT after onboarding).
@@ -205,6 +206,7 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
             if (dbUser && isUserRole(dbUser.role)) {
               token.role = dbUser.role
               token.merchantId = dbUser.merchant?.id ?? null
+              token.invalid = false
             } else if (user?.email) {
               const byEmail = await prisma.user.findUnique({
                 where: { email: user.email.toLowerCase() },
@@ -214,7 +216,14 @@ export function buildAuthConfig(allowedRoles: UserRoleType[]): AuthOptions {
                 token.sub = byEmail.id
                 token.role = byEmail.role
                 token.merchantId = byEmail.merchant?.id ?? null
+                token.invalid = false
+              } else {
+                // Account was deleted — drop identity so portals land on /login, not registration.
+                return { invalid: true }
               }
+            } else {
+              // Account was deleted — drop identity so portals land on /login, not registration.
+              return { invalid: true }
             }
           } catch {
             // Keep existing token claims if the database is temporarily unreachable.
