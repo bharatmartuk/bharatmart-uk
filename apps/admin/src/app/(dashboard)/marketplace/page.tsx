@@ -31,6 +31,7 @@ export default async function MarketplacePage() {
             startDate: banner.startDate.toISOString(),
             endDate: banner.endDate.toISOString(),
             sortOrder: banner.sortOrder,
+            comingSoon: banner.comingSoon,
           }))}
           categories={categories}
         />

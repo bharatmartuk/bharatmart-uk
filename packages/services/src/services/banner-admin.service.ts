@@ -18,6 +18,7 @@ export const BannerAdminService = {
     startDate: Date
     endDate: Date
     isActive?: boolean
+    comingSoon?: boolean
     sortOrder?: number
   }) {
     return prisma.banner.create({
@@ -30,6 +31,7 @@ export const BannerAdminService = {
         startDate: input.startDate,
         endDate: input.endDate,
         isActive: input.isActive ?? true,
+        comingSoon: input.comingSoon ?? false,
         sortOrder: input.sortOrder ?? 0,
       },
     })
@@ -46,6 +48,7 @@ export const BannerAdminService = {
       startDate: Date
       endDate: Date
       isActive: boolean
+      comingSoon: boolean
       sortOrder: number
     }>,
   ) {

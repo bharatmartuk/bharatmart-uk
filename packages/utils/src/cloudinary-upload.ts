@@ -1,6 +1,8 @@
 export type CloudinaryFolder =
   | 'bharatmart/products'
   | 'bharatmart/merchant-documents'
+  | 'bharatmart/carousel'
+  /** @deprecated Use bharatmart/carousel */
   | 'bharatmart/banners'
 
 export type SignedUploadResponse = {

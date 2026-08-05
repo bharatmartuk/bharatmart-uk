@@ -393,16 +393,17 @@ model FollowedStore {
 }
 
 model Banner {
-  id        String   @id @default(cuid())
-  imageUrl  String
-  headline  String
-  subtext   String?
-  ctaText   String?
-  ctaLink   String?
-  startDate DateTime
-  endDate   DateTime
-  isActive  Boolean  @default(true)
-  sortOrder Int      @default(0)
+  id         String   @id @default(cuid())
+  imageUrl   String
+  headline   String
+  subtext    String?
+  ctaText    String?
+  ctaLink    String?
+  startDate  DateTime
+  endDate    DateTime
+  isActive   Boolean  @default(true)
+  comingSoon Boolean  @default(false)
+  sortOrder  Int      @default(0)
 
   @@index([isActive, startDate, endDate])
   @@index([sortOrder])

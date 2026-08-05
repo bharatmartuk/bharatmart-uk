@@ -23,6 +23,7 @@ type MarketplaceBanner = {
   ctaText: string | null
   ctaLink: string | null
   isActive: boolean
+  comingSoon: boolean
   startDate: string
   endDate: string
   sortOrder: number

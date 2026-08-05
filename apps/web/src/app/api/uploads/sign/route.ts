@@ -11,6 +11,7 @@ import { getCurrentUser } from '@/auth'
 const allowedFolders: UploadFolder[] = [
   'bharatmart/products',
   'bharatmart/merchant-documents',
+  'bharatmart/carousel',
   'bharatmart/banners',
 ]
 

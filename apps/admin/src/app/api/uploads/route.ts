@@ -12,7 +12,11 @@ export const runtime = 'nodejs'
 
 const MAX_BYTES = 4 * 1024 * 1024
 
-const allowedFolders: UploadFolder[] = ['bharatmart/banners', 'bharatmart/products']
+const allowedFolders: UploadFolder[] = [
+  'bharatmart/carousel',
+  'bharatmart/banners',
+  'bharatmart/products',
+]
 
 export async function POST(request: Request) {
   const user = await getCurrentUser()

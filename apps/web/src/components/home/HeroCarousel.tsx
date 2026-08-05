@@ -104,6 +104,11 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
             <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent">
               <div className="flex h-full items-center pl-[2cm] pr-3 md:pl-[2.2cm] md:pr-5 lg:pr-6">
                 <div className="max-w-xl text-white">
+                  {banner.comingSoon ? (
+                    <span className="mb-4 inline-flex rounded-full bg-[#7f5700] px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-white shadow-md">
+                      Coming soon
+                    </span>
+                  ) : null}
                   <h1 className="font-heading text-4xl font-bold leading-tight md:text-5xl">
                     {banner.headline}
                   </h1>
@@ -112,7 +117,7 @@ export function HeroCarousel({ banners }: { banners: BannerSummary[] }) {
                       {banner.subtext}
                     </p>
                   ) : null}
-                  {banner.ctaLink && banner.ctaText ? (
+                  {!banner.comingSoon && banner.ctaLink && banner.ctaText ? (
                     <Button
                       asChild
                       className="mt-7 h-12 bg-[#e8a317] px-8 font-bold text-[#281900] hover:bg-[#ffba3e]"

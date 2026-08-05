@@ -12,6 +12,8 @@ import { v2 as cloudinary } from 'cloudinary'
 export type UploadFolder =
   | 'bharatmart/products'
   | 'bharatmart/merchant-documents'
+  | 'bharatmart/carousel'
+  /** @deprecated Use bharatmart/carousel */
   | 'bharatmart/banners'
 
 export interface UploadResult {

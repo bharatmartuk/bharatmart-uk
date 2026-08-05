@@ -13,6 +13,7 @@ export type BannerFormInput = {
   endDate: string
   imageUrl: string
   isActive: boolean
+  comingSoon: boolean
 }
 
 async function requireAdminUser() {
@@ -44,6 +45,7 @@ export async function createBannerAction(input: BannerFormInput) {
     startDate: new Date(input.startDate),
     endDate: new Date(`${input.endDate}T23:59:59.000Z`),
     isActive: input.isActive,
+    comingSoon: input.comingSoon,
     sortOrder: nextOrder,
     ...(input.subtext.trim() ? { subtext: input.subtext.trim() } : {}),
     ...(input.ctaText.trim() ? { ctaText: input.ctaText.trim() } : {}),
@@ -63,6 +65,7 @@ export async function updateBannerAction(id: string, input: BannerFormInput) {
     startDate: new Date(input.startDate),
     endDate: new Date(`${input.endDate}T23:59:59.000Z`),
     isActive: input.isActive,
+    comingSoon: input.comingSoon,
   })
   await revalidateBannerPaths()
 }

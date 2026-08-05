@@ -38,6 +38,7 @@ export type BannerRow = {
   ctaText: string | null
   ctaLink: string | null
   isActive: boolean
+  comingSoon: boolean
   startDate: string
   endDate: string
   sortOrder: number
@@ -55,6 +56,7 @@ function emptyForm(): BannerFormInput {
     endDate: inNinetyDays,
     imageUrl: '',
     isActive: true,
+    comingSoon: false,
   }
 }
 
@@ -68,6 +70,7 @@ function toForm(banner: BannerRow): BannerFormInput {
     endDate: banner.endDate.slice(0, 10),
     imageUrl: banner.imageUrl,
     isActive: banner.isActive,
+    comingSoon: banner.comingSoon,
   }
 }
 
@@ -141,6 +144,7 @@ function SortableBannerCard({
             <Badge variant={banner.isActive ? 'default' : 'secondary'}>
               {banner.isActive ? 'Live' : 'Hidden'}
             </Badge>
+            {banner.comingSoon ? <Badge variant="secondary">Coming soon</Badge> : null}
           </div>
           {banner.subtext ? (
             <p className="line-clamp-2 text-sm text-[#514534]">{banner.subtext}</p>
@@ -312,7 +316,7 @@ function BannerFields({
             const file = event.target.files?.[0]
             if (!file) return
             onUploadError(null)
-            void uploadFileToCloudinary(file, 'bharatmart/banners')
+            void uploadFileToCloudinary(file, 'bharatmart/carousel')
               .then((uploaded) => {
                 onChange((current) => ({ ...current, imageUrl: uploaded.url }))
               })
@@ -344,6 +348,16 @@ function BannerFields({
           type="checkbox"
         />
         Show on homepage carousel (within date range)
+      </label>
+      <label className="flex items-center gap-2 text-sm text-[#514534] md:col-span-2">
+        <input
+          checked={form.comingSoon}
+          onChange={(event) =>
+            onChange((current) => ({ ...current, comingSoon: event.target.checked }))
+          }
+          type="checkbox"
+        />
+        Mark as coming soon (shows badge, hides shop CTA)
       </label>
     </>
   )

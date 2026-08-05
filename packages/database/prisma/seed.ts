@@ -13,6 +13,7 @@ import {
 } from '../generated/client'
 import { resolveSeedProductImageUrl } from './lib/seed-cloudinary'
 import { resolveSeedMerchantLogoUrl } from './lib/seed-merchant-logos'
+import { resolveSeedCarouselUrl } from './lib/seed-carousel'
 
 const prisma = new PrismaClient()
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
@@ -1292,40 +1293,77 @@ async function seedBanners() {
   const banners = [
     {
       id: 'carousel_homemade_pickles',
-      imageUrl: '/carousel/homemade-pickles.png',
+      slug: 'homemade-pickles',
+      fallbackImageUrl: '/carousel/homemade-pickles.png',
       headline: 'Homemade Indian Pickles',
       subtext:
         'Tangy mango, lemon and family-recipe achar - made for everyday meals and festive thalis.',
       ctaText: 'Shop pickles',
       ctaLink: '/products?category=homemade-pickles',
+      comingSoon: false,
       sortOrder: 1,
     },
     {
       id: 'carousel_homemade_snacks',
-      imageUrl: '/carousel/homemade-snacks.png',
+      slug: 'homemade-snacks',
+      fallbackImageUrl: '/carousel/homemade-snacks.png',
       headline: 'Crispy Homemade Snacks',
       subtext:
         'Murukulu, janthikalu, sakinalu, gaarelu and more - festive crunch, delivered across the UK.',
       ctaText: 'Shop snacks',
       ctaLink: '/products?category=homemade-snacks',
+      comingSoon: false,
       sortOrder: 2,
+    },
+    {
+      id: 'carousel_rakshabandhan',
+      slug: 'rakshabandhan',
+      fallbackImageUrl: null as string | null,
+      headline: 'Raksha Bandhan Collection',
+      subtext: 'Celebrate the bond with festive rakhis and gifts — launching soon.',
+      ctaText: null as string | null,
+      ctaLink: null as string | null,
+      comingSoon: true,
+      sortOrder: 3,
     },
   ] as const
 
   for (const banner of banners) {
+    let imageUrl = banner.fallbackImageUrl
+    try {
+      const cloudinaryUrl = await resolveSeedCarouselUrl(banner.slug, REPO_ROOT)
+      if (cloudinaryUrl) imageUrl = cloudinaryUrl
+    } catch {
+      // Cloudinary optional during local seed without credentials.
+    }
+    if (!imageUrl) continue
+
     await prisma.banner.upsert({
       where: { id: banner.id },
       update: {
-        ...banner,
+        imageUrl,
+        headline: banner.headline,
+        subtext: banner.subtext,
+        ctaText: banner.ctaText,
+        ctaLink: banner.ctaLink,
+        comingSoon: banner.comingSoon,
         startDate,
         endDate,
         isActive: true,
+        sortOrder: banner.sortOrder,
       },
       create: {
-        ...banner,
+        id: banner.id,
+        imageUrl,
+        headline: banner.headline,
+        subtext: banner.subtext,
+        ctaText: banner.ctaText,
+        ctaLink: banner.ctaLink,
+        comingSoon: banner.comingSoon,
         startDate,
         endDate,
         isActive: true,
+        sortOrder: banner.sortOrder,
       },
     })
   }

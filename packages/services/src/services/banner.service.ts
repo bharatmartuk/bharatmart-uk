@@ -9,18 +9,20 @@ export interface BannerSummary {
   subtext: string
   ctaText: string
   ctaLink: string
+  comingSoon: boolean
 }
 
 export const BannerService = {
   async getActiveBanners(): Promise<BannerSummary[]> {
     const banners = await bannerRepository.findActive()
-    return banners.map(({ id, imageUrl, headline, subtext, ctaText, ctaLink }) => ({
+    return banners.map(({ id, imageUrl, headline, subtext, ctaText, ctaLink, comingSoon }) => ({
       id,
       imageUrl,
       headline,
       subtext: subtext ?? '',
       ctaText: ctaText ?? '',
       ctaLink: ctaLink ?? '',
+      comingSoon,
     }))
   },
 }
